@@ -8,8 +8,16 @@ export default function Message() {
   var type = arguments[1];
 
   var div = document.createElement('div');
-
-  document.body.appendChild(div);
+  var messageBox = document.getElementsByClassName('el-message-content')[0];
+  if (messageBox) {
+    messageBox.appendChild(div);
+    document.body.appendChild(messageBox);
+  } else {
+    var _messageBox = document.createElement('div');
+    _messageBox.className = "el-message-content";
+    _messageBox.appendChild(div);
+    document.body.appendChild(_messageBox);
+  }
 
   if (typeof props === 'string' || React.isValidElement(props)) {
     props = {
@@ -23,8 +31,9 @@ export default function Message() {
 
   var component = React.createElement(Toast, Object.assign(props, {
     willUnmount: function willUnmount() {
+      var messageBox = document.getElementsByClassName('el-message-content')[0];
       ReactDOM.unmountComponentAtNode(div);
-      document.body.removeChild(div);
+      messageBox.removeChild(div);
 
       if (props.onClose instanceof Function) {
         props.onClose();

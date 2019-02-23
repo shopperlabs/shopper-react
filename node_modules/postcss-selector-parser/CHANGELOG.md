@@ -1,3 +1,55 @@
+# 3.1.1
+
+* Fix: typescript definitions weren't in the published package.
+
+# 3.1.0
+
+* Fixed numerous bugs in attribute nodes relating to the handling of comments
+  and whitespace. There's significant changes to `attrNode.spaces` and `attrNode.raws` since the `3.0.0` release.
+* Added `Attribute#offsetOf(part)` to get the offset location of
+  attribute parts like `"operator"` and `"value"`. This is most
+  often added to `Attribute#sourceIndex` for error reporting.
+
+# 3.0.0
+
+## Breaking changes
+
+* Some tweaks to the tokenizer/attribute selector parsing mean that whitespace
+  locations might be slightly different to the 2.x code.
+* Better attribute selector parsing with more validation; postcss-selector-parser
+  no longer uses regular expressions to parse attribute selectors.
+* Added an async API (thanks to @jacobp100); the default `process` API is now
+  async, and the sync API is now accessed through `processSync` instead.
+* `process()` and `processSync()` now return a string instead of the Processor
+  instance.
+* Tweaks handling of Less interpolation (thanks to @jwilsson).
+* Removes support for Node 0.12.
+
+## Other changes
+
+* `ast()` and `astSync()` methods have been added to the `Processor`. These
+  return the `Root` node of the selectors after processing them.
+* `transform()` and `transformSync()` methods have been added to the
+  `Processor`. These return the value returned by the processor callback
+  after processing the selectors.
+* Set the parent when inserting a node (thanks to @chriseppstein).
+* Correctly adjust indices when using insertBefore/insertAfter (thanks to @tivac).
+* Fixes handling of namespaces with qualified tag selectors.
+* `process`, `ast` and `transform` (and their sync variants) now accept a
+  `postcss` rule node. When provided, better errors are generated and selector
+  processing is automatically set back to the rule selector (unless the `updateSelector` option is set to `false`.)
+* Now more memory efficient when tokenizing selectors.
+
+### Upgrade hints
+
+The pattern of:
+
+`rule.selector = processor.process(rule.selector).result.toString();`
+
+is now:
+
+`processor.processSync(rule)`
+
 # 2.2.3
 
 * Resolves an issue where the parser would not reduce multiple spaces between an

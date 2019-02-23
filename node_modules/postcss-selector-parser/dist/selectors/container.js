@@ -101,14 +101,17 @@ var Container = function (_Node) {
     };
 
     Container.prototype.insertAfter = function insertAfter(oldNode, newNode) {
+        newNode.parent = this;
         var oldIndex = this.index(oldNode);
         this.nodes.splice(oldIndex + 1, 0, newNode);
+
+        newNode.parent = this;
 
         var index = void 0;
         for (var id in this.indexes) {
             index = this.indexes[id];
             if (oldIndex <= index) {
-                this.indexes[id] = index + this.nodes.length;
+                this.indexes[id] = index + 1;
             }
         }
 
@@ -116,14 +119,17 @@ var Container = function (_Node) {
     };
 
     Container.prototype.insertBefore = function insertBefore(oldNode, newNode) {
+        newNode.parent = this;
         var oldIndex = this.index(oldNode);
         this.nodes.splice(oldIndex, 0, newNode);
+
+        newNode.parent = this;
 
         var index = void 0;
         for (var id in this.indexes) {
             index = this.indexes[id];
-            if (oldIndex <= index) {
-                this.indexes[id] = index + this.nodes.length;
+            if (index <= oldIndex) {
+                this.indexes[id] = index + 1;
             }
         }
 

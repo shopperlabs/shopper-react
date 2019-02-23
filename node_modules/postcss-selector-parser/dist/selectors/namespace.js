@@ -25,15 +25,53 @@ var Namespace = function (_Node) {
         return _possibleConstructorReturn(this, _Node.apply(this, arguments));
     }
 
+    Namespace.prototype.qualifiedName = function qualifiedName(value) {
+        if (this.namespace) {
+            return this.namespaceString + '|' + value;
+        } else {
+            return value;
+        }
+    };
+
     Namespace.prototype.toString = function toString() {
-        return [this.spaces.before, this.ns, String(this.value), this.spaces.after].join('');
+        return [this.spaces.before, this.qualifiedName(this.value), this.spaces.after].join('');
     };
 
     _createClass(Namespace, [{
+        key: 'namespace',
+        get: function get() {
+            return this._namespace;
+        },
+        set: function set(namespace) {
+            this._namespace = namespace;
+            if (this.raws) {
+                delete this.raws.namespace;
+            }
+        }
+    }, {
         key: 'ns',
         get: function get() {
-            var n = this.namespace;
-            return n ? (typeof n === 'string' ? n : '') + '|' : '';
+            return this._namespace;
+        },
+        set: function set(namespace) {
+            this._namespace = namespace;
+            if (this.raws) {
+                delete this.raws.namespace;
+            }
+        }
+    }, {
+        key: 'namespaceString',
+        get: function get() {
+            if (this.namespace) {
+                var ns = this.raws && this.raws.namespace || this.namespace;
+                if (ns === true) {
+                    return '';
+                } else {
+                    return ns;
+                }
+            } else {
+                return '';
+            }
         }
     }]);
 

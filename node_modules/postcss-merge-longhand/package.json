@@ -1,6 +1,6 @@
 {
   "name": "postcss-merge-longhand",
-  "version": "2.0.2",
+  "version": "4.0.11",
   "description": "Merge longhand properties into shorthand with PostCSS.",
   "main": "dist/index.js",
   "files": [
@@ -8,8 +8,7 @@
     "dist"
   ],
   "scripts": {
-    "prepublish": "babel src --out-dir dist --ignore /__tests__/",
-    "test": "babel-tape-runner \"src/**/__tests__/*.js\" | tap-spec"
+    "prepublish": "cross-env BABEL_ENV=publish babel src --out-dir dist --ignore /__tests__/"
   },
   "keywords": [
     "css",
@@ -20,19 +19,26 @@
   ],
   "license": "MIT",
   "devDependencies": {
-    "babel": "^5.8.23",
-    "babel-tape-runner": "^1.2.0",
-    "tap-spec": "^4.1.0",
-    "tape": "^4.2.0"
+    "babel-cli": "^6.0.0",
+    "cross-env": "^5.0.0"
   },
-  "homepage": "https://github.com/ben-eb/postcss-merge-longhand",
+  "homepage": "https://github.com/cssnano/cssnano",
   "author": {
     "name": "Ben Briggs",
     "email": "beneb.info@gmail.com",
     "url": "http://beneb.info"
   },
-  "repository": "ben-eb/postcss-merge-longhand",
+  "repository": "cssnano/cssnano",
   "dependencies": {
-    "postcss": "^5.0.4"
+    "css-color-names": "0.0.4",
+    "postcss": "^7.0.0",
+    "postcss-value-parser": "^3.0.0",
+    "stylehacks": "^4.0.0"
+  },
+  "bugs": {
+    "url": "https://github.com/cssnano/cssnano/issues"
+  },
+  "engines": {
+    "node": ">=6.9.0"
   }
 }

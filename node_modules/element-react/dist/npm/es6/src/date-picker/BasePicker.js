@@ -56,6 +56,7 @@ var BasePicker = function (_Component) {
     get: function get() {
       return {
         align: PropTypes.oneOf(['left', 'center', 'right']),
+        className: PropTypes.string,
         format: PropTypes.string,
         isShowTrigger: PropTypes.bool,
         isReadOnly: PropTypes.bool,
@@ -289,7 +290,8 @@ var BasePicker = function (_Component) {
     var _props2 = this.props,
         isReadOnly = _props2.isReadOnly,
         placeholder = _props2.placeholder,
-        isDisabled = _props2.isDisabled;
+        isDisabled = _props2.isDisabled,
+        className = _props2.className;
     var _state2 = this.state,
         pickerVisible = _state2.pickerVisible,
         value = _state2.value,
@@ -352,7 +354,7 @@ var BasePicker = function (_Component) {
     return React.createElement(
       'span',
       {
-        className: this.classNames('el-date-editor', {
+        className: this.classNames('el-date-editor', className, {
           'is-have-trigger': this.calcIsShowTrigger(),
           'is-active': pickerVisible,
           'is-filled': !!value

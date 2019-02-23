@@ -124,3 +124,29 @@ export function convertToRows(columns) {
   });
   return rows;
 }
+
+var isObject = function isObject(obj) {
+  return Object.prototype.toString.call(obj) === '[object Object]';
+};
+var isArray = function isArray(arr) {
+  return Object.prototype.toString.call(arr) === '[object Array]';
+};
+var deepCompare = function deepCompare(obj1, obj2) {
+  if (obj1 && obj2 && obj1.length !== obj2.length) {
+    return true;
+  } else if (isArray(obj1) && isArray(obj2)) {
+    return obj1.some(function (value, key) {
+      return deepCompare(value, obj2[key]);
+    });
+  } else if (isObject(obj1) && isObject(obj2)) {
+    for (var key in obj1) {
+      if (deepCompare(obj1[key], obj2[key])) {
+        return true;
+      }
+    }
+    return false;
+  }
+  return obj1 !== obj2;
+};
+
+export { deepCompare, isObject, isArray };

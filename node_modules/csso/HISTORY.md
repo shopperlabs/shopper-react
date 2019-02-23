@@ -1,8 +1,60 @@
-## 2.3.2 (March 11, 2016)
+## 3.5.1 (June 7, 2018)
 
-- Fix infinite loop on value parse (#328)
+- Bumped [CSSTree](https://github.com/csstree/csstree) to `1.0.0-alpha.29` (fixes some issues)
 
-## 2.3.1 (January 6, 2016)
+## 3.5.0 (January 14, 2018)
+
+- Migrated to [CSSTree](https://github.com/csstree/csstree) `1.0.0-alpha.27`
+
+## 3.4.0 (November 3, 2017)
+
+- Added percent sign removal for zero percentages for some properties that is safe (@RubaXa, #286)
+- Removed unit removal for zero values in `-ms-flex` due it breaks flex in IE10/11 (#362)
+- Improved performance of selectors comparison (@smelukov, #343)
+
+## 3.3.1 (October 17, 2017)
+
+- Fixed merge of `position` declarations when `sticky` fallback is using (@gruzzilkin, #356)
+
+## 3.3.0 (October 12, 2017)
+
+- Migrated to [CSSTree](https://github.com/csstree/csstree) `1.0.0-alpha25`
+    - Changed AST format (see [CSSTree change log](https://github.com/csstree/csstree/blob/master/HISTORY.md) for details)
+    - Fixed performance issue when generate CSS with source map (quadratic increase in time depending on the size of the CSS)
+
+## 3.2.0 (September 10, 2017)
+
+- Fixed named color compression to apply only when an identifier is guaranteed to be a color
+- Added lifting of `@keyframes` to the beginning of style sheet (chunk), but after `@charset` and `@import` rules
+- Added removal of `@keyframes`, `@media` and `@supports` with no prelude
+- Added removal of duplicate `@keyframes` (#202)
+- Added new option `forceMediaMerge` to force media rules merging. It's unsafe in general, but works fine in many cases. Use it on your own risk (#350)
+- Bumped `CSSTree` to `1.0.0-alpha23`
+
+## 3.1.1 (April 25, 2017)
+
+- Fixed crash on a number processing when it used not in a list (#335)
+
+## 3.1.0 (April 24, 2017)
+
+- Implemented optimisation for `none` keyword in `border` and `outline` properties (@zoobestik, #41)
+- Implemented replacing `rgba(x, x, x, 0)` to `transparent`
+- Fixed plus sign omitting for numbers following identifier, hex color, number or unicode range, since it can change the meaning of CSS (e.g. `calc(1px+2px)` has been optimized to `calc(1px2px)` before, now it stays the same)
+- Improved usage filtering for nested selectors (i.e. for `:nth-*()`, `:has()`, `:matches` and other pseudos)
+- Implemented `blacklist` filtering in usage (#334, see [Black list filtering](https://github.com/css/csso#black-list-filtering))
+- Improved white space removing, now white spaces are removing in the beginning and at the ending of sequences, and between stylesheet and block nodes
+- Bumped `CSSTree` to `1.0.0-alpha19`
+
+## 3.0.1 (March 14, 2017)
+
+- Fixed declaration merging when declaration contains an `!important`
+
+## 3.0.0 (March 13, 2017)
+
+- Migrated to [CSSTree](https://github.com/csstree/csstree) as AST backend and exposed its API behind `syntax` property
+- Extracted CLI into standalone package [css/csso-cli](https://github.com/css/csso-cli)
+
+## 2.3.1 (January 6, 2017)
 
 - Added `\0` IE hack support (#320)
 

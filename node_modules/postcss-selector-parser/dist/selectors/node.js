@@ -42,17 +42,10 @@ var _class = function () {
 
         _classCallCheck(this, _class);
 
-        for (var key in opts) {
-            this[key] = opts[key];
-        }
-        var _opts$spaces = opts.spaces;
-        _opts$spaces = _opts$spaces === undefined ? {} : _opts$spaces;
-        var _opts$spaces$before = _opts$spaces.before,
-            before = _opts$spaces$before === undefined ? '' : _opts$spaces$before,
-            _opts$spaces$after = _opts$spaces.after,
-            after = _opts$spaces$after === undefined ? '' : _opts$spaces$after;
-
-        this.spaces = { before: before, after: after };
+        Object.assign(this, opts);
+        this.spaces = this.spaces || {};
+        this.spaces.before = this.spaces.before || '';
+        this.spaces.after = this.spaces.after || '';
     }
 
     _class.prototype.remove = function remove() {

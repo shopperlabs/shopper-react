@@ -1,12 +1,10 @@
 {
   "name": "postcss-unique-selectors",
-  "version": "2.0.2",
+  "version": "4.0.1",
   "description": "Ensure CSS selectors are unique.",
   "main": "dist/index.js",
   "scripts": {
-    "pretest": "eslint src",
-    "prepublish": "de dist && BABEL_ENV=publish babel src --out-dir dist --ignore /__tests__/",
-    "test": "ava src/__tests__"
+    "prepublish": "cross-env BABEL_ENV=publish babel src --out-dir dist --ignore /__tests__/"
   },
   "files": [
     "LICENSE-MIT",
@@ -18,34 +16,26 @@
     "postcss-plugin"
   ],
   "license": "MIT",
-  "devDependencies": {
-    "ava": "^0.11.0",
-    "babel-cli": "^6.4.0",
-    "babel-core": "^6.4.0",
-    "babel-plugin-add-module-exports": "^0.1.2",
-    "babel-preset-es2015": "^6.3.13",
-    "babel-preset-es2015-loose": "^7.0.0",
-    "babel-preset-stage-0": "^6.3.13",
-    "del-cli": "^0.1.2",
-    "eslint": "^1.10.3",
-    "eslint-config-cssnano": "^1.0.0"
-  },
-  "homepage": "https://github.com/ben-eb/postcss-unique-selectors",
+  "homepage": "https://github.com/cssnano/cssnano",
   "author": {
     "name": "Ben Briggs",
     "email": "beneb.info@gmail.com",
     "url": "http://beneb.info"
   },
-  "repository": "ben-eb/postcss-unique-selectors",
+  "repository": "cssnano/cssnano",
+  "devDependencies": {
+    "babel-cli": "^6.0.0",
+    "cross-env": "^5.0.0"
+  },
   "dependencies": {
-    "alphanum-sort": "^1.0.1",
-    "postcss": "^5.0.4",
+    "alphanum-sort": "^1.0.0",
+    "postcss": "^7.0.0",
     "uniqs": "^2.0.0"
   },
-  "ava": {
-    "require": "babel-core/register"
+  "bugs": {
+    "url": "https://github.com/cssnano/cssnano/issues"
   },
-  "eslintConfig": {
-    "extends": "cssnano"
+  "engines": {
+    "node": ">=6.9.0"
   }
 }

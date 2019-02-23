@@ -6,25 +6,30 @@
 var loaderUtils = require('loader-utils')
 var path = require('path')
 var hash = require('hash-sum')
+var qs = require('querystring')
 
 module.exports = function () {}
 
 module.exports.pitch = function (remainingRequest) {
-  if (this.cacheable) this.cacheable()
-
   var isServer = this.target === 'node'
   var isProduction = this.minimize || process.env.NODE_ENV === 'production'
   var addStylesClientPath = loaderUtils.stringifyRequest(this, '!' + path.join(__dirname, 'lib/addStylesClient.js'))
   var addStylesServerPath = loaderUtils.stringifyRequest(this, '!' + path.join(__dirname, 'lib/addStylesServer.js'))
+  var addStylesShadowPath = loaderUtils.stringifyRequest(this, '!' + path.join(__dirname, 'lib/addStylesShadow.js'))
 
   var request = loaderUtils.stringifyRequest(this, '!!' + remainingRequest)
-  var id = JSON.stringify(hash(request + path.relative(__dirname, this.resourcePath)))
+  var relPath = path.relative(__dirname, this.resourcePath).replace(/\\/g, '/')
+  var id = JSON.stringify(hash(request + relPath))
   var options = loaderUtils.getOptions(this) || {}
 
   // direct css import from js --> direct, or manually call `styles.__inject__(ssrContext)` with `manualInject` option
   // css import from vue file --> component lifecycle linked
   // style embedded in vue file --> component lifecycle linked
-  var isVue = /"vue":true/.test(remainingRequest) || options.manualInject
+  var isVue = (
+    /"vue":true/.test(remainingRequest) ||
+    options.manualInject ||
+    qs.parse(this.resourceQuery.slice(1)).vue != null
+  )
 
   var shared = [
     '// style-loader: Adds some css to the DOM by adding a <style> tag',
@@ -36,11 +41,22 @@ module.exports.pitch = function (remainingRequest) {
     'if(content.locals) module.exports = content.locals;'
   ]
 
-  if (!isServer) {
+  // shadowMode is enabled in vue-cli with vue build --target web-component.
+  // exposes the same __inject__ method like SSR
+  if (options.shadowMode) {
+    return shared.concat([
+      '// add CSS to Shadow Root',
+      'var add = require(' + addStylesShadowPath + ').default',
+      'module.exports.__inject__ = function (shadowRoot) {',
+      '  add(' + id + ', content, shadowRoot)',
+      '};'
+    ]).join('\n')
+  } else if (!isServer) {
     // on the client: dynamic inject + hot-reload
     var code = [
       '// add the styles to the DOM',
-      'var update = require(' + addStylesClientPath + ')(' + id + ', content, ' + isProduction + ', ' + JSON.stringify(options) + ');'
+      'var add = require(' + addStylesClientPath + ').default',
+      'var update = add(' + id + ', content, ' + isProduction + ', ' + JSON.stringify(options) + ');'
     ]
     if (!isProduction) {
       code = code.concat([
@@ -67,7 +83,7 @@ module.exports.pitch = function (remainingRequest) {
       // component's lifecycle hooks
       return shared.concat([
         '// add CSS to SSR context',
-        'var add = require(' + addStylesServerPath + ')',
+        'var add = require(' + addStylesServerPath + ').default',
         'module.exports.__inject__ = function (context) {',
         '  add(' + id + ', content, ' + isProduction + ', context)',
         '};'
@@ -75,7 +91,7 @@ module.exports.pitch = function (remainingRequest) {
     } else {
       // normal import
       return shared.concat([
-        'require(' + addStylesServerPath + ')(' + id + ', content, ' + isProduction + ')'
+        'require(' + addStylesServerPath + ').default(' + id + ', content, ' + isProduction + ')'
       ]).join('\n')
     }
   }

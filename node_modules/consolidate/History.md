@@ -1,3 +1,21 @@
+0.15.1 / 2018-03-19
+===================
+
+ * add support for underscore partials
+ * updating metadata and configurations
+ * lint and cleanup code and tests
+
+0.15.0 / 2017-11-01
+===================
+
+ * add plates support
+ * add teacup support
+ * add liquid-node support
+ * add velocityjs support
+ * allow absolute and relative partial paths
+ * extend dot options
+ * support layouts in vash
+
 0.14.0 / 2016-01-24
 ===================
 

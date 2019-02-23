@@ -2,7 +2,7 @@
  * Translates the list format produced by css-loader into something
  * easier to manipulate.
  */
-module.exports = function listToStyles (parentId, list) {
+export default function listToStyles (parentId, list) {
   var styles = []
   var newStyles = {}
   for (var i = 0; i < list.length; i++) {

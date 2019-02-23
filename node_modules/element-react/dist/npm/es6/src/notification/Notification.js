@@ -1,8 +1,11 @@
 import _classCallCheck from 'babel-runtime/helpers/classCallCheck';
 import _possibleConstructorReturn from 'babel-runtime/helpers/possibleConstructorReturn';
 import _inherits from 'babel-runtime/helpers/inherits';
-import React from 'react';
-import { Component, PropTypes, Transition, View } from '../../libs';
+import * as React from 'react';
+import { Component, PropTypes, Animate, View } from '../../libs';
+
+var Transition = Animate.Transition;
+
 
 var typeMap = {
   success: 'circle-check',
@@ -19,14 +22,11 @@ var Notification = function (_Component) {
 
     var _this = _possibleConstructorReturn(this, _Component.call(this, props));
 
-    _this.state = {
-      visible: false
-    };
+    _this.state = { visible: true };
     return _this;
   }
 
   Notification.prototype.componentDidMount = function componentDidMount() {
-    this.setState({ visible: true });
     this.startTimer();
   };
 
@@ -41,20 +41,22 @@ var Notification = function (_Component) {
   };
 
   Notification.prototype.onClose = function onClose() {
-    this.stopTimer();
+    var _this2 = this;
 
-    this.setState({
-      visible: false
+    this.setState({ visible: false }, function () {
+      return _this2.stopTimer();
     });
   };
 
   Notification.prototype.startTimer = function startTimer() {
-    var _this2 = this;
+    var _this3 = this;
 
-    if (this.props.duration) {
+    var duration = this.props.duration;
+
+    if (duration) {
       this.timeout = setTimeout(function () {
-        _this2.onClose();
-      }, this.props.duration);
+        return _this3.onClose();
+      }, duration);
     }
   };
 
@@ -63,59 +65,82 @@ var Notification = function (_Component) {
   };
 
   Notification.prototype.typeClass = function typeClass() {
-    return this.props.type && typeMap[this.props.type] ? 'el-icon-' + typeMap[this.props.type] : '';
+    var type = this.props.type;
+
+    return type && typeMap[type] ? 'el-icon-' + typeMap[type] : '';
   };
 
   Notification.prototype.render = function render() {
-    var _this3 = this;
+    var _this4 = this;
+
+    var visible = this.state.visible;
+    var _props = this.props,
+        _props$onClose = _props.onClose,
+        onClose = _props$onClose === undefined ? function () {
+      return false;
+    } : _props$onClose,
+        willUnmount = _props.willUnmount,
+        duration = _props.duration,
+        top = _props.top,
+        type = _props.type,
+        iconClass = _props.iconClass,
+        title = _props.title,
+        message = _props.message;
 
     return React.createElement(
       Transition,
       {
-        name: 'el-notification-fade',
-        onAfterEnter: function onAfterEnter() {
-          _this3.offsetHeight = _this3.rootDOM.offsetHeight;
+        unmountOnExit: true,
+        transitionClass: {
+          exiting: 'el-notification-fade-leave-active',
+          exited: 'el-notification-fade-enter'
         },
-        onLeave: function onLeave() {
-          _this3.props.onClose && _this3.props.onClose();
+        'in': visible,
+        onEnter: function onEnter() {
+          _this4.offsetHeight = _this4.rootDOM.offsetHeight;
         },
-        onAfterLeave: function onAfterLeave() {
-          _this3.props.willUnmount(_this3.offsetHeight, parseInt(_this3.rootDOM.style.top));
+        onExit: function onExit() {
+          return willUnmount(_this4.offsetHeight, parseInt(_this4.rootDOM.style.top));
+        },
+        onExited: function onExited() {
+          return onClose();
         }
       },
       React.createElement(
         View,
-        { show: this.state.visible },
+        { show: visible },
         React.createElement(
           'div',
           {
             ref: function ref(ele) {
-              _this3.rootDOM = ele;
+              _this4.rootDOM = ele;
             },
             className: 'el-notification',
             style: {
-              top: this.props.top,
+              top: top,
               zIndex: 9999
             },
             onMouseEnter: this.stopTimer.bind(this),
             onMouseLeave: this.startTimer.bind(this),
             onClick: this.onClick.bind(this)
           },
-          this.props.type && React.createElement('i', { className: this.classNames('el-notification__icon', this.typeClass(), this.props.iconClass) }),
+          type && React.createElement('i', { className: this.classNames('el-notification__icon', this.typeClass(), iconClass) }),
           React.createElement(
             'div',
-            { className: this.classNames('el-notification__group', {
-                'is-with-icon': this.typeClass() || this.props.iconClass
-              }) },
+            {
+              className: this.classNames('el-notification__group', {
+                'is-with-icon': this.typeClass() || iconClass
+              })
+            },
             React.createElement(
               'h2',
               { className: 'el-notification__title' },
-              this.props.title
+              title
             ),
             React.createElement(
               'div',
               { className: 'el-notification__content' },
-              this.props.message
+              message
             ),
             React.createElement('div', { className: 'el-notification__closeBtn el-icon-close', onClick: this.onClose.bind(this) })
           )

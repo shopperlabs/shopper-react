@@ -1,6 +1,6 @@
-var listToStyles = require('./listToStyles')
+import listToStyles from './listToStyles'
 
-module.exports = function (parentId, list, isProduction, context) {
+export default function addStylesServer (parentId, list, isProduction, context) {
   if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
     context = __VUE_SSR_CONTEXT__
   }

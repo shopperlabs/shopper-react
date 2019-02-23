@@ -4,8 +4,28 @@
 */
 "use strict";
 
-module.exports = class WebpackError extends Error {
-	inspect() {
+const inspect = require("util").inspect.custom;
+
+class WebpackError extends Error {
+	/**
+	 * Creates an instance of WebpackError.
+	 * @param {string=} message error message
+	 */
+	constructor(message) {
+		super(message);
+
+		this.details = undefined;
+		this.missing = undefined;
+		this.origin = undefined;
+		this.dependencies = undefined;
+		this.module = undefined;
+
+		Error.captureStackTrace(this, this.constructor);
+	}
+
+	[inspect]() {
 		return this.stack + (this.details ? `\n${this.details}` : "");
 	}
-};
+}
+
+module.exports = WebpackError;

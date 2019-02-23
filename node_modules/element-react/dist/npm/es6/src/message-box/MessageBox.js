@@ -139,6 +139,7 @@ var MessageBox = function (_Component) {
         cancelButtonClass = _props3.cancelButtonClass,
         showConfirmButton = _props3.showConfirmButton,
         confirmButtonClass = _props3.confirmButtonClass,
+        customClass = _props3.customClass,
         inputType = _props3.inputType;
     var _state = this.state,
         visible = _state.visible,
@@ -164,7 +165,7 @@ var MessageBox = function (_Component) {
             { show: visible },
             React.createElement(
               'div',
-              { className: 'el-message-box__wrapper' },
+              { className: this.classNames('el-message-box__wrapper', customClass) },
               React.createElement(
                 'div',
                 { className: 'el-message-box' },
@@ -190,7 +191,7 @@ var MessageBox = function (_Component) {
                     'div',
                     { className: 'el-message-box__message', style: { marginLeft: this.typeClass() ? '50px' : '0' } },
                     React.createElement(
-                      'p',
+                      'div',
                       null,
                       message
                     )
@@ -278,6 +279,7 @@ MessageBox.propTypes = {
   cancelButtonText: PropTypes.string,
   cancelButtonClass: PropTypes.string,
   confirmButtonClass: PropTypes.string,
+  customClass: PropTypes.string,
   inputPlaceholder: PropTypes.string,
   inputPattern: PropTypes.regex,
   inputValidator: PropTypes.func,
@@ -290,6 +292,8 @@ MessageBox.propTypes = {
 
 MessageBox.defaultProps = {
   title: '提示',
+  showInput: false,
   showClose: true,
+  showCancelButton: false,
   showConfirmButton: true
 };

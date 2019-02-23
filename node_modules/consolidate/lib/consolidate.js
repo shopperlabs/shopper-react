@@ -22,6 +22,7 @@ var join = path.join;
 var resolve = path.resolve;
 var extname = path.extname;
 var dirname = path.dirname;
+var isAbsolute = path.isAbsolute;
 
 var readCache = {};
 
@@ -43,7 +44,8 @@ var requires = {};
  * @api public
  */
 
-exports.clearCache = function(){
+exports.clearCache = function() {
+  readCache = {};
   cacheStore = {};
 };
 
@@ -79,24 +81,24 @@ function cache(options, compiled) {
  * is true the template string will be cached.
  *
  * @param {String} options
- * @param {Function} fn
+ * @param {Function} cb
  * @api private
  */
 
-function read(path, options, fn) {
+function read(path, options, cb) {
   var str = readCache[path];
   var cached = options.cache && str && typeof str === 'string';
 
   // cached (only if cached is a string and not a compiled template function)
-  if (cached) return fn(null, str);
+  if (cached) return cb(null, str);
 
   // read
-  fs.readFile(path, 'utf8', function(err, str){
-    if (err) return fn(err);
+  fs.readFile(path, 'utf8', function(err, str) {
+    if (err) return cb(err);
     // remove extraneous utf8 BOM marker
     str = str.replace(/^\uFEFF/, '');
     if (options.cache) readCache[path] = str;
-    fn(null, str);
+    cb(null, str);
   });
 }
 
@@ -110,17 +112,33 @@ function read(path, options, fn) {
  * @api private
  */
 
-function readPartials(path, options, fn) {
-  if (!options.partials) return fn();
+function readPartials(path, options, cb) {
+  if (!options.partials) return cb();
   var partials = options.partials;
   var keys = Object.keys(partials);
 
   function next(index) {
-    if (index === keys.length) return fn(null);
+    if (index === keys.length) return cb(null);
     var key = keys[index];
-    var file = join(dirname(path), partials[key] + extname(path));
-    read(file, options, function(err, str){
-      if (err) return fn(err);
+    var partialPath = partials[key];
+
+    if (partialPath === undefined || partialPath === null || partialPath === false) {
+      return next(++index);
+    }
+
+    var file;
+    if (isAbsolute(partialPath)) {
+      if (extname(partialPath) !== '') {
+        file = partialPath;
+      } else {
+        file = join(partialPath + extname(path));
+      }
+    } else {
+      file = join(dirname(path), partialPath + extname(path));
+    }
+
+    read(file, options, function(err, str) {
+      if (err) return cb(err);
       options.partials[key] = str;
       next(++index);
     });
@@ -129,46 +147,66 @@ function readPartials(path, options, fn) {
   next(0);
 }
 
-
 /**
  * promisify
  */
-function promisify(fn, exec) {
-  return new Promise(function (res, rej) {
-    fn = fn || function (err, html) {
+function promisify(cb, fn) {
+  return new Promise(function(resolve, reject) {
+    cb = cb || function(err, html) {
       if (err) {
-        return rej(err);
+        return reject(err);
       }
-      res(html);
+      resolve(html);
     };
-    exec(fn);
+    fn(cb);
   });
 }
-
 
 /**
  * fromStringRenderer
  */
 
 function fromStringRenderer(name) {
-  return function(path, options, fn){
+  return function(path, options, cb) {
     options.filename = path;
 
-    return promisify(fn, function(fn) {
-      readPartials(path, options, function (err) {
-        if (err) return fn(err);
+    return promisify(cb, function(cb) {
+      readPartials(path, options, function(err) {
+        if (err) return cb(err);
         if (cache(options)) {
-          exports[name].render('', options, fn);
+          exports[name].render('', options, cb);
         } else {
-          read(path, options, function(err, str){
-            if (err) return fn(err);
-            exports[name].render(str, options, fn);
+          read(path, options, function(err, str) {
+            if (err) return cb(err);
+            exports[name].render(str, options, cb);
           });
         }
       });
     });
   };
 }
+
+/**
+ * velocity support.
+ */
+
+exports.velocityjs = fromStringRenderer('velocityjs');
+
+/**
+ * velocity string support.
+ */
+
+exports.velocityjs.render = function(str, options, cb) {
+  return promisify(cb, function(cb) {
+    var engine = requires.velocityjs || (requires.velocityjs = require('velocityjs'));
+    try {
+      options.locals = options;
+      cb(null, engine.render(str, options).trimLeft());
+    } catch (err) {
+      cb(err);
+    }
+  });
+};
 
 /**
  * Liquid support.
@@ -188,27 +226,128 @@ exports.liquid = fromStringRenderer('liquid');
  * `includeDir` will also become a local.
  */
 
-exports.liquid.render = function(str, options, fn){
-  return promisify(fn, function (fn) {
-    var engine = requires.liquid || (requires.liquid = require('tinyliquid'));
+function _renderTinyliquid(engine, str, options, cb) {
+  var context = engine.newContext();
+  var k;
+
+  /**
+   * Note that there's a bug in the library that doesn't allow us to pass
+   * the locals to newContext(), hence looping through the keys:
+   */
+
+  if (options.locals) {
+    for (k in options.locals) {
+      context.setLocals(k, options.locals[k]);
+    }
+    delete options.locals;
+  }
+
+  if (options.meta) {
+    context.setLocals('page', options.meta);
+    delete options.meta;
+  }
+
+  /**
+   * Add any defined filters:
+   */
+
+  if (options.filters) {
+    for (k in options.filters) {
+      context.setFilter(k, options.filters[k]);
+    }
+    delete options.filters;
+  }
+
+  /**
+   * Set up a callback for the include directory:
+   */
+
+  var includeDir = options.includeDir || process.cwd();
+
+  context.onInclude(function(name, callback) {
+    var extname = path.extname(name) ? '' : '.liquid';
+    var filename = path.resolve(includeDir, name + extname);
+
+    fs.readFile(filename, {encoding: 'utf8'}, function(err, data) {
+      if (err) return callback(err);
+      callback(null, engine.parse(data));
+    });
+  });
+  delete options.includeDir;
+
+  /**
+   * The custom tag functions need to have their results pushed back
+   * through the parser, so set up a shim before calling the provided
+   * callback:
+   */
+
+  var compileOptions = {
+    customTags: {}
+  };
+
+  if (options.customTags) {
+    var tagFunctions = options.customTags;
+
+    for (k in options.customTags) {
+      /*Tell jshint there's no problem with having this function in the loop */
+      /*jshint -W083 */
+      compileOptions.customTags[k] = function(context, name, body) {
+        var tpl = tagFunctions[name](body.trim());
+        context.astStack.push(engine.parse(tpl));
+      };
+      /*jshint +W083 */
+    }
+    delete options.customTags;
+  }
+
+  /**
+   * Now anything left in `options` becomes a local:
+   */
+
+  for (k in options) {
+    context.setLocals(k, options[k]);
+  }
+
+  /**
+   * Finally, execute the template:
+   */
+
+  var tmpl = cache(context) || cache(context, engine.compile(str, compileOptions));
+  tmpl(context, cb);
+}
+
+exports.liquid.render = function(str, options, cb) {
+  return promisify(cb, function(cb) {
+    var engine = requires.liquid;
+    var Liquid;
+
     try {
-      var context = engine.newContext();
-      var k;
+      // set up tinyliquid engine
+      engine = requires.liquid = require('tinyliquid');
 
-      /**
-       * Note that there's a bug in the library that doesn't allow us to pass
-       * the locals to newContext(), hence looping through the keys:
-       */
+      // use tinyliquid engine
+      _renderTinyliquid(engine, str, options, cb);
 
-      if (options.locals){
-        for (k in options.locals){
-          context.setLocals(k, options.locals[k]);
-        }
-        delete options.locals;
+      return;
+
+    } catch (err) {
+
+      // set up liquid-node engine
+      try {
+        Liquid = requires.liquid = require('liquid-node');
+        engine = new Liquid.Engine();
+      } catch (err) {
+        throw err;
       }
 
-      if (options.meta){
-        context.setLocals('page', options.meta);
+    }
+
+    // use liquid-node engine
+    try {
+      var locals = options.locals || {};
+
+      if (options.meta) {
+        locals.pages = options.meta;
         delete options.meta;
       }
 
@@ -216,10 +355,8 @@ exports.liquid.render = function(str, options, fn){
        * Add any defined filters:
        */
 
-      if (options.filters){
-        for (k in options.filters){
-          context.setFilter(k, options.filters[k]);
-        }
+      if (options.filters) {
+        engine.registerFilters(options.filters);
         delete options.filters;
       }
 
@@ -228,16 +365,7 @@ exports.liquid.render = function(str, options, fn){
        */
 
       var includeDir = options.includeDir || process.cwd();
-
-      context.onInclude(function (name, callback) {
-        var extname = path.extname(name) ? '' : '.liquid';
-        var filename = path.resolve(includeDir, name + extname);
-
-        fs.readFile(filename, {encoding: 'utf8'}, function (err, data){
-          if (err) return callback(err);
-          callback(null, engine.parse(data));
-        });
-      });
+      engine.fileSystem = new Liquid.LocalFileSystem(includeDir, 'liquid');
       delete options.includeDir;
 
       /**
@@ -246,21 +374,11 @@ exports.liquid.render = function(str, options, fn){
        * callback:
        */
 
-      var compileOptions = {
-        customTags: {}
-      };
-
-      if (options.customTags){
+      if (options.customTags) {
         var tagFunctions = options.customTags;
 
-        for (k in options.customTags){
-          /*Tell jshint there's no problem with having this function in the loop */
-          /*jshint -W083 */
-          compileOptions.customTags[k] = function (context, name, body){
-            var tpl = tagFunctions[name](body.trim());
-            context.astStack.push(engine.parse(tpl));
-          };
-          /*jshint +W083 */
+        for (k in options.customTags) {
+          engine.registerTag(k, tagFunctions[k]);
         }
         delete options.customTags;
       }
@@ -269,18 +387,26 @@ exports.liquid.render = function(str, options, fn){
        * Now anything left in `options` becomes a local:
        */
 
-      for (k in options){
-        context.setLocals(k, options[k]);
+      for (var k in options) {
+        locals[k] = options[k];
       }
 
       /**
        * Finally, execute the template:
        */
 
-      var tmpl = cache(context) || cache(context, engine.compile(str, compileOptions));
-      tmpl(context, fn);
+      return engine
+        .parseAndRender(str, locals)
+        .nodeify(function(err, result) {
+          if (err) {
+            throw new Error(err);
+          } else {
+            return cb(null, result);
+          }
+        });
+
     } catch (err) {
-      fn(err);
+      cb(err);
     }
   });
 };
@@ -289,8 +415,8 @@ exports.liquid.render = function(str, options, fn){
  * Jade support.
  */
 
-exports.jade = function(path, options, fn){
-  return promisify(fn, function (fn) {
+exports.jade = function(path, options, cb) {
+  return promisify(cb, function(cb) {
     var engine = requires.jade;
     if (!engine) {
       try {
@@ -306,9 +432,9 @@ exports.jade = function(path, options, fn){
 
     try {
       var tmpl = cache(options) || cache(options, engine.compileFile(path, options));
-      fn(null, tmpl(options));
+      cb(null, tmpl(options));
     } catch (err) {
-      fn(err);
+      cb(err);
     }
   });
 };
@@ -317,8 +443,8 @@ exports.jade = function(path, options, fn){
  * Jade string support.
  */
 
-exports.jade.render = function(str, options, fn){
-  return promisify(fn, function (fn) {
+exports.jade.render = function(str, options, cb) {
+  return promisify(cb, function(cb) {
     var engine = requires.jade;
     if (!engine) {
       try {
@@ -334,9 +460,9 @@ exports.jade.render = function(str, options, fn){
 
     try {
       var tmpl = cache(options) || cache(options, engine.compile(str, options));
-      fn(null, tmpl(options));
+      cb(null, tmpl(options));
     } catch (err) {
-      fn(err);
+      cb(err);
     }
   });
 };
@@ -351,8 +477,8 @@ exports.dust = fromStringRenderer('dust');
  * Dust string support.
  */
 
-exports.dust.render = function(str, options, fn){
-  return promisify(fn, function(fn) {
+exports.dust.render = function(str, options, cb) {
+  return promisify(cb, function(cb) {
     var engine = requires.dust;
     if (!engine) {
       try {
@@ -376,17 +502,22 @@ exports.dust.render = function(str, options, fn){
     }
     if (!options || (options && !options.cache)) engine.cache = {};
 
-    engine.onLoad = function(path, callback){
-      if ('' === extname(path)) path += '.' + ext;
-      if ('/' !== path[0]) path = views + '/' + path;
+    engine.onLoad = function(path, callback) {
+      if (extname(path) === '') path += '.' + ext;
+      if (path[0] !== '/') path = views + '/' + path;
       read(path, options, callback);
     };
 
     try {
-      var tmpl = cache(options) || cache(options, engine.compileFn(str));
-      tmpl(options, fn);
+      var templateName;
+      if (options.filename) {
+        templateName = options.filename.replace(new RegExp('^' + views + '/'), '').replace(new RegExp('\\.' + ext), '');
+      }
+
+      var tmpl = cache(options) || cache(options, engine.compileFn(str, templateName));
+      tmpl(options, cb);
     } catch (err) {
-      fn(err);
+      cb(err);
     }
   });
 };
@@ -401,17 +532,28 @@ exports.swig = fromStringRenderer('swig');
  * Swig string support.
  */
 
-exports.swig.render = function(str, options, fn){
-  return promisify(fn, function(fn) {
-    var engine = requires.swig || (requires.swig = require('swig'));
+exports.swig.render = function(str, options, cb) {
+  return promisify(cb, function(cb) {
+    var engine = requires.swig;
+    if (!engine) {
+      try {
+        engine = requires.swig = require('swig');
+      } catch (err) {
+        try {
+          engine = requires.swig = require('swig-templates');
+        } catch (otherError) {
+          throw err;
+        }
+      }
+    }
 
     try {
-      if(options.cache === true) options.cache = 'memory';
+      if (options.cache === true) options.cache = 'memory';
       engine.setDefaults({ cache: options.cache });
       var tmpl = cache(options) || cache(options, engine.compile(str, options));
-      fn(null, tmpl(options));
+      cb(null, tmpl(options));
     } catch (err) {
-      fn(err);
+      cb(err);
     }
   });
 };
@@ -426,14 +568,14 @@ exports.atpl = fromStringRenderer('atpl');
  * Atpl string support.
  */
 
-exports.atpl.render = function(str, options, fn){
-  return promisify(fn, function(fn) {
+exports.atpl.render = function(str, options, cb) {
+  return promisify(cb, function(cb) {
     var engine = requires.atpl || (requires.atpl = require('atpl'));
     try {
       var tmpl = cache(options) || cache(options, engine.compile(str, options));
-      fn(null, tmpl(options));
+      cb(null, tmpl(options));
     } catch (err) {
-      fn(err);
+      cb(err);
     }
   });
 };
@@ -448,14 +590,14 @@ exports.liquor = fromStringRenderer('liquor');
  * Liquor string support.
  */
 
-exports.liquor.render = function(str, options, fn){
-  return promisify(fn, function(fn) {
+exports.liquor.render = function(str, options, cb) {
+  return promisify(cb, function(cb) {
     var engine = requires.liquor || (requires.liquor = require('liquor'));
     try {
       var tmpl = cache(options) || cache(options, engine.compile(str, options));
-      fn(null, tmpl(options));
+      cb(null, tmpl(options));
     } catch (err) {
-      fn(err);
+      cb(err);
     }
   });
 };
@@ -470,17 +612,17 @@ exports.twig = fromStringRenderer('twig');
  * Twig string support.
  */
 
-exports.twig.render = function(str, options, fn){
-  return promisify(fn, function(fn) {
+exports.twig.render = function(str, options, cb) {
+  return promisify(cb, function(cb) {
     var engine = requires.twig || (requires.twig = require('twig').twig);
     var templateData = {
       data: str
     };
     try {
       var tmpl = cache(templateData) || cache(templateData, engine(templateData));
-      fn(null, tmpl.render(options));
+      cb(null, tmpl.render(options));
     } catch (err) {
-      fn(err);
+      cb(err);
     }
   });
 };
@@ -495,18 +637,17 @@ exports.ejs = fromStringRenderer('ejs');
  * EJS string support.
  */
 
-exports.ejs.render = function(str, options, fn){
-  return promisify(fn, function (fn) {
+exports.ejs.render = function(str, options, cb) {
+  return promisify(cb, function(cb) {
     var engine = requires.ejs || (requires.ejs = require('ejs'));
     try {
       var tmpl = cache(options) || cache(options, engine.compile(str, options));
-      fn(null, tmpl(options));
+      cb(null, tmpl(options));
     } catch (err) {
-      fn(err);
+      cb(err);
     }
   });
 };
-
 
 /**
  * Eco support.
@@ -518,13 +659,13 @@ exports.eco = fromStringRenderer('eco');
  * Eco string support.
  */
 
-exports.eco.render = function(str, options, fn){
-  return promisify(fn, function(fn) {
+exports.eco.render = function(str, options, cb) {
+  return promisify(cb, function(cb) {
     var engine = requires.eco || (requires.eco = require('eco'));
     try {
-      fn(null, engine.render(str, options));
+      cb(null, engine.render(str, options));
     } catch (err) {
-      fn(err);
+      cb(err);
     }
   });
 };
@@ -539,16 +680,16 @@ exports.jazz = fromStringRenderer('jazz');
  * Jazz string support.
  */
 
-exports.jazz.render = function(str, options, fn){
-  return promisify(fn, function(fn) {
+exports.jazz.render = function(str, options, cb) {
+  return promisify(cb, function(cb) {
     var engine = requires.jazz || (requires.jazz = require('jazz'));
     try {
       var tmpl = cache(options) || cache(options, engine.compile(str, options));
-      tmpl.eval(options, function(str){
-        fn(null, str);
+      tmpl.eval(options, function(str) {
+        cb(null, str);
       });
     } catch (err) {
-      fn(err);
+      cb(err);
     }
   });
 };
@@ -563,14 +704,14 @@ exports.jqtpl = fromStringRenderer('jqtpl');
  * JQTPL string support.
  */
 
-exports.jqtpl.render = function(str, options, fn){
-  return promisify(fn, function(fn) {
+exports.jqtpl.render = function(str, options, cb) {
+  return promisify(cb, function(cb) {
     var engine = requires.jqtpl || (requires.jqtpl = require('jqtpl'));
     try {
       engine.template(str, str);
-      fn(null, engine.tmpl(str, options));
+      cb(null, engine.tmpl(str, options));
     } catch (err) {
-      fn(err);
+      cb(err);
     }
   });
 };
@@ -585,14 +726,14 @@ exports.haml = fromStringRenderer('haml');
  * Haml string support.
  */
 
-exports.haml.render = function(str, options, fn){
-  return promisify(fn, function(fn) {
+exports.haml.render = function(str, options, cb) {
+  return promisify(cb, function(cb) {
     var engine = requires.haml || (requires.haml = require('hamljs'));
     try {
       options.locals = options;
-      fn(null, engine.render(str, options).trimLeft());
+      cb(null, engine.render(str, options).trimLeft());
     } catch (err) {
-      fn(err);
+      cb(err);
     }
   });
 };
@@ -607,14 +748,14 @@ exports.hamlet = fromStringRenderer('hamlet');
  * Hamlet string support.
  */
 
-exports.hamlet.render = function(str, options, fn){
-  return promisify(fn, function (fn) {
+exports.hamlet.render = function(str, options, cb) {
+  return promisify(cb, function(cb) {
     var engine = requires.hamlet || (requires.hamlet = require('hamlet'));
     try {
       options.locals = options;
-      fn(null, engine.render(str, options).trimLeft());
+      cb(null, engine.render(str, options).trimLeft());
     } catch (err) {
-      fn(err);
+      cb(err);
     }
   });
 };
@@ -623,10 +764,10 @@ exports.hamlet.render = function(str, options, fn){
  * Whiskers support.
  */
 
-exports.whiskers = function(path, options, fn){
-  return promisify(fn, function (fn) {
+exports.whiskers = function(path, options, cb) {
+  return promisify(cb, function(cb) {
     var engine = requires.whiskers || (requires.whiskers = require('whiskers'));
-    engine.__express(path, options, fn);
+    engine.__express(path, options, cb);
   });
 };
 
@@ -634,13 +775,13 @@ exports.whiskers = function(path, options, fn){
  * Whiskers string support.
  */
 
-exports.whiskers.render = function(str, options, fn){
-  return promisify(fn, function(fn) {
+exports.whiskers.render = function(str, options, cb) {
+  return promisify(cb, function(cb) {
     var engine = requires.whiskers || (requires.whiskers = require('whiskers'));
     try {
-      fn(null, engine.render(str, options));
+      cb(null, engine.render(str, options));
     } catch (err) {
-      fn(err);
+      cb(err);
     }
   });
 };
@@ -655,14 +796,14 @@ exports['haml-coffee'] = fromStringRenderer('haml-coffee');
  * Coffee-HAML string support.
  */
 
-exports['haml-coffee'].render = function(str, options, fn){
-  return promisify(fn, function(fn) {
+exports['haml-coffee'].render = function(str, options, cb) {
+  return promisify(cb, function(cb) {
     var engine = requires['haml-coffee'] || (requires['haml-coffee'] = require('haml-coffee'));
     try {
       var tmpl = cache(options) || cache(options, engine.compile(str, options));
-      fn(null, tmpl(options));
+      cb(null, tmpl(options));
     } catch (err) {
-      fn(err);
+      cb(err);
     }
   });
 };
@@ -677,14 +818,14 @@ exports.hogan = fromStringRenderer('hogan');
  * Hogan string support.
  */
 
-exports.hogan.render = function(str, options, fn){
-  return promisify(fn, function (fn) {
+exports.hogan.render = function(str, options, cb) {
+  return promisify(cb, function(cb) {
     var engine = requires.hogan || (requires.hogan = require('hogan.js'));
     try {
       var tmpl = cache(options) || cache(options, engine.compile(str, options));
-      fn(null, tmpl.render(options, options.partials));
+      cb(null, tmpl.render(options, options.partials));
     } catch (err) {
-      fn(err);
+      cb(err);
     }
   });
 };
@@ -699,14 +840,14 @@ exports.templayed = fromStringRenderer('templayed');
  * templayed.js string support.
  */
 
-exports.templayed.render = function(str, options, fn){
-  return promisify(fn, function (fn) {
+exports.templayed.render = function(str, options, cb) {
+  return promisify(cb, function(cb) {
     var engine = requires.templayed || (requires.templayed = require('templayed'));
     try {
       var tmpl = cache(options) || cache(options, engine(str));
-      fn(null, tmpl(options));
+      cb(null, tmpl(options));
     } catch (err) {
-      fn(err);
+      cb(err);
     }
   });
 };
@@ -721,8 +862,8 @@ exports.handlebars = fromStringRenderer('handlebars');
  * Handlebars string support.
  */
 
-exports.handlebars.render = function(str, options, fn) {
-  return promisify(fn, function(fn) {
+exports.handlebars.render = function(str, options, cb) {
+  return promisify(cb, function(cb) {
     var engine = requires.handlebars || (requires.handlebars = require('handlebars'));
     try {
       for (var partial in options.partials) {
@@ -732,9 +873,9 @@ exports.handlebars.render = function(str, options, fn) {
         engine.registerHelper(helper, options.helpers[helper]);
       }
       var tmpl = cache(options) || cache(options, engine.compile(str, options));
-      fn(null, tmpl(options));
+      cb(null, tmpl(options));
     } catch (err) {
-      fn(err);
+      cb(err);
     }
   });
 };
@@ -749,18 +890,20 @@ exports.underscore = fromStringRenderer('underscore');
  * Underscore string support.
  */
 
-exports.underscore.render = function(str, options, fn) {
-  return promisify(fn, function(fn) {
+exports.underscore.render = function(str, options, cb) {
+  return promisify(cb, function(cb) {
     var engine = requires.underscore || (requires.underscore = require('underscore'));
     try {
+      for (var partial in options.partials) {
+        options.partials[partial] = engine.template(options.partials[partial]);
+      }
       var tmpl = cache(options) || cache(options, engine.template(str, null, options));
-      fn(null, tmpl(options).replace(/\n$/, ''));
+      cb(null, tmpl(options).replace(/\n$/, ''));
     } catch (err) {
-      fn(err);
+      cb(err);
     }
   });
 };
-
 
 /**
  * Lodash support.
@@ -772,25 +915,24 @@ exports.lodash = fromStringRenderer('lodash');
  * Lodash string support.
  */
 
-exports.lodash.render = function(str, options, fn) {
-  return promisify(fn, function (fn) {
+exports.lodash.render = function(str, options, cb) {
+  return promisify(cb, function(cb) {
     var engine = requires.lodash || (requires.lodash = require('lodash'));
     try {
       var tmpl = cache(options) || cache(options, engine.template(str, options));
-      fn(null, tmpl(options).replace(/\n$/, ''));
+      cb(null, tmpl(options).replace(/\n$/, ''));
     } catch (err) {
-      fn(err);
+      cb(err);
     }
   });
 };
-
 
 /**
  * Pug support. (formerly Jade)
  */
 
-exports.pug = function(path, options, fn){
-  return promisify(fn, function (fn) {
+exports.pug = function(path, options, cb) {
+  return promisify(cb, function(cb) {
     var engine = requires.pug;
     if (!engine) {
       try {
@@ -806,9 +948,9 @@ exports.pug = function(path, options, fn){
 
     try {
       var tmpl = cache(options) || cache(options, engine.compileFile(path, options));
-      fn(null, tmpl(options));
+      cb(null, tmpl(options));
     } catch (err) {
-      fn(err);
+      cb(err);
     }
   });
 };
@@ -817,8 +959,8 @@ exports.pug = function(path, options, fn){
  * Pug string support.
  */
 
-exports.pug.render = function(str, options, fn){
-  return promisify(fn, function (fn) {
+exports.pug.render = function(str, options, cb) {
+  return promisify(cb, function(cb) {
     var engine = requires.pug;
     if (!engine) {
       try {
@@ -834,13 +976,12 @@ exports.pug.render = function(str, options, fn){
 
     try {
       var tmpl = cache(options) || cache(options, engine.compile(str, options));
-      fn(null, tmpl(options));
+      cb(null, tmpl(options));
     } catch (err) {
-      fn(err);
+      cb(err);
     }
   });
 };
-
 
 /**
  * QEJS support.
@@ -852,21 +993,20 @@ exports.qejs = fromStringRenderer('qejs');
  * QEJS string support.
  */
 
-exports.qejs.render = function (str, options, fn) {
-  return promisify(fn, function (fn) {
+exports.qejs.render = function(str, options, cb) {
+  return promisify(cb, function(cb) {
     try {
       var engine = requires.qejs || (requires.qejs = require('qejs'));
-      engine.render(str, options).then(function (result) {
-        fn(null, result);
-      }, function (err) {
-        fn(err);
+      engine.render(str, options).then(function(result) {
+        cb(null, result);
+      }, function(err) {
+        cb(err);
       }).done();
     } catch (err) {
-      fn(err);
+      cb(err);
     }
   });
 };
-
 
 /**
  * Walrus support.
@@ -878,14 +1018,14 @@ exports.walrus = fromStringRenderer('walrus');
  * Walrus string support.
  */
 
-exports.walrus.render = function (str, options, fn) {
-  return promisify(fn, function (fn) {
+exports.walrus.render = function(str, options, cb) {
+  return promisify(cb, function(cb) {
     var engine = requires.walrus || (requires.walrus = require('walrus'));
     try {
       var tmpl = cache(options) || cache(options, engine.parse(str));
-      fn(null, tmpl.compile(options));
+      cb(null, tmpl.compile(options));
     } catch (err) {
-      fn(err);
+      cb(err);
     }
   });
 };
@@ -900,13 +1040,13 @@ exports.mustache = fromStringRenderer('mustache');
  * Mustache string support.
  */
 
-exports.mustache.render = function(str, options, fn) {
-  return promisify(fn, function (fn) {
+exports.mustache.render = function(str, options, cb) {
+  return promisify(cb, function(cb) {
     var engine = requires.mustache || (requires.mustache = require('mustache'));
     try {
-      fn(null, engine.to_html(str, options, options.partials));
+      cb(null, engine.to_html(str, options, options.partials));
     } catch (err) {
-      fn(err);
+      cb(err);
     }
   });
 };
@@ -915,15 +1055,15 @@ exports.mustache.render = function(str, options, fn) {
  * Just support.
  */
 
-exports.just = function(path, options, fn){
-  return promisify(fn, function(fn) {
+exports.just = function(path, options, cb) {
+  return promisify(cb, function(cb) {
     var engine = requires.just;
     if (!engine) {
       var JUST = require('just');
       engine = requires.just = new JUST();
     }
     engine.configure({ useCache: options.cache });
-    engine.render(path, options, fn);
+    engine.render(path, options, cb);
   });
 };
 
@@ -931,11 +1071,11 @@ exports.just = function(path, options, fn){
  * Just string support.
  */
 
-exports.just.render = function(str, options, fn){
-  return promisify(fn, function (fn) {
+exports.just.render = function(str, options, cb) {
+  return promisify(cb, function(cb) {
     var JUST = require('just');
     var engine = new JUST({ root: { page: str }});
-    engine.render('page', options, fn);
+    engine.render('page', options, cb);
   });
 };
 
@@ -943,15 +1083,15 @@ exports.just.render = function(str, options, fn){
  * ECT support.
  */
 
-exports.ect = function(path, options, fn){
-  return promisify(fn, function (fn) {
+exports.ect = function(path, options, cb) {
+  return promisify(cb, function(cb) {
     var engine = requires.ect;
     if (!engine) {
       var ECT = require('ect');
       engine = requires.ect = new ECT(options);
     }
     engine.configure({ cache: options.cache });
-    engine.render(path, options, fn);
+    engine.render(path, options, cb);
   });
 };
 
@@ -959,11 +1099,11 @@ exports.ect = function(path, options, fn){
  * ECT string support.
  */
 
-exports.ect.render = function(str, options, fn){
-  return promisify(fn, function (fn) {
+exports.ect.render = function(str, options, cb) {
+  return promisify(cb, function(cb) {
     var ECT = require('ect');
     var engine = new ECT({ root: { page: str }});
-    engine.render('page', options, fn);
+    engine.render('page', options, cb);
   });
 };
 
@@ -977,14 +1117,14 @@ exports.mote = fromStringRenderer('mote');
  * mote string support.
  */
 
-exports.mote.render = function(str, options, fn){
-  return promisify(fn, function (fn) {
+exports.mote.render = function(str, options, cb) {
+  return promisify(cb, function(cb) {
     var engine = requires.mote || (requires.mote = require('mote'));
     try {
       var tmpl = cache(options) || cache(options, engine.compile(str));
-      fn(null, tmpl(options));
+      cb(null, tmpl(options));
     } catch (err) {
-      fn(err);
+      cb(err);
     }
   });
 };
@@ -993,10 +1133,10 @@ exports.mote.render = function(str, options, fn){
  * Toffee support.
  */
 
-exports.toffee = function(path, options, fn){
-  return promisify(fn, function (fn) {
+exports.toffee = function(path, options, cb) {
+  return promisify(cb, function(cb) {
     var toffee = requires.toffee || (requires.toffee = require('toffee'));
-    toffee.__consolidate_engine_render(path, options, fn);
+    toffee.__consolidate_engine_render(path, options, cb);
   });
 };
 
@@ -1004,13 +1144,13 @@ exports.toffee = function(path, options, fn){
  * Toffee string support.
  */
 
-exports.toffee.render = function(str, options, fn) {
-  return promisify(fn, function (fn) {
+exports.toffee.render = function(str, options, cb) {
+  return promisify(cb, function(cb) {
     var engine = requires.toffee || (requires.toffee = require('toffee'));
     try {
-      engine.str_render(str, options,fn);
+      engine.str_render(str, options, cb);
     } catch (err) {
-      fn(err);
+      cb(err);
     }
   });
 };
@@ -1025,14 +1165,18 @@ exports.dot = fromStringRenderer('dot');
  * doT string support.
  */
 
-exports.dot.render = function (str, options, fn) {
-  return promisify(fn, function (fn) {
+exports.dot.render = function(str, options, cb) {
+  return promisify(cb, function(cb) {
     var engine = requires.dot || (requires.dot = require('dot'));
+    var extend = (requires.extend || (requires.extend = require('util')._extend));
     try {
-      var tmpl = cache(options) || cache(options, engine.compile(str, options && options._def));
-      fn(null, tmpl(options));
+      var settings = {};
+      settings = extend(settings, engine.templateSettings);
+      settings = extend(settings, options ? options.dot : {});
+      var tmpl = cache(options) || cache(options, engine.template(str, settings, options));
+      cb(null, tmpl(options));
     } catch (err) {
-      fn(err);
+      cb(err);
     }
   });
 };
@@ -1047,14 +1191,14 @@ exports.bracket = fromStringRenderer('bracket');
  * bracket string support.
  */
 
-exports.bracket.render = function (str, options, fn) {
-  return promisify(fn, function (fn) {
+exports.bracket.render = function(str, options, cb) {
+  return promisify(cb, function(cb) {
     var engine = requires.bracket || (requires.bracket = require('bracket-template'));
     try {
-      var tmpl = cache(options) || cache(options, engine.default.compile(str));
-      fn(null, tmpl(options));
+      var tmpl = cache(options) || cache(options, engine.default.compile(str, options));
+      cb(null, tmpl(options));
     } catch (err) {
-      fn(err);
+      cb(err);
     }
   });
 };
@@ -1069,23 +1213,23 @@ exports.ractive = fromStringRenderer('ractive');
  * Ractive string support.
  */
 
-exports.ractive.render = function(str, options, fn){
-  return promisify(fn, function (fn) {
-    var engine = requires.ractive || (requires.ractive = require('ractive'));
+exports.ractive.render = function(str, options, cb) {
+  return promisify(cb, function(cb) {
+    var Engine = requires.ractive || (requires.ractive = require('ractive'));
 
-    var template = cache(options) || cache(options, engine.parse(str));
+    var template = cache(options) || cache(options, Engine.parse(str));
     options.template = template;
 
-    if (options.data === null || options.data === undefined)
-    {
+    if (options.data === null || options.data === undefined) {
       var extend = (requires.extend || (requires.extend = require('util')._extend));
 
       // Shallow clone the options object
       options.data = extend({}, options);
 
       // Remove consolidate-specific properties from the clone
-      var i, length;
-      var properties = ["template", "filename", "cache", "partials"];
+      var i;
+      var length;
+      var properties = ['template', 'filename', 'cache', 'partials'];
       for (i = 0, length = properties.length; i < length; i++) {
         var property = properties[i];
         delete options.data[property];
@@ -1093,9 +1237,9 @@ exports.ractive.render = function(str, options, fn){
     }
 
     try {
-      fn(null, new engine(options).toHTML());
+      cb(null, new Engine(options).toHTML());
     } catch (err) {
-      fn(err);
+      cb(err);
     }
   });
 };
@@ -1110,8 +1254,8 @@ exports.nunjucks = fromStringRenderer('nunjucks');
  * Nunjucks string support.
  */
 
-exports.nunjucks.render = function (str, options, fn) {
-  return promisify(fn, function (fn) {
+exports.nunjucks.render = function(str, options, cb) {
+  return promisify(cb, function(cb) {
 
     try {
 
@@ -1122,10 +1266,11 @@ exports.nunjucks.render = function (str, options, fn) {
       // deprecated fallback support for express
       // <https://github.com/tj/consolidate.js/pull/152>
       // <https://github.com/tj/consolidate.js/pull/224>
-      if (options.settings && options.settings.views)
+      if (options.settings && options.settings.views) {
         env = engine.configure(options.settings.views);
-      else if (options.nunjucks && options.nunjucks.configure)
+      } else if (options.nunjucks && options.nunjucks.configure) {
         env = engine.configure.apply(engine, options.nunjucks.configure);
+      }
 
       //
       // because `renderString` does not initiate loaders
@@ -1136,21 +1281,6 @@ exports.nunjucks.render = function (str, options, fn) {
       // <https://github.com/crocodilejs/node-email-templates/issues/182>
       //
 
-      //
-      // note that the below code didn't work nor make sense before
-      // because loaders should take different options from rendering
-      //
-
-      /*
-      var loader = options.loader;
-      if (loader) {
-        var env = new engine.Environment(new loader(options));
-        env.renderString(str, options, fn);
-      } else {
-        engine.renderString(str, options, fn);
-      }
-      */
-
       // so instead we simply check if we passed a custom loader
       // otherwise we create a simple file based loader
       if (options.loader) {
@@ -1160,25 +1290,24 @@ exports.nunjucks.render = function (str, options, fn) {
           new engine.FileSystemLoader(options.settings.views)
         );
       } else if (options.nunjucks && options.nunjucks.loader) {
-        if (typeof options.nunjucks.loader === 'string')
+        if (typeof options.nunjucks.loader === 'string') {
           env = new engine.Environment(new engine.FileSystemLoader(options.nunjucks.loader));
-        else
+        } else {
           env = new engine.Environment(
             new engine.FileSystemLoader(
               options.nunjucks.loader[0],
               options.nunjucks.loader[1]
             )
           );
+        }
       }
 
-      env.renderString(str, options, fn);
-
+      env.renderString(str, options, cb);
     } catch (err) {
-      throw fn(err);
+      throw cb(err);
     }
   });
 };
-
 
 /**
  * HTMLing support.
@@ -1190,18 +1319,17 @@ exports.htmling = fromStringRenderer('htmling');
  * HTMLing string support.
  */
 
-exports.htmling.render = function(str, options, fn) {
-  return promisify(fn, function (fn) {
+exports.htmling.render = function(str, options, cb) {
+  return promisify(cb, function(cb) {
     var engine = requires.htmling || (requires.htmling = require('htmling'));
     try {
       var tmpl = cache(options) || cache(options, engine.string(str));
-      fn(null, tmpl.render(options));
+      cb(null, tmpl.render(options));
     } catch (err) {
-      fn(err);
+      cb(err);
     }
   });
 };
-
 
 /**
  *  Rendering function
@@ -1209,13 +1337,12 @@ exports.htmling.render = function(str, options, fn) {
 function requireReact(module, filename) {
   var babel = requires.babel || (requires.babel = require('babel-core'));
 
-  var compiled = babel.transformFileSync(filename, { presets: [ 'react' ] }).code
+  var compiled = babel.transformFileSync(filename, { presets: [ 'react' ] }).code;
 
   return module._compile(compiled, filename);
 }
 
 exports.requireReact = requireReact;
-
 
 /**
  *  Converting a string into a node module.
@@ -1225,7 +1352,7 @@ function requireReactString(src, filename) {
 
   if (!filename) filename = '';
   var m = new module.constructor();
-  filename = filename || '';
+  filename = filename || '';
 
   // Compile Using React
   var compiled = babel.transform(src, { presets: [ 'react' ] }).code;
@@ -1237,19 +1364,18 @@ function requireReactString(src, filename) {
   return m.exports;
 }
 
-
 /**
  * A naive helper to replace {{tags}} with options.tags content
  */
-function reactBaseTmpl(data, options){
+function reactBaseTmpl(data, options) {
 
   var exp;
   var regex;
 
   // Iterates through the keys in file object
   // and interpolate / replace {{key}} with it's value
-  for (var k in options){
-    if (options.hasOwnProperty(k)){
+  for (var k in options) {
+    if (options.hasOwnProperty(k)) {
       exp = '{{' + k + '}}';
       regex = new RegExp(exp, 'g');
       if (data.match(regex)) {
@@ -1261,12 +1387,33 @@ function reactBaseTmpl(data, options){
   return data;
 }
 
+/**
+* Plates Support.
+*/
 
+exports.plates = fromStringRenderer('plates');
+
+/**
+* Plates string support.
+*/
+
+exports.plates.render = function(str, options, cb) {
+  return promisify(cb, function(cb) {
+    var engine = requires.plates || (requires.plates = require('plates'));
+    var map = options.map || undefined;
+    try {
+      var tmpl = engine.bind(str, options, map);
+      cb(null, tmpl);
+    } catch (err) {
+      cb(err);
+    }
+  });
+};
 
 /**
  *  The main render parser for React bsaed templates
  */
-function reactRenderer(type){
+function reactRenderer(type) {
 
   if (require.extensions) {
 
@@ -1284,8 +1431,8 @@ function reactRenderer(type){
   }
 
   // Return rendering fx
-  return function(str, options, fn) {
-    return promisify(fn, function(fn) {
+  return function(str, options, cb) {
+    return promisify(cb, function(cb) {
       // React Import
       var ReactDOM = requires.ReactDOM || (requires.ReactDOM = require('react-dom/server'));
       var react = requires.react || (requires.react = require('react'));
@@ -1310,9 +1457,15 @@ function reactRenderer(type){
         var content;
         var parsed;
 
-        if (!cache(options)){
+        if (!cache(options)) {
           // Parsing
-          Code = (type === 'path') ? require(resolve(str)) : requireReactString(str);
+          if (type === 'path') {
+            var path = resolve(str);
+            delete require.cache[path];
+            Code = require(path);
+          } else {
+            Code = requireReactString(str);
+          }
           Factory = cache(options, react.createFactory(Code));
 
         } else {
@@ -1322,10 +1475,10 @@ function reactRenderer(type){
         parsed = new Factory(options);
         content = (isNonStatic) ? ReactDOM.renderToString(parsed) : ReactDOM.renderToStaticMarkup(parsed);
 
-        if (base){
+        if (base) {
           baseStr = readCache[str] || fs.readFileSync(resolve(base), 'utf8');
 
-          if (enableCache){
+          if (enableCache) {
             readCache[str] = baseStr;
           }
 
@@ -1333,10 +1486,10 @@ function reactRenderer(type){
           content = reactBaseTmpl(baseStr, options);
         }
 
-        fn(null, content);
+        cb(null, content);
 
       } catch (err) {
-        fn(err);
+        cb(err);
       }
     });
   };
@@ -1346,7 +1499,6 @@ function reactRenderer(type){
  * React JS Support
  */
 exports.react = reactRenderer('path');
-
 
 /**
  * React JS string support.
@@ -1363,14 +1515,14 @@ exports['arc-templates'] = fromStringRenderer('arc-templates');
  * ARC-templates string support.
  */
 
-exports['arc-templates'].render = function(str, options, fn) {
+exports['arc-templates'].render = function(str, options, cb) {
   var readFileWithOptions = Promise.promisify(read);
   var consolidateFileSystem = {};
-  consolidateFileSystem.readFile = function (path) {
+  consolidateFileSystem.readFile = function(path) {
     return readFileWithOptions(path, options);
   };
 
-  return promisify(fn, function (fn) {
+  return promisify(cb, function(cb) {
     try {
       var engine = requires['arc-templates'];
       if (!engine) {
@@ -1379,11 +1531,11 @@ exports['arc-templates'].render = function(str, options, fn) {
       }
 
       var compiler = cache(options) || cache(options, engine.compileString(str, options.filename));
-      compiler.then(function (func) { return func(options); })
-          .then(function (result) { fn(null, result.content); })
-          .catch(fn);
+      compiler.then(function(func) { return func(options); })
+        .then(function(result) { cb(null, result.content); })
+        .catch(cb);
     } catch (err) {
-      fn(err);
+      cb(err);
     }
   });
 };
@@ -1396,8 +1548,8 @@ exports.vash = fromStringRenderer('vash');
 /**
  * Vash string support
  */
-exports.vash.render = function(str, options, fn) {
-  return promisify(fn, function(fn) {
+exports.vash.render = function(str, options, cb) {
+  return promisify(cb, function(cb) {
     var engine = requires.vash || (requires.vash = require('vash'));
 
     try {
@@ -1410,10 +1562,15 @@ exports.vash.render = function(str, options, fn) {
           engine.helpers[key] = options.helpers[key];
         }
       }
+
       var tmpl = cache(options) || cache(options, engine.compile(str, options));
-      fn(null, tmpl(options).replace(/\n$/, ''));
+      tmpl(options, function sealLayout(err, ctx) {
+        if (err) cb(err);
+        ctx.finishLayout();
+        cb(null, ctx.toString().replace(/\n$/, ''));
+      });
     } catch (err) {
-      fn(err);
+      cb(err);
     }
   });
 };
@@ -1428,15 +1585,15 @@ exports.slm = fromStringRenderer('slm');
  * Slm string support.
  */
 
-exports.slm.render = function(str, options, fn) {
-  return promisify(fn, function (fn) {
+exports.slm.render = function(str, options, cb) {
+  return promisify(cb, function(cb) {
     var engine = requires.slm || (requires.slm = require('slm'));
 
     try {
       var tmpl = cache(options) || cache(options, engine.compile(str, options));
-      fn(null, tmpl(options));
+      cb(null, tmpl(options));
     } catch (err) {
-      fn(err);
+      cb(err);
     }
   });
 };
@@ -1445,16 +1602,16 @@ exports.slm.render = function(str, options, fn) {
  * Marko support.
  */
 
-exports.marko = function(path, options, fn){
-  return promisify(fn, function (fn) {
+exports.marko = function(path, options, cb) {
+  return promisify(cb, function(cb) {
     var engine = requires.marko || (requires.marko = require('marko'));
     options.writeToDisk = !!options.cache;
 
     try {
       var tmpl = cache(options) || cache(options, engine.load(path, options));
-      tmpl.render(options, fn)
+      tmpl.renderToString(options, cb);
     } catch (err) {
-      fn(err);
+      cb(err);
     }
   });
 };
@@ -1463,22 +1620,60 @@ exports.marko = function(path, options, fn){
  * Marko string support.
  */
 
-exports.marko.render = function(str, options, fn) {
-  return promisify(fn, function (fn) {
+exports.marko.render = function(str, options, cb) {
+  return promisify(cb, function(cb) {
     var engine = requires.marko || (requires.marko = require('marko'));
     options.writeToDisk = !!options.cache;
+    options.filename = options.filename || 'string.marko';
 
     try {
-      var tmpl = cache(options) || cache(options, engine.load('string.marko', str, options));
-      tmpl.render(options, fn)
+      var tmpl = cache(options) || cache(options, engine.load(options.filename, str, options));
+      tmpl.renderToString(options, cb);
     } catch (err) {
-      fn(err);
+      cb(err);
     }
+  });
+};
+
+/**
+ * Teacup support.
+ */
+exports.teacup = function(path, options, cb) {
+  return promisify(cb, function(cb) {
+    var engine = requires.teacup || (requires.teacup = require('teacup/lib/express'));
+    require.extensions['.teacup'] = require.extensions['.coffee'];
+    if (path[0] !== '/') {
+      path = join(process.cwd(), path);
+    }
+    if (!options.cache) {
+      var callback = cb;
+      cb = function() {
+        delete require.cache[path];
+        callback.apply(this, arguments);
+      };
+    }
+    engine.renderFile(path, options, cb);
+  });
+};
+
+/**
+ * Teacup string support.
+ */
+exports.teacup.render = function(str, options, cb) {
+  var coffee = require('coffee-script');
+  var vm = require('vm');
+  var sandbox = {
+    module: {exports: {}},
+    require: require
+  };
+  return promisify(cb, function(cb) {
+    vm.runInNewContext(coffee.compile(str), sandbox);
+    var tmpl = sandbox.module.exports;
+    cb(null, tmpl(options));
   });
 };
 
 /**
  * expose the instance of the engine
  */
-
 exports.requires = requires;

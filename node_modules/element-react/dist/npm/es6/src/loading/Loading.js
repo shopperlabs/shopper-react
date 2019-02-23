@@ -32,9 +32,12 @@ var Loading = function (_Component) {
     } else {
       this.enableScroll();
 
-      return {
-        position: 'relative'
-      };
+      if (this.props.loading) {
+        return {
+          position: 'relative'
+        };
+      }
+      return {};
     }
   };
 

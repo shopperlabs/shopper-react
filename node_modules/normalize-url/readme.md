@@ -1,6 +1,6 @@
-# normalize-url [![Build Status](https://travis-ci.org/sindresorhus/normalize-url.svg?branch=master)](https://travis-ci.org/sindresorhus/normalize-url)
+# normalize-url [![Build Status](https://travis-ci.org/sindresorhus/normalize-url.svg?branch=master)](https://travis-ci.org/sindresorhus/normalize-url) [![Coverage Status](https://coveralls.io/repos/github/sindresorhus/normalize-url/badge.svg?branch=master)](https://coveralls.io/github/sindresorhus/normalize-url?branch=master)
 
-> [Normalize](http://en.wikipedia.org/wiki/URL_normalization) a URL
+> [Normalize](https://en.wikipedia.org/wiki/URL_normalization) a URL
 
 Useful when you need to display, store, deduplicate, sort, compare, etc, URLs.
 
@@ -8,7 +8,7 @@ Useful when you need to display, store, deduplicate, sort, compare, etc, URLs.
 ## Install
 
 ```
-$ npm install --save normalize-url
+$ npm install normalize-url
 ```
 
 
@@ -37,12 +37,19 @@ URL to normalize.
 
 #### options
 
+Type: `Object`
+
+##### defaultProtocol
+
+Type: `string`<br>
+Default: `http:`
+
 ##### normalizeProtocol
 
 Type: `boolean`<br>
 Default: `true`
 
-Prepend `http:` to the URL if it's protocol-relative.
+Prepends `defaultProtocol` to the URL if it's protocol-relative.
 
 ```js
 normalizeUrl('//sindresorhus.com:80/');
@@ -52,12 +59,12 @@ normalizeUrl('//sindresorhus.com:80/', {normalizeProtocol: false});
 //=> '//sindresorhus.com'
 ```
 
-##### normalizeHttps
+##### forceHttp
 
 Type: `boolean`<br>
 Default: `false`
 
-Normalize `https:` URLs to `http:`.
+Normalizes `https:` URLs to `http:`.
 
 ```js
 normalizeUrl('https://sindresorhus.com:80/');
@@ -67,18 +74,35 @@ normalizeUrl('https://sindresorhus.com:80/', {normalizeHttps: true});
 //=> 'http://sindresorhus.com'
 ```
 
-##### stripFragment
+##### forceHttps
+
+Type: `boolean`<br>
+Default: `false`
+
+Normalizes `http:` URLs to `https:`.
+
+```js
+normalizeUrl('https://sindresorhus.com:80/');
+//=> 'https://sindresorhus.com'
+
+normalizeUrl('http://sindresorhus.com:80/', {normalizeHttp: true});
+//=> 'https://sindresorhus.com'
+```
+
+This option can't be used with the `forceHttp` option at the same time.
+
+##### stripHash
 
 Type: `boolean`<br>
 Default: `true`
 
-Remove the fragment at the end of the URL.
+Removes hash from the URL.
 
 ```js
 normalizeUrl('sindresorhus.com/about.html#contact');
 //=> 'http://sindresorhus.com/about.html'
 
-normalizeUrl('sindresorhus.com/about.html#contact', {stripFragment: false});
+normalizeUrl('sindresorhus.com/about.html#contact', {stripHash: false});
 //=> 'http://sindresorhus.com/about.html#contact'
 ```
 
@@ -87,7 +111,7 @@ normalizeUrl('sindresorhus.com/about.html#contact', {stripFragment: false});
 Type: `boolean`<br>
 Default: `true`
 
-Remove `www.` from the URL.
+Removes `www.` from the URL.
 
 ```js
 normalizeUrl('http://www.sindresorhus.com/about.html#contact');
@@ -102,7 +126,7 @@ normalizeUrl('http://www.sindresorhus.com/about.html#contact', {stripWWW: false}
 Type: `Array<RegExp|string>`<br>
 Default: `[/^utm_\w+/i]`
 
-Remove query parameters that matches any of the provided strings or regexes.
+Removes query parameters that matches any of the provided strings or regexes.
 
 ```js
 normalizeUrl('www.sindresorhus.com?foo=bar&ref=test_ref', {
@@ -116,7 +140,7 @@ normalizeUrl('www.sindresorhus.com?foo=bar&ref=test_ref', {
 Type: `boolean`<br>
 Default: `true`
 
-Remove trailing slash.
+Removes trailing slash.
 
 **Note:** Trailing slash is always removed if the URL doesn't have a pathname.
 
@@ -136,13 +160,27 @@ normalizeUrl('http://sindresorhus.com/', {removeTrailingSlash: false});
 Type: `boolean` `Array<RegExp|string>`<br>
 Default: `false`
 
-Remove the default directory index file from path that matches any of the provided strings or regexes. When `true`, the regex `/^index\.[a-z]+$/` is used.
+Removes the default directory index file from path that matches any of the provided strings or regexes. When `true`, the regex `/^index\.[a-z]+$/` is used.
 
 ```js
 normalizeUrl('www.sindresorhus.com/foo/default.php', {
 	removeDirectoryIndex: [/^default\.[a-z]+$/]
 });
 //=> 'http://sindresorhus.com/foo'
+```
+
+##### sortQueryParameters
+
+Type: `boolean`<br>
+Default: `true`
+
+Sorts the query parameters alphabetically by key.
+
+```js
+normalizeUrl('www.sindresorhus.com?b=two&a=one&c=three', {
+	sortQueryParameters: false
+});
+//=> 'http://sindresorhus.com/?b=two&a=one&c=three'
 ```
 
 

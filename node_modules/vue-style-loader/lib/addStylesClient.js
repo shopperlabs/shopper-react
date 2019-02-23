@@ -4,6 +4,8 @@
   Modified by Evan You @yyx990803
 */
 
+import listToStyles from './listToStyles'
+
 var hasDocument = typeof document !== 'undefined'
 
 if (typeof DEBUG !== 'undefined' && DEBUG) {
@@ -13,8 +15,6 @@ if (typeof DEBUG !== 'undefined' && DEBUG) {
     "Use { target: 'node' } in your Webpack config to indicate a server-rendering environment."
   ) }
 }
-
-var listToStyles = require('./listToStyles')
 
 /*
 type StyleObject = {
@@ -49,7 +49,7 @@ var ssrIdKey = 'data-vue-ssr-id'
 // tags it will allow on a page
 var isOldIE = typeof navigator !== 'undefined' && /msie [6-9]\b/.test(navigator.userAgent.toLowerCase())
 
-module.exports = function (parentId, list, _isProduction, _options) {
+export default function addStylesClient (parentId, list, _isProduction, _options) {
   isProduction = _isProduction
 
   options = _options || {}
