@@ -38,10 +38,12 @@
     "toastr": "^2.1.4"
   },
   "devDependencies": {
-    "@babel/preset-react": "^7.0.0",
     "@babel/core": "^7.0.0-0",
+    "@babel/preset-react": "^7.0.0",
+    "babel-preset-react": "^6.23.0",
     "imagemin": "^6.0.0",
     "prop-types": "15.6.0",
-    "babel-preset-react": "^6.23.0"
+    "sass": "^1.17.2",
+    "sass-loader": "7.0"
   }
 }
