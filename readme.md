@@ -1,8 +1,7 @@
 <p align="center"><img height="100px" src="https://pix.watch/k_qldx/tNOUs0.png"></p>
 
 <p align="center">
-[![Build Status](https://travis-ci.org/mckenziearts/shopper.png?branch=master)](https://travis-ci.org/mckenziearts/shopper
-[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/dwyl/esta/issues)
+<a href="https://travis-ci.org/mckenziearts/shopper"><img src="https://travis-ci.org/mckenziearts/shopper.png?branch=master"></a>
 </p>
 
 ## Introduction
