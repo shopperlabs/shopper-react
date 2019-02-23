@@ -1,11 +1,8 @@
 <p align="center"><img height="100px" src="https://pix.watch/k_qldx/tNOUs0.png"></p>
 
 <p align="center">
-<a href="#"><img src="https://travis-ci.org/orchidsoftware/platform.svg?branch=master"></a>
-<a href="#"><img src="https://styleci.io/repos/73781385/shield?branch=master"/></a>
-<a href="#"><img src="https://poser.pugx.org/orchid/platform/v/stable"/></a>
-<a href="#"><img src="https://poser.pugx.org/orchid/platform/downloads"/></a>
-<a href="#"><img src="https://poser.pugx.org/orchid/platform/license"/></a>
+[![Build Status](https://travis-ci.org/mckenziearts/shopper.png?branch=master)](https://travis-ci.org/mckenziearts/shopper
+[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/dwyl/esta/issues)
 </p>
 
 ## Introduction
@@ -19,7 +16,7 @@ Shopper is an Admin Management build for Laravel 5.4 and above which includes al
 3. [Installation](#installation)
 4. [Usage](#usage)
 5. [Documentation](#documentation)
-6. [Change log](#changelog)
+6. [Change log](#change-log)
 7. [Testing](#testing)
 8. [Contributing](#contributing)
 9. [Security](#security)

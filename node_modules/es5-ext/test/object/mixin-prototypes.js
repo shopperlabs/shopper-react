@@ -11,15 +11,13 @@ module.exports = function (t, a) {
 	o2 = Object.defineProperties({}, { nonremovable: { value: y } });
 	o2.other = "other";
 
-	try {
- t(o2, o1);
-} catch (ignore) {}
+	try { t(o2, o1); }
+	catch (ignore) {}
 
 	a(o2.visible, z, "Enumerable");
 	a(o1.hidden, "hidden", "Not Enumerable");
 	a(o2.propertyIsEnumerable("visible"), true, "Enumerable is enumerable");
-	a(o2.propertyIsEnumerable("hidden"), false,
-		"Not enumerable is not enumerable");
+	a(o2.propertyIsEnumerable("hidden"), false, "Not enumerable is not enumerable");
 
 	a(o2.inherited, true, "Extend deep");
 
@@ -28,15 +26,13 @@ module.exports = function (t, a) {
 
 	x = {};
 	t(x, o2);
-	try {
- t(x, o1);
-} catch (ignore) {}
+	try { t(x, o1); }
+	catch (ignore) {}
 
 	a(x.visible, z, "Enumerable");
 	a(x.hidden, "hidden", "Not Enumerable");
 	a(x.propertyIsEnumerable("visible"), true, "Enumerable is enumerable");
-	a(x.propertyIsEnumerable("hidden"), false,
-		"Not enumerable is not enumerable");
+	a(x.propertyIsEnumerable("hidden"), false, "Not enumerable is not enumerable");
 
 	a(x.inherited, true, "Extend deep");
 
@@ -48,9 +44,7 @@ module.exports = function (t, a) {
 
 	x = {};
 	t(x, o1);
-	a.throws(function () {
-		x.hidden = 3;
-	}, "Not writable is not writable");
+	a.throws(function () { x.hidden = 3; }, "Not writable is not writable");
 
 	x = {};
 	t(x, o1);
@@ -59,15 +53,16 @@ module.exports = function (t, a) {
 
 	x = {};
 	t(x, o1);
-	a.throws(function () {
-		delete x.hidden;
-	}, "Not configurable is not configurable");
+	a.throws(function () { delete x.hidden; }, "Not configurable is not configurable");
 
-	x = Object.defineProperty({}, "foo",
-		{ configurable: false, writable: true, enumerable: false, value: "bar" });
+	x = Object.defineProperty({}, "foo", {
+		configurable: false,
+		writable: true,
+		enumerable: false,
+		value: "bar"
+	});
 
-	try {
- t(x, { foo: "lorem" });
-} catch (ignore) {}
+	try { t(x, { foo: "lorem" }); }
+	catch (ignore) {}
 	a(x.foo, "bar", "Writable, not enumerable");
 };

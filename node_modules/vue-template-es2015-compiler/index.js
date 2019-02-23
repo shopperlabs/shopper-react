@@ -8,7 +8,9 @@ var defaultOptions = {
     stripWith: true,
     // custom feature ensures with context targets functional render
     stripWithFunctional: false
-  }
+  },
+  // allow spread...
+  objectAssign: 'Object.assign'
 }
 
 module.exports = function transpile (code, opts) {

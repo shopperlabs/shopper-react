@@ -18,7 +18,7 @@ roundToEven = function (num) {
 	return whole % 2 ? whole + 1 : whole;
 };
 
-// eslint-disable-next-line max-statements
+// eslint-disable-next-line max-statements, max-lines-per-function
 module.exports = function (value, ebits, fbits) {
 	var bias = (1 << (ebits - 1)) - 1, sign, e, fraction, i, bits, str, bytes;
 
@@ -43,7 +43,7 @@ module.exports = function (value, ebits, fbits) {
 
 		if (value >= pow(2, 1 - bias)) {
 			e = min(floor(log(value) / LN2), 1023);
-			fraction = roundToEven(value / pow(2, e) * pow(2, fbits));
+			fraction = roundToEven((value / pow(2, e)) * pow(2, fbits));
 			if (fraction / pow(2, fbits) >= 2) {
 				e += 1;
 				fraction = 1;

@@ -305,10 +305,6 @@
 // User select
 // For selecting text on the page
 @mixin user-select($select){
-  -webkit-user-select: $select;
-  -moz-user-select: $select;
-  -ms-user-select: $select; // IE10+
-  -o-user-select: $select;
   user-select: $select;
 }
 
@@ -320,30 +316,19 @@
 
 // CSS3 Content Columns
 @mixin content-columns($column-count, $column-gap: $grid-gutter-width){
-  -webkit-column-count: $column-count;
-  -moz-column-count: $column-count;
   column-count: $column-count;
-  -webkit-column-gap: $column-gap;
-  -moz-column-gap: $column-gap;
   column-gap: $column-gap;
 }
 
 // Optional hyphenation
 @mixin hyphens($mode: auto){
   word-wrap: break-word;
-  -webkit-hyphens: $mode;
-  -moz-hyphens: $mode;
-  -ms-hyphens: $mode; // IE10+
-  -o-hyphens: $mode;
   hyphens: $mode;
 }
 
 // Opacity
 @mixin opacity($opacity){
   opacity: $opacity;
-  // IE8 filter
-  $opacity-ie: ($opacity * 100);
-  filter: #{"alpha(opacity=${opacity-ie})"};
 }
 
 // GRADIENTS
@@ -360,7 +345,6 @@
   background-image: -moz-linear-gradient(left, $start-color $start-percent, $end-color $end-percent); // FF 3.6+
   background-image: linear-gradient(to right, $start-color $start-percent, $end-color $end-percent); // Standard, IE10
   background-repeat: repeat-x;
-  filter: e(%("progid:DXImageTransform.Microsoft@include gradient(startColorstr='%d', endColorstr='%d', GradientType=1)", argb($start-color), argb($end-color))); // IE9 and down
 }
 
 // Vertical gradient, from top to bottom
@@ -373,7 +357,6 @@
   background-image: -moz-linear-gradient(top, $start-color $start-percent, $end-color $end-percent); // FF 3.6+
   background-image: linear-gradient(to bottom, $start-color $start-percent, $end-color $end-percent); // Standard, IE10
   background-repeat: repeat-x;
-  filter: e(%("progid:DXImageTransform.Microsoft@include gradient(startColorstr='%d', endColorstr='%d', GradientType=0)", argb($start-color), argb($end-color))); // IE9 and down
 }
 
 @mixin gradient-directional($start-color: #555, $end-color: #333, $deg: 45deg){
@@ -388,7 +371,6 @@
   background-image: -moz-linear-gradient(left, $start-color, $mid-color $color-stop, $end-color);
   background-image: linear-gradient(to right, $start-color, $mid-color $color-stop, $end-color);
   background-repeat: no-repeat;
-  filter: e(%("progid:DXImageTransform.Microsoft@include gradient(startColorstr='%d', endColorstr='%d', GradientType=1)", argb($start-color), argb($end-color))); // IE9 and down, gets no color-stop at all for proper fallback
 }
 @mixin gradient-vertical-three-colors($start-color: #00b3ee, $mid-color: #7a43b6, $color-stop: 50%, $end-color: #c3325f){
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from($start-color), color-stop($color-stop, $mid-color), to($end-color));
@@ -396,7 +378,6 @@
   background-image: -moz-linear-gradient(top, $start-color, $mid-color $color-stop, $end-color);
   background-image: linear-gradient($start-color, $mid-color $color-stop, $end-color);
   background-repeat: no-repeat;
-  filter: e(%("progid:DXImageTransform.Microsoft@include gradient(startColorstr='%d', endColorstr='%d', GradientType=0)", argb($start-color), argb($end-color))); // IE9 and down, gets no color-stop at all for proper fallback
 }
 @mixin gradient-radial($inner-color: #555, $outer-color: #333){
   background-image: -webkit-gradient(radial, center center, 0, center center, 460, from($inner-color), to($outer-color));
@@ -410,15 +391,6 @@
   background-image: -webkit-linear-gradient($angle, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);
   background-image: -moz-linear-gradient($angle, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);
   background-image: linear-gradient($angle, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);
-}
-
-
-// Reset filters for IE
-//
-// When you need to remove a gradient background, don't forget to use this to reset
-// the IE filter for IE9 and below.
-@mixin reset-filter(){
-  filter: e(%("progid:DXImageTransform.Microsoft@include gradient(enabled = false)"));
 }
 
 // Transitions
@@ -443,9 +415,6 @@
 }
 
 @mixin transition-transform($transition){
-  -webkit-transition: -webkit-transform $transition;
-  -moz-transition: -moz-transform $transition;
-  -o-transition: -o-transform $transition;
   transition: transform $transition;
 }
 
