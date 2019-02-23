@@ -1,0 +1,40 @@
+.card {
+  &.card-welcome {
+    border: none;
+    .card-title {
+      text-transform: uppercase;
+      font-size: 14px;
+      font-weight: 600;
+      margin-top: 0;
+      margin-bottom: 30px;
+      color: $gray-900;
+    }
+    .cart-content {
+      overflow: hidden;
+      margin-top: -15px;
+      .card-logo {
+        background-color: #f9f9f9;
+        width: 200px;
+        padding: 15px;
+        float: left;
+
+        img {
+          background-size: cover;
+          width: 100%;
+          height: 80px;
+        }
+      }
+      .card-message {
+        margin-left: 220px;
+        margin-top: 10px;
+      }
+    }
+  }
+}
+
+.box-card {
+  width: 60% !important;
+  height: 300px;
+  overflow: hidden !important;
+  overflow-y: scroll !important;
+}

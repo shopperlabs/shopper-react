@@ -1,0 +1,35 @@
+{
+  "name": "webpack-notifier",
+  "version": "1.7.0",
+  "description": "webpack + node-notifier = build status system notifications",
+  "main": "index.js",
+  "files": [
+    "index.js",
+    "logo.png"
+  ],
+  "scripts": {
+    "test": "eslint index.js"
+  },
+  "keywords": [
+    "webpack",
+    "notify",
+    "notification",
+    "node-notifier",
+    "notifier",
+    "build"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Turbo87/webpack-notifier.git"
+  },
+  "author": "Tobias Bieniek <tobias.bieniek@gmx.de>",
+  "license": "ISC",
+  "dependencies": {
+    "node-notifier": "^5.1.2",
+    "object-assign": "^4.1.0",
+    "strip-ansi": "^3.0.1"
+  },
+  "devDependencies": {
+    "eslint": "^3.3.1"
+  }
+}

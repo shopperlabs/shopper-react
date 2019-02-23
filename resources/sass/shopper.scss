@@ -1,0 +1,45 @@
+// Core variables and mixins
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,700&subset=cyrillic");
+@import url("https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css");
+@import url("https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.css");
+
+@import "~open-color/open-color";
+// Core variables and mixins
+@import "theme/variables";
+// External libraries and frameworks.
+@import "~bootstrap/scss/bootstrap";
+@import '~loaders.css/src/animations/ball-beat.scss';
+@import '~rodal/lib/rodal.css';
+@import "~element-theme-default/lib/index.css";
+@import "~react-quill/dist/quill.snow.css";
+@import "~select2/dist/css/select2.min.css";
+@import "~select2-bootstrap-theme/src/select2-bootstrap";
+@import "~bootstrap-tagsinput/dist/bootstrap-tagsinput";
+// core
+@import "core/mixins";
+@import "core/reset";
+@import "core/layout";
+@import "core/nav";
+@import "core/nav.offscreen";
+@import "core/arrow";
+@import "core/buttons";
+@import "core/modals";
+@import "core/components";
+@import "core/item";
+@import "core/utilities";
+@import "core/tables";
+@import "core/element-react";
+@import "core/form";
+// Colors
+@import "colors/colors";
+// Components
+@import "components/card";
+@import "components/product";
+@import "components/dropzone";
+@import "components/pace";
+@import "components/algolia";
+// plugins
+@import "plugins/plugin";
+@import "plugins/notfound";
+// Page
+

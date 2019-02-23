@@ -1,0 +1,10 @@
+{
+  "name": "Users",
+  "version": "1.0.0",
+  "author": "Arthur Monney",
+  "metadata": {
+    "price": "Free",
+    "homepage": "https://github.com/mckenziearts/shopper#readMe"
+  },
+  "is_disabled": false
+}

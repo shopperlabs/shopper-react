@@ -1,0 +1,23 @@
+{
+  "Orders list": "Orders list",
+  "Order Number": "Order Number",
+  "Payment Method": "Payment Method",
+  "Shipping Type": "Shipping Type",
+  "Total Price": "Total Price",
+  "Edit order": "Edit order",
+  "New order": "New order",
+
+  "Payment methods list": "Payment methods list",
+  "New payment method": "New payment method",
+  "Edit payment method": "Edit payment method",
+
+  "Shipping type list": "Shipping type list",
+  "Price": "Price",
+  "New shipping type": "New shipping type",
+  "Edit shipping type": "Edit shipping type",
+
+  "Status list": "Status list",
+  "Show status to user": "Show status to user",
+  "New status": "New status",
+  "Edit status": "Edit status"
+}

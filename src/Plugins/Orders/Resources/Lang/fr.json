@@ -1,0 +1,23 @@
+{
+  "Orders list": "Liste des commandes",
+  "Order Number": "Numéro de commande",
+  "Payment Method": "Moyen de paiement",
+  "Shipping Type": "Livraison",
+  "Total Price": "Prix Total",
+  "Edit order": "Modifier commande",
+  "New order": "Nouvelle commande",
+
+  "Payment methods list": "Liste des moyens de paiement",
+  "New payment method": "Nouveau moyen de paiement",
+  "Edit payment method": "Modifier moyen de paiement",
+
+  "Shipping type list": "Liste des moyens de livraison",
+  "Price": "Prix",
+  "New shipping type": "Nouveau moyen de livraison",
+  "Edit shipping type": "Modifier moyen de livraison",
+
+  "Status list": "Liste des status",
+  "Show status to user": "Afficher au client",
+  "New status": "Nouveau status",
+  "Edit status": "Modifier status"
+}

@@ -1,0 +1,24 @@
+{
+  "Products": "Products",
+  "Product": "Product",
+  "Products list": "Products list",
+  "New product": "New product",
+  "Edit product": "Edit product",
+
+  "Categories": "Categories",
+  "Categories list": "Categories list",
+  "New category": "New category",
+  "Category": "Category",
+
+  "Brands": "Brands",
+  "Brands list": "Brands list",
+  "Brand": "Brand",
+  "New brand": "New brand",
+  "Edit brand": "Edit brand",
+
+  "Reviews": "Reviews",
+  "Reviews list": "Reviews list",
+  "New review": "New review",
+  "Edit review": "Edit review",
+  "Rating": "Rating"
+}

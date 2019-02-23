@@ -1,0 +1,21 @@
+{
+  "name": "concatenate",
+  "version": "0.0.2",
+  "description": "concatenate files",
+  "keywords": [],
+  "author": "Stephen Mathieson <me@stephenmathieson.com>",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/stephenmathieson/node-concatenate.git"
+  },
+  "dependencies": {
+    "globs": "^0.1.2"
+  },
+  "devDependencies": {
+    "mocha": "latest",
+    "should": "latest",
+    "jshint": "1.0.0",
+    "rimraf": "latest"
+  },
+  "main": "index"
+}
