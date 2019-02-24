@@ -2,6 +2,8 @@
 
 <p align="center">
 <a href="https://travis-ci.org/mckenziearts/shopper"><img src="https://travis-ci.org/mckenziearts/shopper.png?branch=master"></a>
+<a href="https://packagist.org/packages/mckenziearts/shopper"><img src="https://img.shields.io/packagist/v/mckenziearts/shopper.svg?style=flat-square"></a>
+<a href="https://packagist.org/packages/mckenziearts/shopper"><img src="https://img.shields.io/packagist/dt/mckenziearts/shopper.svg?style=flat-square"></a>
 </p>
 
 ## Introduction
