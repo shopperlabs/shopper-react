@@ -2,6 +2,8 @@
 
 <p align="center">
 <a href="https://travis-ci.org/mckenziearts/shopper"><img src="https://travis-ci.org/mckenziearts/shopper.png?branch=master"></a>
+[![Latest Version on Packagist][ico-version]][link-packagist]
+[![Total Downloads][ico-downloads]][link-downloads]
 </p>
 
 ## Introduction
@@ -141,3 +143,5 @@ If you discover any security related issues, please email monneylobe@gmail.com i
   
 MIT. Please see the [license file](license.md) for more information.  
   
+[link-packagist]: https://packagist.org/packages/mckenziearts/shopper
+[link-downloads]: https://packagist.org/packages/mckenziearts/shopper
