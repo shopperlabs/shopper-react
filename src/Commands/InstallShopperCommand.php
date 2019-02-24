@@ -55,7 +55,6 @@ class InstallShopperCommand extends Command
         $this->call('vendor:publish', ['--provider' => ShopperServiceProvider::class, '--tag' => 'shopper']);
 
         $this->setupDatabaseConfig();
-        $this->setupAdminUser();
 
         $this->info('Adding the storage and shopper symlink to your public folder');
         $this->call('shopper:link');
@@ -72,16 +71,5 @@ class InstallShopperCommand extends Command
         $this->call('migrate');
         $this->info('Flush data into the database');
         $this->seed('ShopperSeeder');
-    }
-
-    /**
-     * Setup creation of an admin user
-     *
-     * @retun void
-     */
-    protected function setupAdminUser(): void
-    {
-        $this->info('Creation of an admin user');
-        $this->call('shopper:admin');
     }
 }
