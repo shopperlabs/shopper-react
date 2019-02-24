@@ -9,7 +9,6 @@ use Mckenziearts\Shopper\Providers\ComposerServiceProvider;
 use Mckenziearts\Shopper\Providers\ConsoleServiceProvider;
 use Mckenziearts\Shopper\Providers\EventServiceProvider;
 use Mckenziearts\Shopper\Providers\RouteServiceProvider;
-use QCod\ImageUp\ImageUpServiceProvider;
 
 class ShopperServiceProvider extends ServiceProvider
 {
@@ -127,7 +126,6 @@ class ShopperServiceProvider extends ServiceProvider
             ConsoleServiceProvider::class,
             ComposerServiceProvider::class,
             ShopperPluginServiceProvider::class,
-            ImageUpServiceProvider::class,
             EventServiceProvider::class
         ];
     }
