@@ -2,8 +2,6 @@
 
 <p align="center">
 <a href="https://travis-ci.org/mckenziearts/shopper"><img src="https://travis-ci.org/mckenziearts/shopper.png?branch=master"></a>
-[![Latest Version on Packagist][ico-version]][link-packagist]
-[![Total Downloads][ico-downloads]][link-downloads]
 </p>
 
 ## Introduction
