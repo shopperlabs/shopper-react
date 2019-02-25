@@ -4,5 +4,7 @@
     "/js/login.js.map": "/js/login.js.map",
     "/css/login.css.map": "/css/login.css.map",
     "/js/shopper.js": "/js/shopper.js",
-    "/js/shopper.js.map": "/js/shopper.js.map"
+    "/js/shopper.js.map": "/js/shopper.js.map",
+    "/css/shopper.css": "/css/shopper.css",
+    "/css/shopper.css.map": "/css/shopper.css.map"
 }
