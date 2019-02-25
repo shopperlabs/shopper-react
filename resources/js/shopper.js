@@ -132,6 +132,7 @@ autocomplete('#search-input', { hint: false }, [
     displayKey: 'name',
     templates: {
       header: '<h4 class="algolia-search-title">Users</h4>',
+      footer: '<span class="search-foot"><a href="https://www.algolia.com/" target="_blank" title="Algolia - Hosted cloud search as a service"><img src="https://www.algolia.com/static_assets/images/v3/shared/logos/algolia/search-by-algolia-light-background-8762ce8b.svg" width="75" height="25"></a></span>',
       suggestion: function(suggestion) {
         return `<span>${suggestion._highlightResult.name.value +' '+ suggestion.last_name}</span>`
       },
@@ -139,7 +140,7 @@ autocomplete('#search-input', { hint: false }, [
         return `<span>No users for the query ${result.query}</span>`
       }
     }
-  },
+  }
 ]).on('autocomplete:selected', function(event, suggestion, dataset, context) {
   switch (dataset) {
     case 1:
