@@ -1,10 +1,8 @@
 {
-    "/js/shopper.js": "/js/shopper.js",
-    "/js/shopper.js.map": "/js/shopper.js.map",
     "/js/login.js": "/js/login.js",
     "/css/login.css": "/css/login.css",
-    "/css/shopper.css": "/css/shopper.css",
     "/js/login.js.map": "/js/login.js.map",
     "/css/login.css.map": "/css/login.css.map",
-    "/css/shopper.css.map": "/css/shopper.css.map"
+    "/js/shopper.js": "/js/shopper.js",
+    "/js/shopper.js.map": "/js/shopper.js.map"
 }
