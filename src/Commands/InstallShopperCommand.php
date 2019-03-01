@@ -55,6 +55,8 @@ class InstallShopperCommand extends Command
         $this->call('vendor:publish', ['--provider' => ShopperServiceProvider::class, '--tag' => 'shopper']);
 
         $this->setupDatabaseConfig();
+        $this->addEnvVarible();
+
 
         $this->info('Adding the storage and shopper symlink to your public folder');
         $this->call('shopper:link');
@@ -71,5 +73,20 @@ class InstallShopperCommand extends Command
         $this->call('migrate');
         $this->info('Flush data into the database');
         $this->seed('ShopperSeeder');
+    }
+
+    /**
+     * Set env variables
+     *
+     * @return void
+     */
+    protected function addEnvVarible(): void
+    {
+        $env = [
+            'DASHBOARD_PREFIX' => config('shopper.prefix'),
+            'CURRENCY_SYMBOL'  => config('shopper.currency')
+        ];
+
+        setEnvironmentValue($env);
     }
 }
