@@ -109,7 +109,7 @@ class Media extends Model
      */
     public function createDirectory(string $path)
     {
-        $filesystem = config('shopper.storage.uploads.disk');
+        $filesystem = config('shopper.storage.disk');
 
         if (!Storage::disk($filesystem)->exists($path)) {
             Storage::disk($filesystem)->makeDirectory($path);
