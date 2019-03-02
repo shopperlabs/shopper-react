@@ -3,7 +3,7 @@
 namespace Mckenziearts\Shopper;
 
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
-use Mckenziearts\Shopper\Http\Core\Menu;
+use Mckenziearts\Shopper\Core\Menu;
 
 class Shopper
 {

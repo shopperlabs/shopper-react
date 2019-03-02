@@ -77,7 +77,9 @@ function toggleSidebar() {
 }
 
 /**
+ * ==============================================================================
  * Algolia search
+ * ==============================================================================
  */
 let autocomplete = require('autocomplete.js'),
   algolia = document.getElementById('algolia'),
@@ -157,3 +159,20 @@ autocomplete('#search-input', { hint: false }, [
       break
   }
 })
+
+/**
+ * ==============================================================================
+ * Filemanager
+ * ==============================================================================
+ */
+let filemaner = document.getElementById('fm')
+
+if (filemaner) {
+  document.addEventListener('DOMContentLoaded', function() {
+    // Add callback to file manager
+    fm.$store.commit('fm/setFileCallBack', function(fileUrl) {
+      window.opener.fmSetLink(fileUrl)
+      window.close()
+    });
+  });
+}

@@ -322,17 +322,30 @@ class MenuComposer
      */
     protected function registerMediaMenu()
     {
-        /*$this->shopper->menu->add('Main', [
+        $this->shopper->menu->add('Main', [
             'slug'       => 'Media',
             'icon'       => 'icon-picture',
-            'route'      => route('unisharp.lfm.show'),
+            'route'      => '#',
             'label'      => __('Media'),
-            'childs'     => false,
+            'childs'     => true,
             'main'       => true,
-            'active'     => 'unisharp.lfm.*',
+            'active'     => 'shopper.media.*',
             //'permission' => 'dashboard.systems',
-            'sort'       => 100,
-        ]);*/
+            'sort'       => 19,
+        ]);
+
+        $this->shopper->menu->add('Media', [
+            'slug'       => 'Filemanager',
+            'icon'       => 'icon-picture',
+            'route'      => route('shopper.media.index'),
+            'label'      => __('Filemanager'),
+            'groupname'  => __('Browse Media'),
+            'childs'     => false,
+            'divider'    => false,
+            'active'     => 'shopper.media.*',
+            //'permission' => 'dashboard.systems.settings',
+            'sort'       => 1,
+        ]);
     }
 
     /**

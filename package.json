@@ -18,6 +18,7 @@
     "element-theme-default": "^1.4.13",
     "jquery": "^3.3.1",
     "lang.js": "^1.1.14",
+    "laravel-file-manager": "^2.1.4",
     "laravel-mix": "^4.0.7",
     "loaders.css": "^0.1.2",
     "lodash": "^4.17.5",

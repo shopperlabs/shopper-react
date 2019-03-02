@@ -65,7 +65,7 @@ return [
     */
     'storage' => [
 
-        'disk' => 'local',
+        'disk' => ['local'],
 
         'uploads' => [
             'folder' => 'uploads',

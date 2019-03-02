@@ -43,6 +43,7 @@ class RouteServiceProvider extends ServiceProvider
     public function map()
     {
         $this->mapBackendRoutes();
+        $this->mapWebRoutes();
         $this->mapAuthRoutes();
     }
 
@@ -76,5 +77,19 @@ class RouteServiceProvider extends ServiceProvider
             ->as('shopper.')
             ->namespace($this->namespace. '\Backend\Auth')
             ->group(realpath(DASHBOARD_PATH.'/routes/auth.php'));
+    }
+
+    /**
+     * Define the "web" routes for the application.
+     *
+     * These routes all receive session state, CSRF protection, etc.
+     *
+     * @return void
+     */
+    protected function mapWebRoutes()
+    {
+        Route::middleware(config('shopper.middleware.private'))
+            ->namespace($this->namespace. '\Backend')
+            ->group(realpath(DASHBOARD_PATH.'/routes/web.php'));
     }
 }

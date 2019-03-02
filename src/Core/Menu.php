@@ -1,6 +1,6 @@
 <?php
 
-namespace Mckenziearts\Shopper\Http\Core;
+namespace Mckenziearts\Shopper\Core;
 
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 
