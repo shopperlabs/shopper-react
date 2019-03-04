@@ -5,6 +5,7 @@
  */
 import './libs/pace'
 import './bootstrap'
+import './libs/file-manager'
 import './components/NavbarSearch'
 import './components/categories/CategoryForm'
 import './components/brands/BrandForm'
@@ -83,6 +84,7 @@ function toggleSidebar() {
  */
 let autocomplete = require('autocomplete.js'),
   algolia = document.getElementById('algolia'),
+  algoliaLogo = algolia.getAttribute('data-logo'),
   client = algoliasearch(algolia.getAttribute('data-appID'), algolia.getAttribute('data-client-secret')),
   products = client.initIndex('shopper_catalogue_products'),
   categories = client.initIndex('shopper_catalogue_categories'),
@@ -134,7 +136,11 @@ autocomplete('#search-input', { hint: false }, [
     displayKey: 'name',
     templates: {
       header: '<h4 class="algolia-search-title">Users</h4>',
-      footer: '<span class="search-foot"><a href="https://www.algolia.com/" target="_blank" title="Algolia - Hosted cloud search as a service"><img src="https://www.algolia.com/static_assets/images/v3/shared/logos/algolia/search-by-algolia-light-background-8762ce8b.svg" width="75" height="25"></a></span>',
+      footer: `<span class="search-foot">
+        <a href="https://www.algolia.com" target="_blank">
+          <img src="${algoliaLogo}" width="75" height="25">
+        </a>
+      </span>`,
       suggestion: function(suggestion) {
         return `<span>${suggestion._highlightResult.name.value +' '+ suggestion.last_name}</span>`
       },

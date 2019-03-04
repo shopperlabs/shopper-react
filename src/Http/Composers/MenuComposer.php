@@ -42,7 +42,7 @@ class MenuComposer
     {
         $this->shopper->menu->add('Main', [
             'slug'      => 'Dashboard',
-            'icon'      => 'fa fa-tachometer',
+            'icon'      => 'fas fa-palette',
             'route'      => '#',
             'label'      => __('Dashboard'),
             'childs'     => true,
@@ -54,7 +54,7 @@ class MenuComposer
 
         $this->shopper->menu->add('Dashboard', [
             'slug'       => 'Home',
-            'icon'       => 'fa fa-tachometer',
+            'icon'       => 'fas fa-palette',
             'route'      => route('shopper.dashboard.home'),
             'label'      => __('Welcome'),
             'groupname'  => __('Dashboard'),
@@ -104,7 +104,7 @@ class MenuComposer
     {
         $this->shopper->menu->add('Main', [
             'slug'       => 'Catalogue',
-            'icon'       => 'icon-grid',
+            'icon'       => 'fas fa-shopping-cart',
             'route'      => '#',
             'label'      => __('Catalogue'),
             'childs'     => true,
@@ -153,7 +153,7 @@ class MenuComposer
 
         $this->shopper->menu->add('Catalogue', [
             'slug'       => 'Reviews',
-            'icon'       => 'fa fa-commenting',
+            'icon'       => 'far fa-comment',
             'route'      => route('shopper.catalogue.reviews.index'),
             'label'      => __('Reviews'),
             'childs'     => false,
@@ -183,7 +183,7 @@ class MenuComposer
     {
         $this->shopper->menu->add('Main', [
             'slug'       => 'Orders',
-            'icon'       => 'icon-basket',
+            'icon'       => 'fas fa-money-check',
             'route'      => '#',
             'label'      => __('Orders'),
             'childs'     => true,
@@ -208,7 +208,7 @@ class MenuComposer
 
         $this->shopper->menu->add('Orders', [
             'slug'       => 'Payment',
-            'icon'       => 'fa fa-cc-visa',
+            'icon'       => 'far fa-credit-card',
             'route'      => route('shopper.shoporders.payments.index'),
             'label'      => __('Payment Methods'),
             'childs'     => false,
@@ -262,7 +262,7 @@ class MenuComposer
 
         $this->shopper->menu->add('Promo', [
             'slug'       => 'Coupon',
-            'icon'       => 'fa fa-ticket',
+            'icon'       => 'fas fa-gift',
             'route'      => route('shopper.wip'),
             'label'      => __('Coupons'),
             'groupname'  => __('Promotion'),
