@@ -1,8 +1,5 @@
 @extends('shopper::layouts.dashboard')
 @section('title', __('Filemanager'))
-@section('stylesheets')
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
-@endsection
 
 @section('content')
 
