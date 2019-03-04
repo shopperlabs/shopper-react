@@ -6,7 +6,7 @@
             <div class="col-md-6">
                 <table class="table">
                     <tr>
-                        <td>{{ __('Name of the site') }}</td>
+                        <td>{{ __('Name of your application') }}</td>
                         <td>{{ $settings->get('name') }}</td>
                     </tr>
                     <tr>

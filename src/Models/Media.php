@@ -109,9 +109,9 @@ class Media extends Model
      */
     public function createDirectory(string $path)
     {
-        $filesystem = config('shopper.storage.uploads.disk');
+        $filesystem = config('shopper.storage.disk')[0];
 
-        if (!Storage::disk($filesystem)->exists($path)) {
+        if (! Storage::disk($filesystem)->exists($path)) {
             Storage::disk($filesystem)->makeDirectory($path);
             return true;
         }
@@ -126,7 +126,7 @@ class Media extends Model
      */
     public function checkStorageSymlik()
     {
-        if (!Storage::disk('local')->exists(public_path('storage'))) {
+        if (! Storage::disk('local')->exists(public_path('storage'))) {
             App::make('files')->link(storage_path('app'), public_path('storage'));
             return true;
         } else {

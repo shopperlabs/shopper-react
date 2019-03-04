@@ -1128,7 +1128,7 @@ autoprefixer@^9.4.2:
     postcss "^7.0.14"
     postcss-value-parser "^3.3.1"
 
-axios@^0.18:
+axios@^0.18, axios@^0.18.0:
   version "0.18.0"
   resolved "https://registry.yarnpkg.com/axios/-/axios-0.18.0.tgz#32d53e4851efdc0a11993b6cd000789d70c05102"
   integrity sha1-MtU+SFHv3AoRmTts0AB4nXDAUQI=
@@ -1615,6 +1615,11 @@ code-point-at@^1.0.0:
   resolved "https://registry.yarnpkg.com/code-point-at/-/code-point-at-1.1.0.tgz#0d070b4d043a5bea33a2f1a40e2edb3d9a4ccf77"
   integrity sha1-DQcLTQQ6W+ozovGkDi7bPZpMz3c=
 
+codemirror@^5.41.0:
+  version "5.44.0"
+  resolved "https://registry.yarnpkg.com/codemirror/-/codemirror-5.44.0.tgz#80dc2a231eeb7aab25ec2405cdca37e693ccf9cc"
+  integrity sha512-3l42syTNakCdCQuYeZJXTyxina6Y9i4V0ighSJXNCQtRbaCN76smKKLu1ZHPHQon3rnzC7l4i/0r4gp809K1wg==
+
 collection-visit@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/collection-visit/-/collection-visit-1.0.0.tgz#4bc0373c164bc3291b4d368c829cf1a80a59dca0"
@@ -1801,7 +1806,7 @@ core-js@^1.0.0:
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-1.2.7.tgz#652294c14651db28fa93bd2d5ff2983a4f08c636"
   integrity sha1-ZSKUwUZR2yj6k70tX/KYOk8IxjY=
 
-core-js@^2.4.0:
+core-js@^2.4.0, core-js@^2.6.5:
   version "2.6.5"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.6.5.tgz#44bc8d249e7fb2ff5d00e0341a7ffb94fbf67895"
   integrity sha512-klh/kDpwX8hryYL14M9w/xei6vrv6sE8gTHDG7/T/+SEovB/G4ejwcfE/CBzO6Edsu+OETZMZ3wcX/EjUkrl5A==
@@ -1871,6 +1876,11 @@ create-react-class@^15.6.0:
     fbjs "^0.8.9"
     loose-envify "^1.3.1"
     object-assign "^4.1.1"
+
+cropperjs@^1.4.3:
+  version "1.4.3"
+  resolved "https://registry.yarnpkg.com/cropperjs/-/cropperjs-1.4.3.tgz#dc44d6c9e73269e7f96894c726ab91e8913f9e90"
+  integrity sha512-fsUjHuS9mvKVh2aXVRgNcUDlFplW+v4eEB6sOHVI9kMV4G3GViSD4p1qvNLg1ko4ZhOnF0L8/9uXcY4s2bFQPg==
 
 cross-env@^5.1:
   version "5.2.0"
@@ -2099,6 +2109,11 @@ csstype@^2.2.0:
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-2.6.2.tgz#3043d5e065454579afc7478a18de41909c8a2f01"
   integrity sha512-Rl7PvTae0pflc1YtxtKbiSqq20Ts6vpIYOD5WBafl4y123DyHUeLrRdQP66sQW8/6gmX8jrYJLXwNeMqYVJcow==
 
+custom-event-polyfill@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/custom-event-polyfill/-/custom-event-polyfill-1.0.6.tgz#6b026e81cd9f7bc896bd6b016a427407bb068db1"
+  integrity sha512-3FxpFlzGcHrDykwWu+xWVXZ8PfykM/9/bI3zXb953sh+AjInZWcQmrnmvPoZgiqNjmbtTm10PWvYqvRW527x6g==
+
 cyclist@~0.2.2:
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/cyclist/-/cyclist-0.2.2.tgz#1b33792e11e914a2fd6d6ed6447464444e5fa640"
@@ -2253,6 +2268,11 @@ detect-node@^2.0.4:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/detect-node/-/detect-node-2.0.4.tgz#014ee8f8f669c5c58023da64b8179c083a28c46c"
   integrity sha512-ZIzRpLJrOj7jjP2miAtgqIfmzbxa4ZOr5jJc601zklsfEx9oTzmmj2nVpIPRpNlRTIh8lc1kyViIY7BWSGNmKw==
+
+diff-match-patch@^1.0.0:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/diff-match-patch/-/diff-match-patch-1.0.4.tgz#6ac4b55237463761c4daf0dc603eb869124744b1"
+  integrity sha512-Uv3SW8bmH9nAtHKaKSanOQmj2DnlH65fUpcrMdfdaOxUG02QQ4YGZ8AE7kKOMisF7UqvOlGKVYWRvezdncW9lg==
 
 diffie-hellman@^5.0.0:
   version "5.0.3"
@@ -3802,6 +3822,19 @@ lang.js@^1.1.14:
   resolved "https://registry.yarnpkg.com/lang.js/-/lang.js-1.1.14.tgz#96329c064c18f8d5e1299d79d827a368af08c710"
   integrity sha512-HsNKw3b7tYHwDQux3lQtbLGAntwJ5fl8Pl1BPXTKu+gdpaZsK9d787yFmLi6/LSXeNSgPO1CjZDKkrrPsERbSw==
 
+laravel-file-manager@^2.1.4:
+  version "2.1.4"
+  resolved "https://registry.yarnpkg.com/laravel-file-manager/-/laravel-file-manager-2.1.4.tgz#1c81ab0817d1184526285a1ee6e8c4d5734f1a42"
+  integrity sha512-ddc2zZu9Z/duYtGPiJfJSsYdlwjIMfAkjr1qFMrF65d3wBBBvnf3Du+lLmMHdlinDAfRhx9/ws3y60pMiVGaLw==
+  dependencies:
+    axios "^0.18.0"
+    codemirror "^5.41.0"
+    cropperjs "^1.4.3"
+    plyr "^3.4.7"
+    vue "^2.5.17"
+    vue-codemirror "^4.0.5"
+    vuex "^3.0.1"
+
 laravel-mix@^4.0.7:
   version "4.0.14"
   resolved "https://registry.yarnpkg.com/laravel-mix/-/laravel-mix-4.0.14.tgz#949374650d39f2c937257ad2749dab039b848f28"
@@ -3877,6 +3910,11 @@ loaders.css@^0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/loaders.css/-/loaders.css-0.1.2.tgz#3a9fb43726c73334a38142af9d0629019b658743"
   integrity sha1-Op+0NybHMzSjgUKvnQYpAZtlh0M=
+
+loadjs@^3.5.5:
+  version "3.5.5"
+  resolved "https://registry.yarnpkg.com/loadjs/-/loadjs-3.5.5.tgz#2fbaa981ffdd079e0f8786ea75aeed643483b368"
+  integrity sha512-qBuLnKt4C6+vctutozFqPHQ6s4SSa9tcE64NsvDJ92UZmUrFvqGI1oVOtnZz2xwpgOT+2niQtHtQIDP4e/wlTA==
 
 locate-path@^3.0.0:
   version "3.0.0"
@@ -4863,7 +4901,19 @@ pkg-dir@^3.0.0:
   dependencies:
     find-up "^3.0.0"
 
-popper.js@^1.14.4, popper.js@^1.14.5:
+plyr@^3.4.7:
+  version "3.5.2"
+  resolved "https://registry.yarnpkg.com/plyr/-/plyr-3.5.2.tgz#991e2686f00656cb46e8f49fe6ee2dbceaaef204"
+  integrity sha512-7wx2uC4x2KusSWxdDYlXknwKjoFFCgPEc5gnoSGAZ9zmYcSIxRfAt1WPenkqix7tLRE1Pg7dgi91ZymxjZmbSg==
+  dependencies:
+    core-js "^2.6.5"
+    custom-event-polyfill "^1.0.6"
+    loadjs "^3.5.5"
+    rangetouch "^2.0.0"
+    raven-js "^3.27.0"
+    url-polyfill "^1.1.3"
+
+popper.js@^1.12, popper.js@^1.14.4:
   version "1.14.7"
   resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.14.7.tgz#e31ec06cfac6a97a53280c3e55e4e0c860e7738e"
   integrity sha512-4q1hNvoUre/8srWsH7hnoSJ5xVmIL4qgz+s4qf2TnJIMyZFUFMGH+9vE7mXynAlHSZ/NdTmmow86muD0myUkVQ==
@@ -5412,6 +5462,16 @@ range-parser@^1.0.3, range-parser@~1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/range-parser/-/range-parser-1.2.0.tgz#f49be6b487894ddc40dcc94a322f611092e00d5e"
   integrity sha1-9JvmtIeJTdxA3MlKMi9hEJLgDV4=
+
+rangetouch@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/rangetouch/-/rangetouch-2.0.0.tgz#5459cdb38b929326c5484ab47aac9632fbe3a896"
+  integrity sha512-y66wTFbwh7KafYligRsmIYYR1kZY8U9tGHH9PgbVhBUFmGzPMsOSjslXPedgR5D3M9W1QKVbAf1AtaVAt7JJTw==
+
+raven-js@^3.27.0:
+  version "3.27.0"
+  resolved "https://registry.yarnpkg.com/raven-js/-/raven-js-3.27.0.tgz#9f47c03e17933ce756e189f3669d49c441c1ba6e"
+  integrity sha512-vChdOL+yzecfnGA+B5EhEZkJ3kY3KlMzxEhShKh6Vdtooyl0yZfYNFQfYzgMf2v4pyQa+OTZ5esTxxgOOZDHqw==
 
 raw-body@2.3.3:
   version "2.3.3"
@@ -6600,6 +6660,11 @@ url-parse@^1.4.3:
     querystringify "^2.0.0"
     requires-port "^1.0.0"
 
+url-polyfill@^1.1.3:
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/url-polyfill/-/url-polyfill-1.1.3.tgz#ce0bdf2e923aa6f66bc198ab776323dfc5a91e62"
+  integrity sha512-xIAXc0DyXJCd767sSeRu4eqisyYhR0z0sohWArCn+WPwIatD39xGrc09l+tluIUi6jGkpGa8Gz8TKwkKYxMQvQ==
+
 url@^0.11.0:
   version "0.11.0"
   resolved "https://registry.yarnpkg.com/url/-/url-0.11.0.tgz#3838e97cfc60521eb73c525a8e55bfdd9e2e28f1"
@@ -6672,6 +6737,14 @@ vm-browserify@0.0.4:
   dependencies:
     indexof "0.0.1"
 
+vue-codemirror@^4.0.5:
+  version "4.0.6"
+  resolved "https://registry.yarnpkg.com/vue-codemirror/-/vue-codemirror-4.0.6.tgz#b786bb80d8d762a93aab8e46f79a81006f0437c4"
+  integrity sha512-ilU7Uf0mqBNSSV3KT7FNEeRIxH4s1fmpG4TfHlzvXn0QiQAbkXS9lLfwuZpaBVEnpP5CSE62iGJjoliTuA8poQ==
+  dependencies:
+    codemirror "^5.41.0"
+    diff-match-patch "^1.0.0"
+
 vue-hot-reload-api@^2.3.0:
   version "2.3.3"
   resolved "https://registry.yarnpkg.com/vue-hot-reload-api/-/vue-hot-reload-api-2.3.3.tgz#2756f46cb3258054c5f4723de8ae7e87302a1ccf"
@@ -6708,6 +6781,16 @@ vue-template-es2015-compiler@^1.9.0:
   version "1.9.1"
   resolved "https://registry.yarnpkg.com/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.9.1.tgz#1ee3bc9a16ecbf5118be334bb15f9c46f82f5825"
   integrity sha512-4gDntzrifFnCEvyoO8PqyJDmguXgVPxKiIxrBKjIowvL9l+N66196+72XVYR8BBf1Uv1Fgt3bGevJ+sEmxfZzw==
+
+vue@^2.5.17:
+  version "2.6.8"
+  resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.8.tgz#f21cbc536bfc14f7d1d792a137bb12f69e60ea91"
+  integrity sha512-+vp9lEC2Kt3yom673pzg1J7T1NVGuGzO9j8Wxno+rQN2WYVBX2pyo/RGQ3fXCLh2Pk76Skw/laAPCuBuEQ4diw==
+
+vuex@^3.0.1:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/vuex/-/vuex-3.1.0.tgz#634b81515cf0cfe976bd1ffe9601755e51f843b9"
+  integrity sha512-mdHeHT/7u4BncpUZMlxNaIdcN/HIt1GsGG5LKByArvYG/v6DvHcOxvDCts+7SRdCoIRGllK8IMZvQtQXLppDYg==
 
 watchpack@^1.5.0:
   version "1.6.0"

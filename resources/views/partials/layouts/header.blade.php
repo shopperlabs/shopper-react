@@ -22,7 +22,7 @@
         </div>
         <div class="col-xs-12 col-md-3">
             <input type="search" id="search-input" placeholder="{{ __('Search here...') }}" name="search" class="form-control" />
-            <span id="algolia" data-appID="{{ env('ALGOLIA_APP_ID', '') }}" data-client-secret="{{ env('ALGOLIA_CLIENT_SECRET', '') }}"></span>
+            <span id="algolia" data-appID="{{ env('ALGOLIA_APP_ID', '') }}" data-client-secret="{{ env('ALGOLIA_CLIENT_SECRET', '') }}" data-logo="{{ asset('shopper/img/search-by-algolia.svg') }}"></span>
         </div>
         <div class="col-xs-12 col-md-8">
             <div class='pull-right'>

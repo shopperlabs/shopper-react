@@ -54,12 +54,11 @@ class InstallShopperCommand extends Command
         $this->call('vendor:publish', ['--provider' => ShopperServiceProvider::class, '--tag' => 'shopper_seeders']);
         $this->call('vendor:publish', ['--provider' => ShopperServiceProvider::class, '--tag' => 'shopper']);
 
-        //$this->setupDatabaseConfig();
+        $this->setupDatabaseConfig();
         $this->addEnvVarible();
 
-
-        //$this->info('Adding the storage and shopper symlink to your public folder');
-        //$this->call('shopper:link');
+        $this->info('Adding the storage and shopper symlink to your public folder');
+        $this->call('shopper:link');
     }
 
     /**
