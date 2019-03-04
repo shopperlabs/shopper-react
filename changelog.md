@@ -6,3 +6,6 @@ All notable changes to `Shopper` will be documented in this file.
 
 ### Added
 - Everything
+
+### Version 1.0.2-beta
+- Add Filemanager
