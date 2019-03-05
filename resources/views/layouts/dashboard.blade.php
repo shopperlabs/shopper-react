@@ -17,6 +17,11 @@
     <meta name="apple-mobile-web-app-title" content="Shopper">
     <meta name="application-name" content="Shopper">
     <meta name="theme-color" content="#ffffff">
+    
+    <meta property="og:title" content="@yield('title') | Shopper E-commerce" />
+    <meta property="og:url" content="{{ url()->current() }}/>
+    <meta property="og:image" content="{{ asset('/shopper/img/favicons/favicon-32x32.png') }}" />
+    
     <link rel="dns-prefetch" href="{{ config('app.url') }}">
     <link rel="dns-prefetch" href="https://fonts.googleapis.com">
     @yield('stylesheets')
