@@ -416,7 +416,7 @@ class MenuComposer
 
         $this->shopper->menu->add('Settings', [
             'slug'       => 'Analytics',
-            'icon'       => 'fa fa-pie-chart',
+            'icon'       => 'icon-pie-chart',
             'route'      => route('shopper.wip'),
             'groupname'  => __('Analytics'),
             'label'      => __('Google Analytics'),
