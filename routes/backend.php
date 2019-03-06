@@ -37,6 +37,7 @@ Route::group(['prefix' => 'settings', 'as' => 'settings.'], function (Router $ro
     /** Mail route */
     $router->group(['prefix' => 'mails', 'as' => 'mails.'], function (Router $router) {
         $router->get('settings', 'Mails\Configuration@config')->name('config');
+        $router->get('mailables', 'Mails\MailablesController@index')->name('mailables.mailableList');
     });
 
     /** Base config route list */

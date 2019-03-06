@@ -17880,4 +17880,349 @@ div.mce-fullscreen {
   justify-content: center;
   margin-bottom: 0;
 }
+
+/*! MailEclipse Template Styles
+ *
+ *  Built on top of Bootstrap 4 (https://getbootstrap.com)
+ */
+/*svg {
+	overflow: hidden;
+	vertical-align: middle;
+}*/
+/*.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+  background-color: #f1f7fa;
+}*/
+a:hover {
+  text-decoration: none;
+}
+
+.header svg.logo {
+  width: 2.1rem;
+  height: 2.1rem;
+}
+
+.card {
+  box-shadow: 0 2px 3px #cdd8df;
+  border: none;
+}
+.card .nav-pills.btn-pills {
+  font-size: 13px;
+  font-weight: 600 !important;
+}
+.card .nav-pills:not(.btn-pills) .nav-link {
+  font-size: 0.9rem;
+  border-radius: 0;
+  padding: 0.75rem 1.25rem;
+  color: #2a5164;
+}
+.card .nav-pills:not(.btn-pills) .nav-link.active {
+  background: none;
+  color: #1d4670;
+  border-bottom: solid 2px #1d4670;
+}
+.card .card-header {
+  padding-top: 0.7rem;
+  padding-bottom: 0.7rem;
+  background-color: #fff;
+  border-bottom: none;
+}
+.card .card-header h5 {
+  margin: 0;
+}
+.card .table-action svg {
+  fill: #ccd2df;
+  width: 1.2rem;
+  height: 1.2rem;
+}
+.card .table-action svg:hover {
+  fill: #1d4670;
+}
+.card .table-action svg.remove:hover {
+  fill: #dc3545;
+}
+.card .table.table-hover tbody tr:hover td, .card .table.table-hover tbody tr:hover th {
+  background-color: #f1f7fa;
+}
+.card .table th {
+  background-color: #F3F4F6;
+  font-weight: 400;
+  padding: 0.5rem 1.25rem;
+  border-bottom: 0;
+}
+.card .table td.table-fit {
+  width: 1%;
+  white-space: nowrap;
+}
+.card .table:not(.table-borderless) td {
+  border-top: 1px solid #EFEFEF;
+  color: #000;
+}
+.card .table.table-sm th, .card .table.table-sm td {
+  padding: 1rem 1.25rem;
+}
+.card .table.table-sm td:nth-last-child(2) {
+  text-align: right;
+}
+
+.card-bg-secondary, .main-bg-secondary {
+  background: #f1f7fa;
+}
+
+.fill-text-color {
+  fill: #d4e1e7;
+}
+
+.sidebar {
+  border: none;
+}
+.sidebar .nav-item a {
+  color: #2a5164;
+}
+.sidebar .nav-item a.active {
+  color: #1d4670;
+}
+.sidebar .nav-item a.active svg {
+  fill: #1d4670;
+}
+.sidebar .nav-item a svg {
+  width: 1.3rem;
+  height: 1.3rem;
+  margin-right: 15px;
+  fill: #c3cbd3;
+}
+
+.statistics-items > div:last-child {
+  border-right: 0 !important;
+}
+
+@media (max-width: 991.98px) {
+  .sidebar {
+    border-bottom: solid 1px #d5dfe9;
+  }
+
+  .statistics-items > div {
+    border-right: 0 !important;
+  }
+}
+.font-weight-sixhundred {
+  font-weight: 600;
+}
+
+.badge {
+  font-size: 0.95rem;
+}
+
+.badge-info {
+  color: #212529;
+  background-color: #BCDEFA;
+}
+
+.badge-info[href]:hover, .badge-info[href]:focus {
+  color: #212529;
+  text-decoration: none;
+  background-color: #8dc7f6;
+}
+
+.language-selector {
+  cursor: pointer;
+}
+
+.content {
+  position: relative;
+  overflow: hidden;
+}
+.content .content-overlay {
+  background: rgba(0, 123, 255, 0.7);
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  opacity: 0;
+  transition: all 0.4s ease-in-out 0s;
+}
+.content:hover .content-overlay {
+  opacity: 1;
+}
+
+.content-image {
+  width: 100%;
+}
+
+.content-details {
+  position: absolute;
+  text-align: center;
+  padding-left: 1em;
+  padding-right: 1em;
+  width: 100%;
+  top: 50%;
+  left: 50%;
+  opacity: 0;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  transition: all 0.3s ease-in-out 0s;
+}
+
+.content:hover .content-details {
+  top: 50%;
+  left: 50%;
+  opacity: 1;
+}
+
+.content-details h4 {
+  color: #fff;
+  text-transform: uppercase;
+}
+.content-details p {
+  color: #fff;
+  font-size: 0.8em;
+}
+
+.template-item {
+  cursor: pointer;
+}
+
+@media (min-width: 576px) {
+  .template-item .content-title {
+    font-size: 18px;
+  }
+}
+.nav-link.disabled {
+  color: #6c757d !important;
+}
+
+/* PrismJS 1.15.0
+https://prismjs.com/download.html#themes=prism-okaidia&languages=markup+css+markup-templating+http+hpkp+hsts+markdown&plugins=data-uri-highlight+unescaped-markup */
+/**
+ * okaidia theme for JavaScript, CSS and HTML
+ * Loosely based on Monokai textmate theme by http://www.monokai.nl/
+ * @author ocodia
+ */
+code[class*=language-],
+pre[class*=language-] {
+  color: #f8f8f2;
+  background: none;
+  text-shadow: 0 1px rgba(0, 0, 0, 0.3);
+  font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.5;
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+  -webkit-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+/* Code blocks */
+pre[class*=language-] {
+  padding: 1em;
+  margin: 0.5em 0;
+  overflow: auto;
+  border-radius: 0.3em;
+}
+
+:not(pre) > code[class*=language-],
+pre[class*=language-] {
+  background: #272822;
+}
+
+/* Inline code */
+:not(pre) > code[class*=language-] {
+  padding: 0.1em;
+  border-radius: 0.3em;
+  white-space: normal;
+}
+
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+  color: slategray;
+}
+
+.token.punctuation {
+  color: #f8f8f2;
+}
+
+.namespace {
+  opacity: 0.7;
+}
+
+.token.property,
+.token.tag,
+.token.constant,
+.token.symbol,
+.token.deleted {
+  color: #f92672;
+}
+
+.token.boolean,
+.token.number {
+  color: #ae81ff;
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+  color: #a6e22e;
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string,
+.token.variable {
+  color: #f8f8f2;
+}
+
+.token.atrule,
+.token.attr-value,
+.token.function,
+.token.class-name {
+  color: #e6db74;
+}
+
+.token.keyword {
+  color: #66d9ef;
+}
+
+.token.regex,
+.token.important {
+  color: #fd971f;
+}
+
+.token.important,
+.token.bold {
+  font-weight: bold;
+}
+
+.token.italic {
+  font-style: italic;
+}
+
+.token.entity {
+  cursor: help;
+}
+
+/* Fallback, in case JS does not run, to ensure the code is at least visible */
+[class*=lang-] script[type="text/plain"],
+[class*=language-] script[type="text/plain"],
+script[type="text/plain"][class*=lang-],
+script[type="text/plain"][class*=language-] {
+  display: block;
+  font: 100% Consolas, Monaco, monospace;
+  white-space: pre;
+  overflow: auto;
+}
 /*# sourceMappingURL=shopper.css.map*/

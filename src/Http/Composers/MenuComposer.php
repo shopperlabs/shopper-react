@@ -430,7 +430,7 @@ class MenuComposer
         $this->shopper->menu->add('Settings', [
             'slug'       => 'Mailable',
             'icon'       => 'fas fa-envelope',
-            'route'      => '#',
+            'route'      => route('shopper.settings.mails.mailables.mailableList'),
             'groupname'  => __('Mail'),
             'label'      => __('Mailables'),
             'childs'     => false,

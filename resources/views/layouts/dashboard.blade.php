@@ -8,6 +8,7 @@
     <title>@yield('title') | Shopper E-commerce</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/notie/dist/notie.min.css">
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('/shopper/img/favicons/apple-touch-icon.png') }}">
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('/shopper/img/favicons/favicon-32x32.png') }}">
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('/shopper/img/favicons/favicon-16x16.png') }}">
@@ -50,6 +51,9 @@
     </script>
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lozad/dist/lozad.min.js"></script>
+    <!-- Notie Library -->
+    <script src="https://unpkg.com/notie"></script>
     <script src="{{ mix('/js/shopper.js','shopper')}}" type="text/javascript"></script>
 
 </body>
