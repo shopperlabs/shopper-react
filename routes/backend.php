@@ -34,11 +34,35 @@ Route::group(['prefix' => 'settings', 'as' => 'settings.'], function (Router $ro
         $router->put('states/{id}','StateController@update')->name('states.update')->where('id', '[0-9]+');
     });
 
-    /** Mail route */
+    /** Mail & Templates route */
     $router->group(['prefix' => 'mails', 'as' => 'mails.'], function (Router $router) {
         $router->get('settings', 'Mails\Configuration@config')->name('config');
-        $router->get('mailables', 'Mails\MailablesController@index')->name('mailables.mailableList');
+
+        $router->group(['prefix' => 'mailables', 'as' => 'mailables.'], function (Router $router) {
+            $router->get('/', 'Mails\MailablesController@index')->name('mailableList');
+            $router->get('view/{name}', 'Mails\MailablesController@viewMailable')->name('viewMailable');
+            $router->get('edit/template/{name}', 'Mails\MailablesController@editMailable')->name('editMailable');
+            $router->post('parse/template', 'Mails\MailablesController@parseTemplate')->name('parseTemplate');
+            $router->post('preview/template', 'Mails\MailablesController@previewMarkdownView')->name('previewMarkdownView');
+
+            $router->get('preview/template/previewerror', 'Mails\MailablesController@templatePreviewError')->name('templatePreviewError');
+            $router->post('delete', 'Mails\MailablesController@delete')->name('deleteMailable');
+            $router->post('new', 'Mails\MailablesController@generateMailable')->name('generateMailable');
+            $router->get('preview/{name}', 'Mails\MailablesController@previewMailable')->name('previewMailable');
+        });
+
+        $router->group(['prefix' => 'templates', 'as' => 'templates.'], function (Router $router) {
+            $router->get('/', 'Mails\TemplatesController@index')->name('templateList');
+            $router->get('new', 'Mails\TemplatesController@select')->name('selectNewTemplate');
+            $router->get('new/{type}/{name}/{skeleton}', 'Mails\TemplatesController@new')->name('newTemplate');
+            $router->get('edit/{templatename}', 'Mails\TemplatesController@view')->name('viewTemplate');
+            $router->post('new', 'Mails\TemplatesController@create')->name('createNewTemplate');
+            $router->post('delete', 'Mails\TemplatesController@delete')->name('deleteTemplate');
+            $router->post('update', 'Mails\TemplatesController@update')->name('updateTemplate');
+            $router->post('preview', 'Mails\TemplatesController@previewTemplateMarkdownView')->name('previewTemplateMarkdownView');
+        });
     });
+
 
     /** Base config route list */
     $router->resource('globals', 'SettingController');

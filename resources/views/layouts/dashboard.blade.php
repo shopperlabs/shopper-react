@@ -8,7 +8,6 @@
     <title>@yield('title') | Shopper E-commerce</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
-    <link rel="stylesheet" type="text/css" href="https://unpkg.com/notie/dist/notie.min.css">
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('/shopper/img/favicons/apple-touch-icon.png') }}">
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('/shopper/img/favicons/favicon-32x32.png') }}">
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('/shopper/img/favicons/favicon-16x16.png') }}">
@@ -20,8 +19,15 @@
     <meta name="theme-color" content="#ffffff">
     <link rel="dns-prefetch" href="{{ config('app.url') }}">
     <link rel="dns-prefetch" href="https://fonts.googleapis.com">
-    @yield('stylesheets')
     @routes
+    @if ( request()->route()->getName() === 'shopper.settings.mails.templates.newTemplate' ||
+          request()->route()->getName() === 'shopper.settings.mails.mailables.editMailable' ||
+          request()->route()->getName() === 'shopper.settings.mails.templates.viewTemplate')
+        <!-- Editor Markdown/Html/Text -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/codemirror/5.13.4/codemirror.css">
+    @endif
+    @stack('css')
     <link rel="stylesheet" type="text/css" href="{{ mix('/css/shopper.css', 'shopper') }}">
 </head>
 <body>
@@ -52,9 +58,20 @@
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lozad/dist/lozad.min.js"></script>
-    <!-- Notie Library -->
-    <script src="https://unpkg.com/notie"></script>
+    @if ( request()->route()->getName() === 'shopper.settings.mails.templates.newTemplate' ||
+          request()->route()->getName() === 'shopper.settings.mails.mailables.editMailable' ||
+          request()->route()->getName() === 'shopper.settings.mails.templates.viewTemplate')
+        <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/codemirror/5.13.4/codemirror.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.0.0/tinymce.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/codemirror/5.13.4/mode/xml/xml.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/codemirror/5.13.4/mode/css/css.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/codemirror/5.13.4/mode/javascript/javascript.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/codemirror/5.13.4/mode/htmlmixed/htmlmixed.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/codemirror/5.43.0/addon/display/placeholder.js"></script>
+    @endif
     <script src="{{ mix('/js/shopper.js','shopper')}}" type="text/javascript"></script>
+    @stack('scripts')
 
 </body>
 </html>

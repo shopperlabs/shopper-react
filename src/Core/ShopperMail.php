@@ -6,8 +6,8 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Container\Container;
 use Illuminate\Support\Facades\View;
 use Illuminate\Mail\Markdown;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
+use Mckenziearts\Shopper\Models\MailTemplate;
 use RecursiveIteratorIterator;
 use RecursiveDirectoryIterator;
 use RegexIterator;
@@ -41,6 +41,8 @@ class ShopperMail
     }
 
     /**
+     * Return a mailable Class
+     *
      * @param $key
      * @param $name
      * @return static
@@ -52,75 +54,65 @@ class ShopperMail
 		return $filtered;
 	}
 
+    /**
+     * Delete Template
+     *
+     * @param $templateSlug
+     * @return bool
+     */
 	static public function deleteTemplate($templateSlug)
 	{
+		$template = DB::table(self::$templates_table)->where('template_slug', $templateSlug)->first();
 
-
-		$template = DB::table(self::$templates_table)
-		            ->where('template_slug', $templateSlug)->first();
-
-		if ( !is_null($template) ){
-
+		if ( !is_null($template) ) {
 			DB::table(self::$templates_table)->where('template_slug', '=', $templateSlug)->delete();
 
-			$template_view = self::$view_namespace.'::templates.'.$templateSlug;
+			$template_view = self::$view_namespace.'::pages.mails.templates.'.$templateSlug;
 			$template_plaintext_view = $template_view.'_plain_text';
 
-			// return $template_plaintext_view;
+			if (view::exists( $template_view )) {
+				unlink(view($template_view)->getPath());
 
-			if ( View::exists( $template_view ) )
-			{
-				unlink( View($template_view)->getPath() );
-
-				if ( View::exists( $template_plaintext_view ) )
-				{
-
-					unlink( View($template_plaintext_view)->getPath() );
+				if (view::exists( $template_plaintext_view )) {
+					unlink( View($template_plaintext_view)->getPath());
 				}
+
 				return true;
 			}
-
 		}
 
 		return false;
 	}
 
+    /**
+     * Update template
+     *
+     * @param $request
+     * @return \Illuminate\Http\JsonResponse
+     */
 	static public function updateTemplate($request)
 	{
+		$template = DB::table(self::$templates_table)->where('template_slug', $request->templateslug)->first();
 
-		$template = DB::table(self::$templates_table)
-		            ->where('template_slug', $request->templateslug)->first();
+		if ( !is_null($template) ) {
+            if ( !preg_match( "/^[a-zA-Z0-9-_\s]+$/", $request->title ) ) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => __('Template name not valid'),
+                ]);
+            }
 
-		if ( !is_null($template) ){
+		    $templatename = camel_case(preg_replace('/\s+/', '_', $request->title) );
 
+            // check if not already exists on db
+            if ( DB::table( self::$templates_table )->where('template_slug', '=', $templatename)->exists() ){
 
-		if ( !preg_match( "/^[a-zA-Z0-9-_\s]+$/", $request->title ) ) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => __('Template name already exists'),
+                ]);
+            }
 
-			return response()->json([
-					'status' => 'failed',
-					'message' => 'Template name not valid',
-			]);
-		}
-
-
-		$templatename = camel_case(preg_replace('/\s+/', '_', $request->title) );
-
-		// check if not already exists on db
-		//
-		//
-
-		if ( DB::table( self::$templates_table )->where('template_slug', '=', $templatename)->exists() ){
-
-			return response()->json([
-
-				'status' => 'failed',
-				'message' => 'Template name already exists',
-
-			]);
-		}
-
-		// Update
-		//
 			DB::table(self::$templates_table)
 				->where('template_slug', $request->templateslug)
 				->update([
@@ -129,18 +121,14 @@ class ShopperMail
 					'template_description' => $request->description,
 			]);
 
-			$template_view = self::$view_namespace.'::templates.'.$request->templateslug;
+			$template_view = self::$view_namespace.'::pages.mails.templates.'.$request->templateslug;
 			$template_plaintext_view = $template_view.'_plain_text';
 
-			if ( View::exists( $template_view ) )
-			{
-
-				$viewPath = View($template_view)->getPath();
-
+			if (view::exists( $template_view )) {
+				$viewPath = view($template_view)->getPath();
 				rename($viewPath, dirname($viewPath)."/{$templatename}.blade.php");
 
-				if ( View::exists( $template_plaintext_view ) ){
-
+				if (view::exists( $template_plaintext_view )) {
 					$textViewPath = View($template_plaintext_view)->getPath();
 
 					rename($textViewPath, dirname($viewPath)."/{$templatename}_plain_text.blade.php");
@@ -148,39 +136,37 @@ class ShopperMail
 			}
 
 			return response()->json([
-
 				'status' => 'ok',
-				'message' => 'Updated Successfully',
-				'template_url' => route('viewTemplate', [ 'templatename' => $templatename ]),
-
+				'message' => __('Updated Successfully'),
+				'template_url' => route('shopper.settings.mails.templates.viewTemplate', ['templatename' => $templatename]),
 			]);
-
 		}
-
 	}
 
-	static public function getTemplate($templateSlug)
+    /**
+     * Get single template
+     *
+     * @param string $templateSlug
+     * @return \Illuminate\Support\Collection
+     */
+	static public function getTemplate(string $templateSlug)
 	{
-
-		$template = DB::table(self::$templates_table)
-		            ->where('template_slug', $templateSlug)->first();
+		$template = DB::table(self::$templates_table)->where('template_slug', $templateSlug)->first();
 
 		if ( !is_null($template) ){
 
-			$template_view = self::$view_namespace.'::templates.'.$template->template_slug;
+			$template_view = self::$view_namespace.'::pages.mails.templates.'.$template->template_slug;
 			$template_plaintext_view = $template_view.'_plain_text';
 
 			// return $template_plaintext_view;
 
-			if ( View::exists( $template_view ) )
-			{
-
-				$viewPath = View($template_view)->getPath();
-				$textViewPath = View($template_plaintext_view)->getPath();
+			if (view::exists( $template_view )) {
+				$viewPath = view($template_view)->getPath();
+				$textViewPath = view($template_plaintext_view)->getPath();
 
 				$templateData = collect([
 					'template' => self::templateComponentReplace(file_get_contents($viewPath), true),
-					'plain_text' => View::exists( $template_plaintext_view ) ? file_get_contents($textViewPath) : '',
+					'plain_text' => view::exists( $template_plaintext_view ) ? file_get_contents($textViewPath) : '',
 					'slug' => $template->template_slug,
 					'name' => $template->template_name,
 					'description' => $template->template_description,
@@ -192,54 +178,39 @@ class ShopperMail
 				return $templateData;
 			}
 		}
-
-		// return;
 	}
 
+    /**
+     * Get ALl Store templates
+     *
+     * @return mixed
+     */
 	static public function getTemplates()
 	{
-
-		$template = DB::table(self::$templates_table)->get();
+		$template = MailTemplate::all();
 
 		return $template;
 	}
 
+    /**
+     * Create a new Mail template and store in database
+     *
+     * @param $request
+     * @return \Illuminate\Http\JsonResponse
+     */
 	static public function createTemplate($request)
 	{
-
-		// preg_match('/^[a-zA-Z0-9_-\\s]+$/', 'dscsdc dscdsc')
-
-		/*$validator = Validator::make($request->all(), [
-		    'template_name' => 'required|regex:/^[a-zA-Z0-9_-\s]+$/u',
-		    'template_description' => 'string|nullable',
-		])->validate();
-
-
-		if (!is_array($validator)) {
-			if ($validator->fails()){
-				return response()->json([
-					'errors' => $validator->errors()->all()
-				]);
-			}
-		}*/
-
 		if ( !preg_match( "/^[a-zA-Z0-9-_\s]+$/", $request->template_name ) ) {
 			return response()->json([
-
-					'status' => 'error',
-					'message' => 'Template name not valid',
-
+                'status' => 'error',
+                'message' => __('Template name not valid'),
 			]);
 		}
 
-
-		$view = mailEclipse::$view_namespace.'::templates.'.$request->template_name;
-
+		$view = self::$view_namespace.'::pages.mails.templates.'.$request->template_name;
 		$templatename = camel_case(preg_replace('/\s+/', '_', $request->template_name) );
 
-		if ( !view()->exists($view) && !DB::table( self::$templates_table )->where('template_slug', '=', $templatename)->exists() )
-		{
-
+		if (!view()->exists($view) && !DB::table( self::$templates_table )->where('template_slug', '=', $templatename)->exists()) {
 			DB::table(self::$templates_table)
 		        ->insert([
 		        	'template_name' => $request->template_name,
@@ -250,45 +221,49 @@ class ShopperMail
 		        	'template_skeleton' => $request->template_skeleton,
 		        ]);
 
-			$dir = dirname(__FILE__, 2). '/resources/views/templates';
+			$dir = dirname(__FILE__, 3). '/resources/views/pages/mails/templates';
 
 			file_put_contents($dir. "/{$templatename}.blade.php", self::templateComponentReplace($request->content));
 
 			file_put_contents($dir. "/{$templatename}_plain_text.blade.php", $request->plain_text);
 
 			return response()->json([
-
-					'status' => 'ok',
-					'message' => 'Template created<br> <small>Reloading...<small>',
-					'template_url' => route('viewTemplate', ['templatename' => $templatename]),
-
+                'status' => 'ok',
+                'message' => 'Template created<br> <small>Reloading...<small>',
+                'template_url' => route('shopper.settings.mails.templates.viewTemplate', ['templatename' => $templatename]),
 			]);
 		}
 
 		return response()->json([
-
-					'status' => 'error',
-					'message' => 'Template not created',
-
-			]);
+            'status' => 'error',
+            'message' => __('Template not created'),
+        ]);
 	}
 
+    /**
+     * Return List of Skeletons
+     *
+     * @return \Illuminate\Support\Collection
+     */
 	static public function getTemplateSkeletons()
 	{
-
-		return collect(config('maileclipse.skeletons'));
+		return collect(config('shopper.skeletons'));
 	}
 
+    /**
+     * Get Skeleton Template
+     *
+     * @param string    $type
+     * @param string    $name
+     * @param string    $skeleton
+     * @return array
+     */
 	static public function getTemplateSkeleton($type, $name, $skeleton)
 	{
+		$skeletonView = self::$view_namespace."::pages.mails.skeletons.{$type}.{$name}.{$skeleton}";
 
-		$skeletonView = self::$view_namespace."::skeletons.{$type}.{$name}.{$skeleton}";
-
-
-		if ( view()->exists($skeletonView) )
-		{
-
-			$skeletonViewPath = View($skeletonView)->getPath();
+		if (view()->exists($skeletonView)) {
+			$skeletonViewPath = view($skeletonView)->getPath();
 			$templateContent = file_get_contents($skeletonViewPath);
 
 			return [
@@ -300,14 +275,16 @@ class ShopperMail
 				'view_path' => $skeletonViewPath,
 			];
 		}
-
 	}
 
+    /**
+     * @param $content
+     * @param bool $reverse
+     * @return null|string|string[]
+     */
 	static protected function templateComponentReplace($content, $reverse = false)
 	{
-
-		if ($reverse)
-		{
+		if ($reverse) {
 			$patterns = [
 				'/@component/i',
 				'/@endcomponent/i',
@@ -332,9 +309,7 @@ class ShopperMail
 				'[endslot]: # ',
 			];
 
-		} else
-
-		{
+		} else {
 			$patterns = [
 				'/\[component]:\s?#\s?/i',
 				'/\[endcomponent]:\s?#\s?/i',
@@ -372,64 +347,80 @@ class ShopperMail
 		// return preg_replace($patterns, $replacements, $viewContent);
 	}
 
-	/**
-	 *
-	 * Markdowned template view
-	 */
-
+    /**
+     * Markdowned template view
+     *
+     * @param bool $save
+     * @param string $content
+     * @param string $viewPath
+     * @param bool $template
+     * @return bool|null|string|string[]
+     */
 	static public function markdownedTemplateToView($save = true, $content = '', $viewPath = '', $template = false)
 	{
-
-		if ( $template && View::exists(self::$view_namespace.'::templates.'.$viewPath) )
-		{
-
-			$viewPath = View(self::$view_namespace.'::templates.'.$viewPath)->getPath();
+		if ($template && view::exists(self::$view_namespace.'::pages.mails.templates.'.$viewPath)) {
+			$viewPath = view(self::$view_namespace.'::pages.mails.templates.'.$viewPath)->getPath();
 		}
 
 		$replaced = self::templateComponentReplace($content);
 
-		if (!$save)
-		{
+		if (!$save) {
 			return $replaced;
 		}
 
 		return file_put_contents($viewPath, $replaced) === false ? false : true;
 	}
 
+    /**
+     * @param bool $simpleview
+     * @param $content
+     * @param $viewName
+     * @param bool $template
+     * @param null $namespace
+     * @return bool|string
+     * @throws \Throwable
+     */
 	static public function previewMarkdownViewContent($simpleview = false, $content, $viewName, $template = false, $namespace = null)
 	{
-
 		$previewtoset = self::markdownedTemplateToView(false, $content);
-		$dir = dirname(__FILE__, 2). '/resources/views/draft';
+		$dir = dirname(__FILE__, 3). '/resources/views/pages/mails/draft';
 		$viewName = $template ? $viewName.'_template' : $viewName;
 
-		if ( file_exists($dir) )
-		{
+		if (file_exists($dir)) {
 			file_put_contents($dir. "/{$viewName}.blade.php", $previewtoset);
-			$instance = $template ? null : new $namespace;
-			return self::renderPreview($simpleview, self::$view_namespace.'::draft.'.$viewName, $template, $instance);
+
+            if ($template) {
+                $instance = null;
+            } else {
+                if (! is_null(self::handleMailableViewDataArgs($namespace))){
+                    $instance = self::handleMailableViewDataArgs($namespace);
+                } else {
+                    $instance = new $namespace;
+                }
+            }
+
+			return self::renderPreview($simpleview, self::$view_namespace.'::pages.mails.draft.'.$viewName, $template, $instance);
 		}
 
-		return false;
+        return false;
 	}
 
-	/**
-	 *
-	 *
-	 */
-
-	static public function previewMarkdownHtml($instance, $view){
-
+    /**
+     * @param $instance
+     * @param $view
+     * @return string
+     * @throws \Throwable
+     */
+	static public function previewMarkdownHtml($instance, $view)
+    {
 		return self::renderPreview($instance, $view);
 	}
 
-	/**
-	 *
-	 *
-	 */
-
-
-	static public function getMailableTemplateData($mailableName)
+    /**
+     * @param string $mailableName
+     * @return array|bool
+     */
+	static public function getMailableTemplateData(string $mailableName)
 	{
 		$mailable = self::getMailable('name', $mailableName);
 
@@ -438,59 +429,54 @@ class ShopperMail
 			return false;
 		}
 
-
 		$templateData = collect($mailable->first())->only(['markdown', 'view_path', 'text_view_path', 'text_view', 'view_data', 'data', 'namespace'])->all();
-
 		$templateExists = !is_null($templateData['view_path']);
 		$textTemplateExists = !is_null($templateData['text_view_path']);
 
-		if ($templateExists)
-		{
-
+		if ($templateExists) {
 			$viewPathParams = collect($templateData)->union([
-
 				'text_template' => $textTemplateExists ? file_get_contents($templateData['text_view_path']) : null,
 				'template' => file_get_contents($templateData['view_path']),
 				'markdowned_template' => self::markdownedTemplate($templateData['view_path']),
 				'template_name' => !is_null($templateData['markdown']) ? $templateData['markdown'] : $templateData['data']->view,
 				'is_markdown' => !is_null($templateData['markdown']) ? true : false,
 				// 'text_template' => file_get_contents($templateData['text_view_path']),
-
-
 			] )->all();
 
 			return $viewPathParams;
-
 		}
 
 		return $templateData;
-
 	}
 
+    /**
+     * Generate a Mail Class
+     *
+     * @param null $request
+     * @return \Illuminate\Http\JsonResponse
+     */
 	static public function generateMailable($request = null)
 	{
 		$name = ucwords( camel_case(preg_replace('/\s+/', '_', $request->input('name'))) );
 
-		if ( !self::getMailable('name', $name)->isEmpty() && !$request->has('force') ){
+		if (! self::getMailable('name', $name)->isEmpty() && !$request->has('force') ){
 			// return redirect()->route('createMailable')->with('error', 'mailable already exists! to overide it enable force option.');
 			//
 			return response()->json([
-					'status' => 'error',
-					'message' => 'This mailable name already exists. names should be unique! to override it, enable "force" option.',
+                'status' => 'error',
+                'message' => __('This mailable name already exists. names should be unique! to override it, enable "force" option.'),
 			]);
 
 		}
 
 		if (strtolower($name) === 'mailable'){
 			return response()->json([
-					'status' => 'error',
-					'message' => 'You cannot use this name',
+                'status' => 'error',
+                'message' => __('You cannot use this name'),
 			]);
 		}
 
-		$params = collect([
-			'name' => $name,
-		]);
+		$params = collect(['name' => $name,]);
 
 		if ($request->input('markdown')){
 			$params->put('--markdown', $request->markdown);
@@ -505,12 +491,9 @@ class ShopperMail
     	if ($exitCode > -1) {
 
     		// return redirect()->route('mailableList');
-    		//
     		return response()->json([
-
-					'status' => 'ok',
-					'message' => 'Mailable Created<br> <small>Reloading...<small>',
-
+                'status' => 'ok',
+                'message' => 'Mailable Created<br> <small>Reloading...<small>',
 			]);
     	}
 	}
@@ -558,10 +541,12 @@ class ShopperMail
                             continue;
                         }
 
-                        $mailable_view_data = self::getMailableViewData(new $mailableClass);
+                        if (! is_null(self::handleMailableViewDataArgs($mailableClass))) {
+                            $mailable_view_data = self::getMailableViewData(self::handleMailableViewDataArgs($mailableClass));
+                        } else {
+                            $mailable_view_data = self::getMailableViewData(new $mailableClass);
+                        }
                         $mailable_data = self::buildMailable($mailableClass);
-
-
 
                         $fqcns[$i]['data'] = $mailable_data;
                         $fqcns[$i]['markdown'] = self::getMarkdownViewName($mailable_data);
@@ -614,15 +599,13 @@ class ShopperMail
 
 
     /**
-     *
-     *
+     * @param $mailable
+     * @return array
      * @throws \ReflectionException
      */
     static private function getMailableViewData($mailable)
     {
-
         $traitProperties = [];
-
         $data = new ReflectionClass($mailable);
 
         foreach ($data->getTraits() as $trait) {
@@ -653,19 +636,15 @@ class ShopperMail
         $mailableData = collect($classProps)->merge( collect($obj->viewData)->keys() );
 
         return $mailableData->all();
-
     }
 
     /**
-	 *
-	 *
-	 */
-
+     * @param $mailable
+     * @return bool
+     */
     static protected function mailable_exists($mailable)
     {
-
-    	if ( !class_exists($mailable) )
-    	{
+    	if (! class_exists($mailable)) {
     		return false;
     	}
 
@@ -673,39 +652,40 @@ class ShopperMail
     }
 
     /**
-	 *
-	 *
-	 */
-
+     * @param $mailable
+     * @return mixed|null
+     * @throws \ReflectionException
+     */
     static protected function getMarkdownViewName($mailable)
     {
-
-    	if ($mailable === null){
-    		return;
+    	if ($mailable === null) {
+    		return null;
     	}
 
     	$reflection = new ReflectionClass($mailable);
-
 	    $property = $reflection->getProperty('markdown');
-
 	    $property->setAccessible(true);
 
 	    return $property->getValue($mailable);
     }
 
     /**
-	 *
-	 *
-	 */
-
-
+     * @param $instance
+     * @param string $type
+     * @return mixed
+     * @throws \ReflectionException
+     */
     static public function buildMailable($instance, $type = 'call')
     {
-    	if ($type == 'call') {
-    		return Container::getInstance()->call( [ new $instance, 'build' ] );
-    	}
+        if ($type === 'call') {
+            if (! is_null(self::handleMailableViewDataArgs($instance))) {
+                return Container::getInstance()->call([self::handleMailableViewDataArgs($instance), 'build']);
+            }
 
-    	return Container::getInstance()->make($instance);
+            return Container::getInstance()->call([new $instance, 'build']);
+        }
+
+        return Container::getInstance()->make($instance);
     }
 
     /**
@@ -731,18 +711,20 @@ class ShopperMail
     }*/
 
     /**
-	 *
-	 *
-	 */
-
+     * @param bool $simpleview
+     * @param $view
+     * @param bool $template
+     * @param null $instance
+     * @return string
+     * @throws \Throwable
+     */
     static public function renderPreview($simpleview = false, $view, $template = false, $instance = null)
     {
-    	if ( !View::exists($view) ){
-    		return;
+    	if (! view::exists($view)) {
+    		return null;
     	}
 
-    	 if(!$template){
-
+    	 if(! $template) {
     	 	$obj = self::buildMailable($instance);
 	    	$viewData = $obj->viewData;
 	    	$_data = array_merge($instance->buildViewData(), $viewData);
@@ -759,11 +741,10 @@ class ShopperMail
 
 	    try {
 
-	    	if ($simpleview){
-
+	    	if ($simpleview) {
 	    		$renderer_html = view($_view, $_data)->render();
-	    		return $renderer_html;
 
+	    		return $renderer_html;
 	    	}
 
     		$_md = self::buildMailable(Markdown::class, 'make');
@@ -772,23 +753,56 @@ class ShopperMail
 	    	return $renderer_html;
 
 	    } catch(ErrorException $e) {
-
 	    	$error = '<div class="alert alert-warning">
 	    	<h5 class="alert-heading">Error:</h5>
 	    	<p>'.$e->getMessage().'</p>
 	    	</div>';
 
-	    	if ($template){
-
+	    	if ($template) {
 	    		$error .= '<div class="alert alert-info">
-				<h5 class="alert-heading">Notice:</h5>
-				 <p>You can\'t add variables withing a template editor. because they are undefined until you bind template with a mailable that actually has data.</p>
-	    	</div>';
-
+                        <h5 class="alert-heading">'. __('Notice') .':</h5>
+                        <p>'. __("You can't add variables withing a template editor. because they are undefined until you bind template with a mailable that actually has data.") .'</p>
+	    	        </div>';
 	    	}
 
 	    	return $error;
 	    }
+    }
 
+    /**
+     * @param $mailable
+     * @return object
+     * @throws \ReflectionException
+     */
+    static public function handleMailableViewDataArgs($mailable)
+    {
+        if (method_exists($mailable, '__construct'))
+        {
+            $reflection = new ReflectionClass($mailable);
+            $params = $reflection->getConstructor()->getParameters();
+
+            $args = collect($params)->map(function( $param ){
+                $types = $param->getType() !== null ? [
+                    'typehint' => true, 'instance' => $param->getType()->getName()
+                ] : $param->name;
+                return $types;
+            });
+
+            $filteredparams = [];
+            foreach ($args->all() as $arg) {
+                if ( is_array($arg) ){
+                    $filteredparams[] = new $arg['instance'];
+                    continue;
+                }
+                $filteredparams[] = $arg;
+            }
+            $reflector = new ReflectionClass($mailable);
+
+            if (!$args->isEmpty()){
+                $foo = $reflector->newInstanceArgs($filteredparams);
+
+                return $foo;
+            }
+        }
     }
 }

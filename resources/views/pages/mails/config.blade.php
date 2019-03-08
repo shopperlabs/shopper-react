@@ -31,12 +31,12 @@
                                         <div class="form-group">
                                             <label class="control-label">{{ __('Mail method') }}</label>
                                             <select data-placeholder="Select a driver" name="MAIL_DRIVER" class="select2 form-control">
-                                                <option value="smtp">SMTP</option>
-                                                <option value="sendmail">Sendmail</option>
-                                                <option value="mailgun">Mailgun</option>
-                                                <option value="mandrill">Mandrill</option>
-                                                <option value="ses">SES</option>
-                                                <option value="log">Log file</option>
+                                                <option value="smtp" @if(env('MAIL_DRIVER') === 'smtp') selected  @endif>SMTP</option>
+                                                <option value="sendmail" @if(env('MAIL_DRIVER') === 'sendmail') selected  @endif>Sendmail</option>
+                                                <option value="mailgun" @if(env('MAIL_DRIVER') === 'mailgun') selected  @endif>Mailgun</option>
+                                                <option value="mandrill" @if(env('MAIL_DRIVER') === 'mandrill') selected  @endif>Mandrill</option>
+                                                <option value="ses" @if(env('MAIL_DRIVER') === 'ses') selected  @endif>SES</option>
+                                                <option value="log" @if(env('MAIL_DRIVER') === 'log') selected  @endif>Log file</option>
                                             </select>
                                         </div>
 
@@ -65,9 +65,9 @@
                                         <div class="form-group">
                                             <label class="control-label">{{ __('SMTP encryption protocol') }}</label>
                                             <select data-placeholder="Select a driver" name="MAIL_ENCRYPTION" class="select2 form-control">
-                                                <option value="tls">TLS</option>
-                                                <option value="ssl">SSL</option>
-                                                <option value="null">No encryption</option>
+                                                <option value="tls" @if(env('MAIL_ENCRYPTION') === 'tls') selected  @endif>TLS</option>
+                                                <option value="ssl" @if(env('MAIL_ENCRYPTION') === 'ssl') selected  @endif>SSL</option>
+                                                <option value="null" @if(env('MAIL_ENCRYPTION') === 'null') selected  @endif>No encryption</option>
                                             </select>
                                         </div>
 

@@ -1,4 +1,4 @@
-
+window.notie = require('notie')
 window._ = require('lodash')
 
 /**

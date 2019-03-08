@@ -188,8 +188,14 @@ if (filemaner) {
  * Mailing JavaScript
  * ==============================================================================
  */
-$(document).ready(function(){
+$(document).ready(function() {
+  $.ajaxSetup({
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+  })
 
+  let $_markdownInput = $('.markdown-input'), $_markdownTruth = $('#markdown--truth')
   const el = document.querySelector('img.mail')
   const observer = lozad(el) // passing a `NodeList` (e.g. `document.querySelectorAll()`) is also valid
   observer.observe()
@@ -208,4 +214,76 @@ $(document).ready(function(){
     })
   })
 
+  $('form#create_mailable').on('submit', function(e) {
+    e.preventDefault();
+    let $_markdownView = $('#markdownView'), $_mailableAlerts = $('.new-mailable-alerts')
+
+    if ( $('input#markdown--truth').is(':checked') && $_markdownView.val() === '') {
+      $_markdownView.addClass('is-invalid');
+      return;
+    }
+
+    axios
+      .post($(this).attr('action'), $(this).serialize())
+      .then(function (response) {
+        if (response.data.status === 'ok') {
+          $('#newMailableModal').modal('toggle')
+          notie.alert({ type: 1, text: response.data.message, time: 3 })
+
+          setTimeout(function() { location.reload(); }, 1000)
+        } else {
+          $_mailableAlerts.text(response.data.message)
+          $_mailableAlerts.removeClass('d-none')
+        }
+      })
+      .catch(function (error) {
+        notie.alert({ type: 'error', text: error, time: 2 })
+      })
+  })
+
+  if ($_markdownTruth.is(':checked')) {
+    $_markdownInput.show()
+  } else {
+    $_markdownInput.hide()
+  }
+
+  $_markdownTruth.change(
+    function() {
+      if ($(this).is(':checked')) {
+        $_markdownInput.show()
+      } else {
+        $_markdownInput.hide()
+      }
+    })
+
+  $('.remove-item').click(function() {
+    let mailableName = $(this).data('mailable-name')
+
+    notie.confirm({
+      text: 'Are you sure you want to do that?<br>Delete Mailable <b>'+ mailableName +'</b>',
+      submitCallback: function () {
+        axios
+          .post(route('shopper.settings.mails.mailables.deleteMailable'), {
+            mailablename: mailableName,
+          })
+          .then(function (response) {
+            if (response.data.status === 'ok') {
+              notie.alert({ type: 1, text: 'Mailable deleted', time: 2 })
+              jQuery('tr#mailable_item_' + mailableName).fadeOut('slow')
+
+              // let tbody = $("#mailables_list tbody")
+              /*if (tbody.children().length <= 1) {
+                location.reload()
+              }*/
+              window.location = route('shopper.settings.mails.mailables.mailableList')
+            } else {
+              notie.alert({ type: 'error', text: 'Mailable not deleted', time: 2 })
+            }
+          })
+          .catch(function (error) {
+            notie.alert({ type: 'error', text: error, time: 2 })
+          })
+      }
+    })
+  })
 })

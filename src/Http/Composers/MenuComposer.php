@@ -441,6 +441,18 @@ class MenuComposer
         ]);
 
         $this->shopper->menu->add('Settings', [
+            'slug'       => 'Mail Templates',
+            'icon'       => 'fas fa-columns',
+            'route'      => route('shopper.settings.mails.templates.templateList'),
+            'label'      => __('Mail Templates'),
+            'childs'     => false,
+            'divider'    => false,
+            'active'     => 'shopper.settings.mails.templates.*',
+            //'permission' => 'dashboard.systems.settings',
+            'sort'       => 21,
+        ]);
+
+        $this->shopper->menu->add('Settings', [
             'slug'       => 'Mail Configuration',
             'icon'       => 'fas fa-cog',
             'route'      => route('shopper.settings.mails.config'),
@@ -448,18 +460,6 @@ class MenuComposer
             'childs'     => false,
             'divider'    => false,
             'active'     => 'shopper.settings.mails.config',
-            //'permission' => 'dashboard.systems.settings',
-            'sort'       => 21,
-        ]);
-
-        $this->shopper->menu->add('Settings', [
-            'slug'       => 'Mail Templates',
-            'icon'       => 'fas fa-columns',
-            'route'      => '#',
-            'label'      => __('Mail Templates'),
-            'childs'     => false,
-            'divider'    => false,
-            'active'     => 'shopper.settings.mails.templates.*',
             //'permission' => 'dashboard.systems.settings',
             'sort'       => 22,
         ]);
