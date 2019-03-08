@@ -13,7 +13,7 @@ Make sure your server meets the following requirements.
 
 ## Install
 
-Shopper is realy easy to install. After creating your new Laravel application you can include the Shopper package with the following command:
+Shopper is realy easy to install. After creating your new Laravel application (5.6+) you can include the Shopper package with the following command:
 
 ```bash
 composer require mckenziearts/shopper  
@@ -28,11 +28,6 @@ DB_DATABASE=homestead
 DB_USERNAME=homestead
 DB_PASSWORD=secret
 ```
-
-{% hint style="info" %}
-**Using Laravel 5.4?**  
-If you are installing with Laravel 5.4 you will need to [add the Service Provider manually](installation.md#adding-the-service-provider). Otherwise, if you are on 5.5 this happens automatically thanks to package auto-discovery.
-{% endhint %}
 
 To install run this command to install Shopper in your project
 
@@ -56,31 +51,6 @@ php artisan shopper:admin
 ```
 
 And you will be prompted for the users username, firstname, lastname and password.
-
-## Adding the Service Provider
-
-{% hint style="info" %}
-**This is only required if you are using Laravel 5.4!**  
-If you are on Laravel 5.5+ you can skip this step.
-{% endhint %}
-
-To add the Shopper Service Provider open up your application `config/app.php` file and add `Mckenziearts\Shopper\ShopperServiceProvider::class,` in the `providers` array like so:
-
-```php
-<?php
-
-'providers' => [
-    // Laravel Framework Service Providers...
-    //...
-
-    // Package Service Providers
-    Mckenziearts\Shopper\ShopperServiceProvider::class,
-    // ...
-
-    // Application Service Providers
-    // ...
-],
-```
 
 If you want to publish again Shopper's vendor files run these commands:
 
