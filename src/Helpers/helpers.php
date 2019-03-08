@@ -24,6 +24,8 @@ if (! function_exists('setEnvironmentValue')) {
                 $keyPosition = strpos($str, "{$envKey}=");
                 $endOfLinePosition = strpos($str, "\n", $keyPosition);
                 $oldLine = substr($str, $keyPosition, $endOfLinePosition - $keyPosition);
+                $space = strpos($envValue, ' ');
+                $envValue = ($space === false) ? $envValue : '"' . $envValue . '"';
 
                 // If key does not exist, add it
                 if (!$keyPosition || !$endOfLinePosition || !$oldLine) {

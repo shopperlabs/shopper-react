@@ -116,6 +116,7 @@ class UserController extends Controller
 
         // Set relation between brand and media for preview image
         if (! is_null($request->input('image_id'))) {
+            $record->previewImage()->delete();
             $media = $this->mediaRepository->find($request->input('image_id'));
             $media->update([
                 'attachmentable_type'   => EloquentUser::class,
@@ -195,8 +196,9 @@ class UserController extends Controller
     {
         $record = $this->repository->updateProfile($request->all(), $request->input('id'));
 
-        // Set relation between brand and media for preview image
+        // Set relation between user and media for preview image
         if (! is_null($request->input('image_id'))) {
+            $record->previewImage()->delete();
             $media = $this->mediaRepository->find($request->input('image_id'));
             $media->update([
                 'attachmentable_type'   => EloquentUser::class,

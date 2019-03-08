@@ -1,10 +1,6 @@
 {
-    "/js/login.js": "/js/login.js",
-    "/css/login.css": "/css/login.css",
-    "/css/shopper.css": "/css/shopper.css",
-    "/js/login.js.map": "/js/login.js.map",
-    "/css/login.css.map": "/css/login.css.map",
-    "/css/shopper.css.map": "/css/shopper.css.map",
-    "/js/shopper.js": "/js/shopper.js",
-    "/js/shopper.js.map": "/js/shopper.js.map"
+    "/js/login.js": "/js/login.js?id=f7a3181c84354d1354fa",
+    "/css/login.css": "/css/login.css?id=3b0612f0c79ad7e7aa7c",
+    "/css/shopper.css": "/css/shopper.css?id=f0ecc178b941c54de80a",
+    "/js/shopper.js": "/js/shopper.js?id=98ba2cf72f41ea1131dd"
 }

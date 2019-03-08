@@ -1,11 +1,31 @@
 language: php
+
+sudo: true
+
 php:
   - 7.1
   - 7.2
   - 7.3
 
+env:
+  matrix:
+    - LARAVEL_VERSION=5.6.*
+    - LARAVEL_VERSION=5.7.*
+
+matrix:
+  fast_finish: true
+
+cache:
+  directories:
+    - $HOME/.composer/cache
+    - node_modules
+
 before_script:
-  - composer install --no-interaction
+  - travis_retry composer self-update
+  - composer require "illuminate/support:${LARAVEL_VERSION}"
+  - composer show laravel/framework
+  - yarn install
+  - npm run dev
 
 script:
-  - vendor/bin/phpunit
+  - vendor/bin/phpunit --no-coverage

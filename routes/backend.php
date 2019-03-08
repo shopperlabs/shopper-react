@@ -19,24 +19,6 @@ Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.'], function () {
 
 Route::group(['prefix' => 'media'], function (Router $router) {
     $router->post('uploader', 'MediaController@uploader')->name('media.uploader');
-    $router->get('initialize', 'FileManagerController@initialize')->name('media.initialize');
-    $router->get('content', 'FileManagerController@content')->name('media.content');
-    $router->get('tree', 'FileManagerController@tree')->name('media.tree');
-    $router->get('select-disk', 'FileManagerController@selectDisk')->name('media.select-disk');
-    $router->post('upload', 'FileManagerController@upload')->name('media.upload');
-    $router->post('delete', 'FileManagerController@delete')->name('media.delete');
-    $router->post('paste', 'FileManagerController@paste')->name('media.paste');
-    $router->post('rename', 'FileManagerController@rename')->name('media.rename');
-    $router->get('download', 'FileManagerController@download')->name('media.download');
-    $router->get('thumbnails', 'FileManagerController@thumbnails')->name('media.thumbnails');
-    $router->get('preview', 'FileManagerController@preview')->name('media.preview');
-    $router->get('url', 'FileManagerController@url')->name('media.url');
-    $router->post('create-directory', 'FileManagerController@createDirectory')->name('media.create-directory');
-    $router->post('create-file', 'FileManagerController@createFile')->name('media.create-file');
-    $router->post('update-file', 'FileManagerController@updateFile')->name('media.update-file');
-    $router->get('stream-file', 'FileManagerController@streamFile')->name('media.stream-file');
-    $router->post('zip', 'FileManagerController@zip')->name('media.zip');
-    $router->post('unzip', 'FileManagerController@unzip')->name('media.unzip');
     // Integration with editors
     $router->get('/', 'FileManagerController@index')->name('media.index');
 });
@@ -51,6 +33,37 @@ Route::group(['prefix' => 'settings', 'as' => 'settings.'], function (Router $ro
         $router->post('states/{country_id}','StateController@store')->name('states.store')->where('country_id', '[0-9]+');
         $router->put('states/{id}','StateController@update')->name('states.update')->where('id', '[0-9]+');
     });
+
+    /** Mail & Templates route */
+    $router->group(['prefix' => 'mails', 'as' => 'mails.'], function (Router $router) {
+        $router->get('settings', 'Mails\Configuration@config')->name('config');
+
+        $router->group(['prefix' => 'mailables', 'as' => 'mailables.'], function (Router $router) {
+            $router->get('/', 'Mails\MailablesController@index')->name('mailableList');
+            $router->get('view/{name}', 'Mails\MailablesController@viewMailable')->name('viewMailable');
+            $router->get('edit/template/{name}', 'Mails\MailablesController@editMailable')->name('editMailable');
+            $router->post('parse/template', 'Mails\MailablesController@parseTemplate')->name('parseTemplate');
+            $router->post('preview/template', 'Mails\MailablesController@previewMarkdownView')->name('previewMarkdownView');
+
+            $router->get('preview/template/previewerror', 'Mails\MailablesController@templatePreviewError')->name('templatePreviewError');
+            $router->post('delete', 'Mails\MailablesController@delete')->name('deleteMailable');
+            $router->post('new', 'Mails\MailablesController@generateMailable')->name('generateMailable');
+            $router->get('preview/{name}', 'Mails\MailablesController@previewMailable')->name('previewMailable');
+        });
+
+        $router->group(['prefix' => 'templates', 'as' => 'templates.'], function (Router $router) {
+            $router->get('/', 'Mails\TemplatesController@index')->name('templateList');
+            $router->get('new', 'Mails\TemplatesController@select')->name('selectNewTemplate');
+            $router->get('new/{type}/{name}/{skeleton}', 'Mails\TemplatesController@new')->name('newTemplate');
+            $router->get('edit/{templatename}', 'Mails\TemplatesController@view')->name('viewTemplate');
+            $router->post('new', 'Mails\TemplatesController@create')->name('createNewTemplate');
+            $router->post('delete', 'Mails\TemplatesController@delete')->name('deleteTemplate');
+            $router->post('update', 'Mails\TemplatesController@update')->name('updateTemplate');
+            $router->post('preview', 'Mails\TemplatesController@previewTemplateMarkdownView')->name('previewTemplateMarkdownView');
+        });
+    });
+
+
     /** Base config route list */
     $router->resource('globals', 'SettingController');
     $router->post('save-settings', 'SettingController@save')->name('globals.save');

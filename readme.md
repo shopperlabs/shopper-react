@@ -8,7 +8,7 @@
 
 ## Introduction
 
-Shopper is an Admin Management build for Laravel 5.4 and above (Not yet compatible with Laravel 5.8) which includes all the necessary for your online market application. This project is inspired by [Orchid/Platform](https://github.com/orchidsoftware/platform).
+Shopper is an Admin Management build for Laravel 5.6+ (Not yet compatible with Laravel 5.8) which includes all the necessary for your online market application. This project is inspired by [Orchid/Platform](https://github.com/orchidsoftware/platform).
 This package is still in development.
 
 # Table of Contents
@@ -71,9 +71,9 @@ Run this command to install Shopper in your project
 ```php
 php artisan shopper:install
 ```
-This command will install shopper, publish vendor files, create shopper and storage symlinks if they don't exist in the public folder, run migrations, package seeders classes and finally create an Admin user.
+This command will install shopper, publish vendor files, create shopper and storage symlinks if they don't exist in the public folder, run migrations and seeders classes.
 
-Extend your user model using the `Mckenziearts\Shopper\Plugins\Users\Models\User as BaseUser` alias:
+Extend your user model using the `Mckenziearts\Shopper\Plugins\Users\Models\User as Authenticatable` alias:
 
 ```php
 namespace App;
@@ -95,7 +95,7 @@ php artisan vendor:publish --all
 
 During publishing of shopper vendors files, shopper will add some others package's configurations files to your config folder : `larasap.php`, `scout.php`, `currencyConverter.php`, `laravellocalization.php` and `cartalyst.sentinel.php`
 
-If you want to create an admin user use this command :
+If you want to create an admin user use this command:
 ```php
 php artisan shopper:admin
 ```
@@ -113,7 +113,7 @@ http://localhost:8000/console
 ```
 
 ## Documentation
-Official documentation is being written.
+Official documentation is available [Here](https://shopper.gitbook.io/docs).
 
 
 ## Change log  

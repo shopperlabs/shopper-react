@@ -416,7 +416,7 @@ class MenuComposer
 
         $this->shopper->menu->add('Settings', [
             'slug'       => 'Analytics',
-            'icon'       => 'fa fa-pie-chart',
+            'icon'       => 'fas fa-chart-bar',
             'route'      => route('shopper.wip'),
             'groupname'  => __('Analytics'),
             'label'      => __('Google Analytics'),
@@ -425,6 +425,43 @@ class MenuComposer
             'active'     => 'shopper.settings.analytics.*',
             //'permission' => 'dashboard.systems.settings',
             'sort'       => 9,
+        ]);
+
+        $this->shopper->menu->add('Settings', [
+            'slug'       => 'Mailable',
+            'icon'       => 'fas fa-envelope',
+            'route'      => route('shopper.settings.mails.mailables.mailableList'),
+            'groupname'  => __('Mail'),
+            'label'      => __('Mailables'),
+            'childs'     => false,
+            'divider'    => false,
+            'active'     => 'shopper.settings.mails.mailables.*',
+            //'permission' => 'dashboard.systems.settings',
+            'sort'       => 20,
+        ]);
+
+        $this->shopper->menu->add('Settings', [
+            'slug'       => 'Mail Templates',
+            'icon'       => 'fas fa-columns',
+            'route'      => route('shopper.settings.mails.templates.templateList'),
+            'label'      => __('Mail Templates'),
+            'childs'     => false,
+            'divider'    => false,
+            'active'     => 'shopper.settings.mails.templates.*',
+            //'permission' => 'dashboard.systems.settings',
+            'sort'       => 21,
+        ]);
+
+        $this->shopper->menu->add('Settings', [
+            'slug'       => 'Mail Configuration',
+            'icon'       => 'fas fa-cog',
+            'route'      => route('shopper.settings.mails.config'),
+            'label'      => __('Mail Configuration'),
+            'childs'     => false,
+            'divider'    => false,
+            'active'     => 'shopper.settings.mails.config',
+            //'permission' => 'dashboard.systems.settings',
+            'sort'       => 22,
         ]);
 
         $this->shopper->menu->add('Settings', [
@@ -437,19 +474,7 @@ class MenuComposer
             'divider'    => false,
             'active'     => 'shopper.settings.backend.*',
             //'permission' => 'dashboard.systems.settings',
-            'sort'       => 20,
-        ]);
-
-        $this->shopper->menu->add('Settings', [
-            'slug'       => 'Database',
-            'icon'       => 'fa fa-database',
-            'route'      =>  route('shopper.wip'),
-            'label'      => __('Database'),
-            'childs'     => false,
-            'divider'    => false,
-            'active'     => 'shopper.settings.database.*',
-            //'permission' => 'dashboard.systems.settings',
-            'sort'       => 21,
+            'sort'       => 25,
         ]);
 
         $this->shopper->menu->add('Settings', [
