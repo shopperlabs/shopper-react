@@ -26,7 +26,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($records as $record)
+                        @forelse($records as $record)
                             <tr
                                 data-url="{{ route('shopper.catalogue.categories.edit', $record) }}"
                                 class="record-link"
@@ -38,7 +38,16 @@
                                 <td>{{ $record->getParent() }}</td>
                                 <td>{{ $record->code }}</td>
                             </tr>
-                        @endforeach
+                        @empty
+                            <tr>
+                                <td colspan="5">
+                                    @component('shopper::layouts.emptydata')
+                                        <span class="mt-4">{{ __("We didn't find anything - just empty space.") }}</span>
+                                        <a class="btn btn-primary mt-3" href="{{ route('shopper.catalogue.categories.create') }}">{{ __('Add New Category') }}</a>
+                                    @endcomponent
+                                </td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>

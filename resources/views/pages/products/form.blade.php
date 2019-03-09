@@ -13,7 +13,7 @@
         </div>
         <div class="pull-right">
             @if ((isset($record->id)))
-                <form action="{{ route('shopper.catalogue.products.destroy', $record) }}" id="delete_form" method="POST">
+                <form action="{{ route('shopper.catalogue.products.destroy', $record) }}" class="record-delete" method="POST">
                     {{ method_field("DELETE") }}
                     {{ csrf_field() }}
                     <span id="social-share" class="inline"></span>

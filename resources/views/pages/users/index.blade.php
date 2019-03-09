@@ -28,7 +28,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($records as $record)
+                        @forelse($records as $record)
                             <tr
                                 data-url="{{ route('shopper.users.edit', $record) }}"
                                 class="record-link"
@@ -42,7 +42,15 @@
                                 <td>{{ $record->isActivated() }}</td>
                                 <td>{{ $record->created_at->format('Y-m-d h:m') }}</td>
                             </tr>
-                        @endforeach
+                        @empty
+                            <tr>
+                                <td colspan="7">
+                                    @component('shopper::layouts.emptydata')
+                                        <span class="mt-4">{{ __("We didn't find anything - just empty space.") }}</span><a class="btn btn-primary mt-3" href="{{ route('shopper.users.create') }}">{{ __('Add New User') }}</a>
+                                    @endcomponent
+                                </td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>

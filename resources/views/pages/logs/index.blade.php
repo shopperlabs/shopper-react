@@ -6,7 +6,7 @@
     <div class="wrapper-md">
         <div class="links-group">
             <a class="btn btn-primary" href="{{ route('shopper.settings.logs.index') }}">
-                <i class="fa fa-refresh"></i> {{ __('Refresh') }}
+                <i class="fas fa-sync-alt"></i> {{ __('Refresh') }}
             </a>
         </div>
     </div>

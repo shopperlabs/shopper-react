@@ -11,7 +11,7 @@
                 </a>
             @endif
             <a class="btn btn-info" href="{{ route('shopper.settings.backend.roles.index') }}">
-                <i class="fa fa-address-card-o"></i> {{ __('Manage Roles') }}
+                <i class="fas fa-lock"></i> {{ __('Manage Roles') }}
             </a>
         </div>
     </div>

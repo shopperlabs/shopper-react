@@ -27,7 +27,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($records as $record)
+                        @forelse($records as $record)
                             <tr
                                 data-url="{{ route('shopper.promo.discounts.edit', $record) }}"
                                 class="record-link"
@@ -40,7 +40,16 @@
                                 <td>{{ $record->date_begin->format('l, M d, Y H:i') }}</td>
                                 <td>{{ $record->date_end->format('l, M d, Y H:i') }}</td>
                             </tr>
-                        @endforeach
+                        @empty
+                            <tr>
+                                <td colspan="6">
+                                    @component('shopper::layouts.emptydata')
+                                        <span class="mt-4">{{ __("We didn't find anything - just empty space.") }}</span>
+                                        <a class="btn btn-primary mt-3" href="{{ route('shopper.promo.discounts.create') }}">{{ __('Add New Discount') }}</a>
+                                    @endcomponent
+                                </td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
