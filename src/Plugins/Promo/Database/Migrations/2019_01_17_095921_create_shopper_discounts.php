@@ -23,7 +23,7 @@ class CreateShopperDiscounts extends Migration
             $table->dateTime('date_begin');
             $table->dateTime('date_end')->nullable();
             $table->text('preview_text')->nullable();
-            $table->text('description')->nullable();
+            $table->longText('description')->nullable();
             $table->timestamps();
 
             $table->engine = 'InnoDB';

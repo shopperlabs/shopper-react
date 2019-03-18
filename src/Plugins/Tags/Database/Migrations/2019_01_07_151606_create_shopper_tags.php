@@ -19,7 +19,7 @@ class CreateShopperTags extends Migration
             $table->string('name')->unique()->index();
             $table->string('slug')->unique()->index();
             $table->text('preview_text')->nullable();
-            $table->text('description')->nullable();
+            $table->longText('description')->nullable();
             $table->integer('sort_order')->nullable()->unsigned();
             $table->timestamps();
 

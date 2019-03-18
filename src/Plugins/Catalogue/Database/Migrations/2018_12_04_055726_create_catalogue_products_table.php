@@ -22,7 +22,7 @@ class CreateCatalogueProductsTable extends Migration
             $table->unsignedInteger('category_id')->nullable()->index();
             $table->string('code')->nullable()->index();
             $table->text('preview_text')->nullable();
-            $table->text('description')->nullable();
+            $table->longText('description')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
