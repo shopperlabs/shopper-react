@@ -4,7 +4,6 @@ namespace Mckenziearts\Shopper\Plugins\Promo\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Mckenziearts\Shopper\Models\Setting;
-use Mckenziearts\Shopper\Plugins\Catalogue\Models\Category;
 use Mckenziearts\Shopper\Plugins\Catalogue\Models\Product;
 use Mckenziearts\Shopper\Plugins\Users\Models\User;
 

@@ -15,6 +15,7 @@ class PromoServiceProvider extends ServiceProvider
     {
         $this->registerDatabase();
         $this->registerMenu();
+        $this->registerProviders();
 
         $this->loadRoutesFrom(__DIR__ . '/../routes.php');
         $this->loadJsonTranslationsFrom(__DIR__ . '/../Resources/Lang');
@@ -48,5 +49,29 @@ class PromoServiceProvider extends ServiceProvider
     public function register() : void
     {
 
+    }
+
+    /**
+     * Register provider
+     *
+     * @return void
+     */
+    public function registerProviders() : void
+    {
+        foreach ($this->provides() as $provide) {
+            $this->app->register($provide);
+        }
+    }
+
+    /**
+     * Register any package services.
+     *
+     * @return array
+     */
+    public function provides() : array
+    {
+        return [
+            ObserverServiceProvider::class
+        ];
     }
 }
