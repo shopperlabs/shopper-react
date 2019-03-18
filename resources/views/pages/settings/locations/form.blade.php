@@ -13,7 +13,7 @@
         </div>
         <div class="pull-right">
             @if ((isset($record->id)))
-                <form action="{{ route('shopper.settings.locations.countries.destroy', $record) }}" id="delete_form" method="POST">
+                <form action="{{ route('shopper.settings.locations.countries.destroy', $record) }}" class="record-delete" method="POST">
                     {{ method_field("DELETE") }}
                     {{ csrf_field() }}
                     <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i> {{ __('Delete') }}</button>

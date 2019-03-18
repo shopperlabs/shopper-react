@@ -2,6 +2,7 @@
 
 namespace Mckenziearts\Shopper\Plugins\Users\Http\Controllers;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Mckenziearts\Shopper\Http\Controllers\Controller;
 use Mckenziearts\Shopper\Plugins\Users\Http\Requests\UserRequest;
@@ -122,11 +123,19 @@ class UserController extends Controller
      * Delete a record
      *
      * @param int $id
+     * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(int $id)
+    public function destroy(int $id, Request $request)
     {
         $this->repository->delete($id);
+
+        if ($request->ajax()) {
+            return response()->json([
+               'status'  => 'ok',
+                'redirect_url'  => route('shopper.users.index')
+            ]);
+        }
 
         return redirect()
             ->route('shopper.users.index')

@@ -2,6 +2,7 @@
 
 namespace Mckenziearts\Shopper\Plugins\Catalogue\Http\Controllers;
 
+use Illuminate\Http\Request;
 use Mckenziearts\Shopper\Http\Controllers\Controller;
 use Mckenziearts\Shopper\Models\Media;
 use Mckenziearts\Shopper\Plugins\Catalogue\Http\Requests\ProductRequest;
@@ -187,12 +188,20 @@ class ProductController extends Controller
      * Delete a record
      *
      * @param int $id
+     * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(int $id)
+    public function destroy(int $id, Request $request)
     {
         try {
             $this->repository->delete($id);
+
+            if ($request->ajax()) {
+                return response()->json([
+                    'status'  => 'ok',
+                    'redirect_url'  => route('shopper.catalogue.products.index')
+                ]);
+            }
 
             return redirect()
                 ->route('shopper.catalogue.products.index')

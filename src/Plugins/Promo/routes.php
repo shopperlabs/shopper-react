@@ -21,5 +21,9 @@ Route::group([
     $router->get('discount-offers/{id}', 'DiscountController@getDiscountOffers')->name('discounts.getOffers');
     $router->post('discount-offers/{id}', 'DiscountController@storeDiscountOffers')->name('discounts.offers');
     $router->delete('discount-offers/{id}', 'DiscountController@destroyDiscountOffers')->name('discounts.destroyOffer');
-
+    /** Coupon route list */
+    $router->resource('coupons', 'CouponController');
+    $router->post('coupon-products/{id}', 'CouponController@storeCouponProducts')->name('coupons.products')->where('id', '[0-9]+');
+    $router->get('coupon-products/{id}', 'CouponController@getCouponProducts')->name('coupons.getProducts');
+    $router->delete('coupon-remove-products/{id}/{coupon_id}', 'CouponController@removeProducts')->name('coupons.removeProducts');
 });

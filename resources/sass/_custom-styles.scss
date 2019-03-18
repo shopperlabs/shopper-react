@@ -51,7 +51,7 @@ a {
 			font-weight: 600 !important;
 		}
 	}
-	
+
     .nav-pills:not(.btn-pills) {
 
     	.nav-link {
@@ -141,7 +141,7 @@ a {
 				text-align: right;
 			}
 		}
- 
+
 	}
 }
 
@@ -320,4 +320,8 @@ p {
 
 .nav-link.disabled {
     color: #6c757d !important;
+}
+
+.empty-bloc {
+  margin-bottom: 15px;
 }

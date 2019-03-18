@@ -75,12 +75,16 @@ class AccessLog extends Model
      */
     public function getUser(string $column = null)
     {
-        if (!$this->getAttribute('user_id')) {
+        if (! $this->getAttribute('user_id')) {
             return null;
         }
 
-        if (is_null($column)) {
+        if (is_null($column) && ! is_null($this->getAttribute('user'))) {
             return $this->getAttribute('user')->first_name;
+        }
+
+        if (is_null($this->getAttribute('user'))) {
+            return __('Deleted user');
         }
 
         return $this->getAttribute('user')->{$column};

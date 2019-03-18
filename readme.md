@@ -47,7 +47,7 @@ It packs in lots of demanding features that allows your shop to scale in no time
 - [x] Orders Management System
 - [x] Tag Management System
 - [x] Discount Management System
-- [ ] Coupon Management System
+- [x] Coupon Management System
 - [x] Products, Related Products, Offers Management System
 - [x] Customers Management System
 - [x] Customer Cart, Wishlist, Product Reviews.

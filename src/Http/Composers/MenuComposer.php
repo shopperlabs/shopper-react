@@ -263,7 +263,7 @@ class MenuComposer
         $this->shopper->menu->add('Promo', [
             'slug'       => 'Coupon',
             'icon'       => 'fas fa-gift',
-            'route'      => route('shopper.wip'),
+            'route'      => route('shopper.promo.coupons.index'),
             'label'      => __('Coupons'),
             'groupname'  => __('Promotion'),
             'childs'     => false,

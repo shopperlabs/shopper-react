@@ -29,7 +29,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($records as $record)
+                        @forelse($records as $record)
                             <tr
                                 data-url="{{ route('shopper.shoporders.orders.edit', $record) }}"
                                 class="record-link"
@@ -44,7 +44,16 @@
                                 <td>{{ $record->getUser('phone') }}</td>
                                 <td>{{ $record->total_price }}</td>
                             </tr>
-                        @endforeach
+                        @empty
+                            <tr>
+                                <td colspan="8">
+                                    @component('shopper::layouts.emptydata')
+                                        <span class="mt-4">{{ __("We didn't find anything - just empty space.") }}</span>
+                                        <a class="btn btn-primary mt-3" href="{{ route('shopper.shoporders.orders.create') }}">{{ __('Add New Order') }}</a>
+                                    @endcomponent
+                                </td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>

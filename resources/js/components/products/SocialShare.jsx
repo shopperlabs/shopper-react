@@ -71,10 +71,10 @@ export default class SocialShare extends ShopperComponent {
     return (
       <span className='social-share-button'>
         <a className="btn btn-twitter" onClick={this.publishOnTwitter.bind(this)}>
-          <i className="fa fa-twitter"/> {this.trans.get('Publish on Twitter')}
+          <i className="fab fa-twitter"/> {this.trans.get('Publish on Twitter')}
         </a>
         <a className="btn btn-facebook" onClick={this.publishOnFacebook.bind(this)}>
-          <i className="fa fa-facebook"/> {this.trans.get('Publish on Facebook')}
+          <i className="fab fa-facebook-f"/> {this.trans.get('Publish on Facebook')}
         </a>
         <Rodal
           visible={this.state.visible}

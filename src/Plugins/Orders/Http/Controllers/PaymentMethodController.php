@@ -2,6 +2,7 @@
 
 namespace Mckenziearts\Shopper\Plugins\Orders\Http\Controllers;
 
+use Illuminate\Http\Request;
 use Mckenziearts\Shopper\Http\Controllers\Controller;
 use Mckenziearts\Shopper\Plugins\Orders\Http\Requests\PaymentRequest;
 use Mckenziearts\Shopper\Plugins\Orders\Repositories\PaymentRepository;
@@ -104,11 +105,19 @@ class PaymentMethodController extends Controller
      * Delete a record
      *
      * @param int $id
+     * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(int $id)
+    public function destroy(int $id, Request $request)
     {
         $this->repository->delete($id);
+
+        if ($request->ajax()) {
+            return response()->json([
+                'status'  => 'ok',
+                'redirect_url'  => route('shopper.shoporders.payments.index')
+            ]);
+        }
 
         return redirect()
             ->route('shopper.shoporders.payments.index')

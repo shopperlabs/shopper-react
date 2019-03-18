@@ -5,7 +5,7 @@
             @csrf
             <div class="row">
                 <div class="col-sm-6">
-                    <h4><i class="fa fa-facebook"></i> {{ __('Facebook API Keys') }}</h4>
+                    <h4><i class="fab fa-facebook"></i> {{ __('Facebook API Keys') }}</h4>
 
                     <div class="line line-dashed b-b line-lg"></div>
 
@@ -30,7 +30,7 @@
                     </div>
                 </div>
                 <div class="col-sm-6">
-                    <h4><i class="fa fa-twitter"></i> {{ __('Twitter API Keys') }}</h4>
+                    <h4><i class="fab fa-twitter"></i> {{ __('Twitter API Keys') }}</h4>
 
                     <div class="line line-dashed b-b line-lg"></div>
 

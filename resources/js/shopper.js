@@ -4,6 +4,7 @@
  * building robust, powerful web applications using React + Laravel.
  */
 import './libs/pace'
+import './helpers/translate'
 import './bootstrap'
 import './libs/file-manager'
 import './components/NavbarSearch'
@@ -22,6 +23,8 @@ import './components/locations/CountryForm'
 import './components/tags/TagFrom'
 import './components/reviews/ReviewForm'
 import './components/promo/DiscountForm'
+import './components/promo/CouponForm'
+import translate from './helpers/translate'
 
 // Language management
 const default_locale = window.default_locale
@@ -215,12 +218,12 @@ $(document).ready(function() {
   })
 
   $('form#create_mailable').on('submit', function(e) {
-    e.preventDefault();
+    e.preventDefault()
     let $_markdownView = $('#markdownView'), $_mailableAlerts = $('.new-mailable-alerts')
 
     if ( $('input#markdown--truth').is(':checked') && $_markdownView.val() === '') {
-      $_markdownView.addClass('is-invalid');
-      return;
+      $_markdownView.addClass('is-invalid')
+      return
     }
 
     axios
@@ -285,5 +288,35 @@ $(document).ready(function() {
           })
       }
     })
+  })
+})
+
+/**
+ * ==============================================================================
+ * Ajax remove record
+ * ==============================================================================
+ */
+$('form.record-delete').on('submit', function(e) {
+  e.preventDefault()
+  let $_this = $(this)
+
+  notie.confirm({
+    text: translate.get('Are you sure you want to do remove this record?'),
+    submitCallback: function () {
+      axios
+        .delete($_this.attr('action'), $_this.serializeArray())
+        .then(function (response) {
+          if (response.data.status === 'ok') {
+            notie.alert({ type: 1, text: translate.get(`Record deleted successfully <br><small>Redirecting...</small>`), time: 3 })
+
+            setTimeout(function() {
+              window.location.replace(response.data.redirect_url);
+            }, 3000)
+          }
+        })
+        .catch(function (error) {
+          notie.alert({ type: 'error', text: error, time: 3 })
+        })
+    }
   })
 })
