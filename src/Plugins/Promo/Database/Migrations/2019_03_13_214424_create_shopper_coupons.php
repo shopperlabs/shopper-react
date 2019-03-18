@@ -25,7 +25,7 @@ class CreateShopperCoupons extends Migration
             $table->integer('usage_limit')->nullable();
             $table->integer('usage_limit_per_user')->nullable();
             $table->text('preview_text')->nullable();
-            $table->text('description')->nullable();
+            $table->longText('description')->nullable();
             $table->timestamps();
         });
     }

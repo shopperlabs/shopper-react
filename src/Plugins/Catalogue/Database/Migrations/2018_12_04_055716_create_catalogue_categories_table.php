@@ -20,7 +20,7 @@ class CreateCatalogueCategoriesTable extends Migration
             $table->string('slug')->unique()->index();
             $table->string('code')->nullable()->index();
             $table->text('preview_text')->nullable();
-            $table->text('description')->nullable();
+            $table->longText('description')->nullable();
             $table->integer('parent_id')->nullable()->unsigned();
             $table->integer('sort_order')->nullable()->unsigned();
             $table->timestamps();

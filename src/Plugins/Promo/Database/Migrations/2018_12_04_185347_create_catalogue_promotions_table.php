@@ -23,7 +23,7 @@ class CreateCataloguePromotionsTable extends Migration
             $table->dateTime('date_begin');
             $table->dateTime('date_end')->nullable();
             $table->text('preview_text')->nullable();
-            $table->text('description')->nullable();
+            $table->longText('description')->nullable();
             $table->integer('sort_order')->nullable();
             $table->timestamps();
 
