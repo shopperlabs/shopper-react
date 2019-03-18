@@ -293,7 +293,7 @@ export default class DiscountForm extends ShopperComponent {
   OfferStore(e) {
     e.preventDefault()
     let element = document.getElementById('discount-form');
-    console.log(this.state.offerForm.offer_id)
+
     if (this.state.offerForm.offer_id !== '') {
       axios
         .post(route('shopper.promo.discounts.offers', {id: parseInt(element.getAttribute('data-id'))}), this.state.offerForm)
@@ -314,8 +314,8 @@ export default class DiscountForm extends ShopperComponent {
         })
     } else {
       Notification({
-        title: 'Error',
-        message: 'Please select offer before apply your discount',
+        title: this.trans.get('Error'),
+        message: this.trans.get('Please select offer before apply your discount'),
         type: 'error'
       })
     }

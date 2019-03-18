@@ -76,7 +76,7 @@ class Discount extends Model
     {
         switch ($this->type) {
             case self::DISCOUNT_FIXED:
-                return '- ' . moneyFormat($this->value, (new Setting)->get('site_currency'));
+                return '- ' . shopperMoney($this->value, (new Setting)->get('site_currency'));
                 break;
             case self::DISCOUNT_PERCENT:
                 return '-' . $this->value . '%';

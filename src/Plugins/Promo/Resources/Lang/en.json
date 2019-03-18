@@ -4,5 +4,10 @@
   "Date of beginning": "Date of beginning",
   "Date of end": "Date of end",
   "New discount": "New discount",
-  "Edit discount": "Edit discount"
+  "Edit discount": "Edit discount",
+
+  "Coupons list": "Coupons list",
+  "Coupon Value": "Discount Value",
+  "New coupon": "New coupon",
+  "Edit coupon": "Edit coupon"
 }

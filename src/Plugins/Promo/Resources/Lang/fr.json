@@ -4,5 +4,10 @@
   "Date of beginning": "Date de début",
   "Date of end": "Date de fin",
   "New discount": "Nouvelle remise",
-  "Edit discount": "Modifier remise"
+  "Edit discount": "Modifier remise",
+
+  "Coupons list": "Liste de coupons",
+  "Coupon Value": "Valeur du coupon",
+  "New coupon": "Nouveau coupon",
+  "Edit coupon": "Modifier coupon"
 }

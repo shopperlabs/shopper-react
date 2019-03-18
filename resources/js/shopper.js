@@ -23,6 +23,7 @@ import './components/locations/CountryForm'
 import './components/tags/TagFrom'
 import './components/reviews/ReviewForm'
 import './components/promo/DiscountForm'
+import './components/promo/CouponForm'
 import translate from './helpers/translate'
 
 // Language management

@@ -17535,7 +17535,7 @@ a.text-black:hover {
   overflow-y: scroll !important;
 }
 
-.offer-actions {
+.offer-actions, .buttons-actions {
   margin-bottom: 15px;
 }
 
@@ -18234,6 +18234,10 @@ a:hover {
 }
 .nav-link.disabled {
   color: #6c757d !important;
+}
+
+.empty-bloc {
+  margin-bottom: 15px;
 }
 
 /* PrismJS 1.15.0

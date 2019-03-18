@@ -15,4 +15,12 @@ class TagRelation extends Model
      * {@inheritDoc}
      */
     protected $fillable = ['tag_id', 'taggable_type', 'taggable_id'];
+
+    /**
+     * Get all of the owning taggable models.
+     */
+    public function taggable()
+    {
+        return $this->morphTo();
+    }
 }

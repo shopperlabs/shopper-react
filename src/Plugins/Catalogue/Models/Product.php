@@ -7,6 +7,7 @@ use CyrildeWit\EloquentViewable\Contracts\Viewable as ViewableContract;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Scout\Searchable;
+use Mckenziearts\Shopper\Plugins\Promo\Models\Coupon;
 use Mckenziearts\Shopper\Plugins\Tags\Models\Tag;
 use Mckenziearts\Shopper\Traits\Mediatable;
 use Mckenziearts\Shopper\Traits\Resize;
@@ -113,6 +114,14 @@ class Product extends Model implements ViewableContract
     public function tags()
     {
         return $this->morphToMany(Tag::class, 'taggable', 'shopper_tags_taggables');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     */
+    public function coupons()
+    {
+        return $this->morphToMany(Coupon::class, 'couponable', 'shopper_coupons_couponables');
     }
 
     /**
