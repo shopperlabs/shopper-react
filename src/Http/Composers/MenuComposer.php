@@ -163,7 +163,7 @@ class MenuComposer
             'sort'       => 4,
         ]);
 
-        $this->shopper->menu->add('Catalogue', [
+        /*$this->shopper->menu->add('Catalogue', [
             'slug'       => 'Properties',
             'icon'       => 'fa fa-list',
             'route'      => route('shopper.wip'),
@@ -173,7 +173,7 @@ class MenuComposer
             'active'     => 'shopper.catalogue.properties.*',
             //'permission' => 'dashboard.systems.settings',
             'sort'       => 5,
-        ]);
+        ]);*/
     }
 
     /**
@@ -403,7 +403,7 @@ class MenuComposer
             'sort'       => 6,
         ]);
 
-        $this->shopper->menu->add('Settings', [
+        /*$this->shopper->menu->add('Settings', [
             'slug'       => 'Translate',
             'icon'       => 'icon-speech',
             'route'      =>  route('shopper.wip'),
@@ -412,7 +412,7 @@ class MenuComposer
             'divider'    => false,
             //'permission' => 'dashboard.systems.settings',
             'sort'       => 7,
-        ]);
+        ]);*/
 
         $this->shopper->menu->add('Settings', [
             'slug'       => 'Analytics',
