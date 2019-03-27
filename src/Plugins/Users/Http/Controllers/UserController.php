@@ -116,7 +116,7 @@ class UserController extends Controller
      */
     public function show(int $id)
     {
-        return $this->repository->find($id, ['addresses', 'orders']);
+        return $this->repository->find($id, ['addresses', 'orders','transactions']);
     }
 
     /**
@@ -189,5 +189,14 @@ class UserController extends Controller
             return redirect()->route('shopper.users.index')
                 ->with('warning', __('There is no user you can impersonate'));
         }
+    }
+
+    /**
+     * @param int $id
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function transactions(int $id)
+    {
+        return $this->repository->find($id, ['transactions'])->transactions;
     }
 }
