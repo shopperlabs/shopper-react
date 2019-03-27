@@ -2,7 +2,9 @@
 
 namespace Mckenziearts\Shopper\Plugins\Orders\Repositories;
 
+use Illuminate\Support\Facades\DB;
 use Mckenziearts\Shopper\Plugins\Orders\Models\Order;
+use Mckenziearts\Shopper\Plugins\Orders\Models\Status;
 
 class OrderRepository
 {
@@ -96,7 +98,34 @@ class OrderRepository
      */
     public function paginateList(int $count = 10)
     {
-        return $this->model->with(['user', 'status', 'shippingType', 'paymentMethod'])->paginate($count);
+        return $this->model
+            ->with(['user', 'status', 'shippingType', 'paymentMethod'])
+            ->paginate($count);
+    }
+
+    /**
+     * Get recents orders if an user_id is defined return the user recents orders
+     *
+     * @param array $relations
+     * @param int $result
+     * @param int|null $user_id
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
+    public function recentOrders(array $relations = [], int $result = 5, int $user_id = null)
+    {
+        if ($user_id) {
+            return $this->model
+                ->with($relations)
+                ->where('user_id', '=', $user_id)
+                ->limit($result)
+                ->get();
+        }
+
+        return $this->model
+            ->with($relations)
+            ->orderBy('created_at', 'desc')
+            ->limit($result)
+            ->get();
     }
 
     /**
@@ -142,5 +171,38 @@ class OrderRepository
     public function getBySecretKey($key)
     {
        return $this->model->where('secret_key', $key);
+    }
+
+    /**
+     * Return total order price
+     *
+     * @return mixed
+     */
+    public function getTotalRevenue()
+    {
+        return $this->model->get()->sum('total_price');
+    }
+
+    /**
+     * Return a list of Orders with the status set in parameter
+     *
+     * @param string $code
+     * @param int $limit
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
+    public function ordersStatusList(string $code, int $limit = null)
+    {
+        if (! $limit) {
+            return $this->model->join((new Status())->getTable(), 'status_id', '=', (new Status())->getTable(). '.id')
+                ->where((new Status())->getTable(). '.code', '=', $code)
+                ->select( DB::raw($this->getModel()->getTable() .'.*'))
+                ->get();
+        }
+
+        return $this->model->join((new Status())->getTable(), 'status_id', '=', (new Status())->getTable(). '.id')
+            ->where((new Status())->getTable(). '.code', '=', $code)
+            ->select( DB::raw($this->getModel()->getTable() .'.*'))
+            ->limit($limit)
+            ->get();
     }
 }

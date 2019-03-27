@@ -146,4 +146,14 @@ class ProductRepository
             ->limit($results)
             ->get();
     }
+
+    /**
+     * Return all records
+     *
+     * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
+     */
+    public function all()
+    {
+        return $this->model->get();
+    }
 }

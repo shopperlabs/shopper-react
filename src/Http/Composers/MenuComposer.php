@@ -64,6 +64,18 @@ class MenuComposer
             //'permission' => 'dashboard.systems.settings',
             'sort'       => 1,
         ]);
+
+        $this->shopper->menu->add('Dashboard', [
+            'slug'       => 'E-commerce',
+            'icon'       => 'fas fa-store',
+            'route'      => route('shopper.dashboard.e-commerce'),
+            'label'      => __('E-commerce'),
+            'childs'     => false,
+            'divider'    => false,
+            'active'     => 'shopper.dashboard.e-commerce',
+            //'permission' => 'dashboard.systems.settings',
+            'sort'       => 1,
+        ]);
     }
 
     /**
@@ -414,7 +426,7 @@ class MenuComposer
             'sort'       => 7,
         ]);*/
 
-        $this->shopper->menu->add('Settings', [
+        /*$this->shopper->menu->add('Settings', [
             'slug'       => 'Analytics',
             'icon'       => 'fas fa-chart-bar',
             'route'      => route('shopper.wip'),
@@ -425,7 +437,7 @@ class MenuComposer
             'active'     => 'shopper.settings.analytics.*',
             //'permission' => 'dashboard.systems.settings',
             'sort'       => 9,
-        ]);
+        ]);*/
 
         $this->shopper->menu->add('Settings', [
             'slug'       => 'Mailable',

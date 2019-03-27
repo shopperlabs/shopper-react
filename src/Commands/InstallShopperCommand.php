@@ -93,7 +93,7 @@ class InstallShopperCommand extends Command
         $this->progressBar->advance();
 
         $this->info('Flush data into the database');
-        //$this->seed('ShopperSeeder');
+        $this->seed('ShopperSeeder');
         $this->progressBar->advance();
 
         // Visually slow down the installation process so that the user can read what's happening

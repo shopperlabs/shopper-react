@@ -42,7 +42,7 @@
                                 <td>{{ $record->getUser('email') }}</td>
                                 <td>{{ $record->getUser() }}</td>
                                 <td>{{ $record->getUser('phone') }}</td>
-                                <td>{{ $record->total_price }}</td>
+                                <td>{{ shopperMoney($record->total_price, setting('site_currency')) }}</td>
                             </tr>
                         @empty
                             <tr>

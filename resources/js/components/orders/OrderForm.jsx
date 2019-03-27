@@ -357,8 +357,8 @@ export default class OrderForm extends ShopperComponent {
         this.setState({
           form: Object.assign(this.state.form, formOrder),
           shippingPrice: order.shipping_price,
-          orderPrice: parseFloat(order.total_price) - parseFloat(order.shipping_price),
-          totalPrice: order.total_price,
+          orderPrice: parseFloat(order.total_price),
+          totalPrice: parseFloat(order.total_price) + parseFloat(order.shipping_price),
           loading: false,
           loadingOffers: false
         })

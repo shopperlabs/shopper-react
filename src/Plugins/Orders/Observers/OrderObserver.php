@@ -44,4 +44,14 @@ class OrderObserver
 
         $order->secret_key = $order->generateSecretKey();
     }
+
+    /**
+     * Trigger before delete a Order
+     *
+     * @param Order $order
+     */
+    public function deleting(Order $order)
+    {
+        $order->offers()->detach();
+    }
 }

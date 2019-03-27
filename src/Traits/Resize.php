@@ -2,6 +2,8 @@
 
 namespace Mckenziearts\Shopper\Traits;
 
+use Illuminate\Support\Facades\URL;
+
 trait Resize
 {
     /**
@@ -40,6 +42,6 @@ trait Resize
             return shopperAsset($this->previewImage->disk_name);
         }
 
-        return null;
+        return Url::asset('/shopper/img/img-not-found.png');
     }
 }
