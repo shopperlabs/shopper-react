@@ -43712,9 +43712,9 @@ $(function () {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/arthur/Sites/shopper/packages/mckenziearts/shopper/resources/js/login.js */"./resources/js/login.js");
-__webpack_require__(/*! /Users/arthur/Sites/shopper/packages/mckenziearts/shopper/resources/sass/login.scss */"./resources/sass/login.scss");
-module.exports = __webpack_require__(/*! /Users/arthur/Sites/shopper/packages/mckenziearts/shopper/resources/sass/shopper.scss */"./resources/sass/shopper.scss");
+__webpack_require__(/*! /Users/mac/Projets/PHP/shopper/packages/fabrice/shopper/resources/js/login.js */"./resources/js/login.js");
+__webpack_require__(/*! /Users/mac/Projets/PHP/shopper/packages/fabrice/shopper/resources/sass/login.scss */"./resources/sass/login.scss");
+module.exports = __webpack_require__(/*! /Users/mac/Projets/PHP/shopper/packages/fabrice/shopper/resources/sass/shopper.scss */"./resources/sass/shopper.scss");
 
 
 /***/ })
