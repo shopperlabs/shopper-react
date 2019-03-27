@@ -2,3 +2,5 @@
 /.vscode
 /.vagrant
 .idea
+/vendor
+composer.lock
