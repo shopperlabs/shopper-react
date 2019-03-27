@@ -25,7 +25,7 @@
                             <th>{{ __('Email') }}</th>
                             <th>{{ __('Name') }}</th>
                             <th>{{ __('Phone') }}</th>
-                            <th>{{ __('Total Price') }}</th>
+                            <th>{{ __('Price') }}</th>
                         </tr>
                     </thead>
                     <tbody>

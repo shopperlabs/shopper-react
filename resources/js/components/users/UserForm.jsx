@@ -28,7 +28,6 @@ import addressRules from './addressValidation'
 import balanceColumns from './columns/balanceColumns'
 import transactionFields from './forms/transactionForm';
 
-
 export default class UserForm extends ShopperComponent {
   constructor(props) {
     super(props)
@@ -469,12 +468,17 @@ export default class UserForm extends ShopperComponent {
   }
 
   hideModal() {
-    this.setState({visible: false,visibleTransaction: false})
+    this.setState({
+      visible: false,
+      visibleTransaction: false
+    })
+    this.refs.transactionForm.resetFields()
   }
 
   showModalDelete() {
     this.setState({confirmDelete: true})
   }
+
   showModalDeleteTransaction() {
     this.setState({confirmDeleteTransaction: true})
   }
@@ -506,6 +510,7 @@ export default class UserForm extends ShopperComponent {
         })
     }
   }
+
   onSelectTransaction(selection) {
     if (selection.length > 0) {
       this.setState({
@@ -519,6 +524,7 @@ export default class UserForm extends ShopperComponent {
       })
     }
   }
+
   getUserTransactions() {
     let element = document.getElementById('user-form')
     this.setState({loadingBalance: true})
@@ -536,6 +542,7 @@ export default class UserForm extends ShopperComponent {
         Message.error(error.response.data.message)
       })
   }
+
   postFormTransaction(id) {
     axios
       .post(route('shopper.transactions.store', {user_id: parseInt(id)}), this.state.transactionFields)
@@ -555,6 +562,7 @@ export default class UserForm extends ShopperComponent {
         Message.error(error.response.data.message)
       })
   }
+
   updateFormTransaction(id) {
     axios
       .put(route('shopper.transactions.update', {id: parseInt(id)}), this.state.transactionFields)
@@ -572,6 +580,7 @@ export default class UserForm extends ShopperComponent {
         Message.error(error.response.data.message)
       })
   }
+
   submitTransaction (e) {
     e.preventDefault()
     let element = document.getElementById('user-form')
@@ -609,7 +618,6 @@ export default class UserForm extends ShopperComponent {
   }
 
   render() {
-    const { imageUrl } = this.state
     let componentConfig = this.componentConfig, djsConfig = this.djsConfig, eventHandlers = this.uploadEvents
 
     return (
@@ -851,7 +859,6 @@ export default class UserForm extends ShopperComponent {
             <Button onClick={this.hideModal.bind(this)}>{this.trans.get('Cancel')}</Button>
           </Dialog.Footer>
         </Dialog>
-
         <Rodal
           visible={this.state.confirmDelete}
           onClose={this.hideModalDelete.bind(this)}
@@ -871,7 +878,6 @@ export default class UserForm extends ShopperComponent {
             </div>
           </div>
         </Rodal>
-
         <Rodal
           visible={this.state.confirmDeleteTransaction}
           onClose={this.hideModalDelete.bind(this)}
@@ -891,7 +897,6 @@ export default class UserForm extends ShopperComponent {
             </div>
           </div>
         </Rodal>
-
         <Dialog
           title={(this.state.currentTransaction !== null) ? this.trans.get('Update Transaction') : this.trans.get('Create Transaction')}
           visible={this.state.visibleTransaction}

@@ -1,26 +1,23 @@
 import React from 'react'
 import { Tag } from 'element-react'
-function formatDate(date) {
-  var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-  var day = date.getDate(), monthIndex = date.getMonth(), year = date.getFullYear().toString().substr(-2);
-  return day + ' ' + monthNames[monthIndex] + ' ' + year;
-}
+import translate from '../../../helpers/translate'
+
 const balanceColumns = [
   {
     type: 'selection'
   },
   {
-    label: 'Added At',
+    label: translate.get('Added At'),
     prop: "created_at",
     sortable: true,
   },
   {
-    label: 'Amount',
+    label: translate.get('Amount'),
     prop: "amount",
     sortable: true
   },
   {
-    label: 'Type',
+    label: translate.get('Type'),
     prop: "type",
     sortable: true,
     filters: [{ text: 'Deposit', value: 'deposit' }, { text: 'Withdraw', value: 'withdraw' }],
@@ -32,20 +29,19 @@ const balanceColumns = [
     }
   },
   {
-    label: 'Valid',
+    label: translate.get('Valid'),
     prop: "accepted",
     sortable: true,
-    render: (data, column)=>{
-      console.log(data)
-      if (data.accepted == 0) {
-        return <Tag type="danger">Desactivated</Tag>
+    render: (data, column) => {
+      if (data.accepted === 0) {
+        return <Tag type="danger">{translate.get('Desactivated')}</Tag>
       } else{
-        return <Tag type="success">Validated</Tag>
+        return <Tag type="success">{translate.get('Validated')}</Tag>
       }
     }
   },
   {
-    label: 'Comment',
+    label: translate.get('Comment'),
     prop: "meta",
   }
 ]

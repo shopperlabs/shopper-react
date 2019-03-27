@@ -8,22 +8,22 @@ const ordersColumns = [
   },
   {
     label: translate.get('Status'),
-    prop: "status_id",
+    prop: "statusName",
     sortable: true
   },
   {
     label: translate.get('Payment Method'),
-    prop: "payment_method_id",
+    prop: "paymentMethod",
     sortable: true
   },
   {
     label: translate.get('Shipping Type'),
-    prop: "shipping_type_id",
+    prop: "shippingType",
     sortable: true
   },
   {
-    label: translate.get('Total Price'),
-    prop: "total_price",
+    label: translate.get('Price'),
+    prop: "total_price_formated",
     sortable: true
   }
 ]

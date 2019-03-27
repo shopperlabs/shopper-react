@@ -116,7 +116,15 @@ class UserController extends Controller
      */
     public function show(int $id)
     {
-        return $this->repository->find($id, ['addresses', 'orders','transactions']);
+        $record = $this->repository->find($id, ['addresses', 'orders', 'transactions']);
+        $record->orders->map(function ($item) {
+            $item['paymentMethod'] = $item->getPaymentMethod();
+            $item['statusName'] = $item->getStatus();
+            $item['shippingType'] = $item->getShippingType();
+            $item['total_price_formated'] = shopperMoney($item->total_price, setting('site_currency'));
+        });
+
+        return $record;
     }
 
     /**
