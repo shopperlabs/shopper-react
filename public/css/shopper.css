@@ -17496,6 +17496,7 @@ a.text-black:hover {
 
 .card.card-welcome {
   border: none;
+  box-shadow: none;
 }
 .card.card-welcome .card-title {
   text-transform: uppercase;
