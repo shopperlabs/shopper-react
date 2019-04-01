@@ -163,6 +163,8 @@ class OrderController extends Controller
         ]);
 
         $order = $this->repository->find($id);
+        $order->total_price = OrderContent::where('order_id', $order->id)->get()->sum('price');
+        $order->save();
 
         $response = [
             'status'    => 'success',

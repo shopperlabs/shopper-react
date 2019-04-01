@@ -28,4 +28,10 @@ Route::group([
     $router->post('addresses/{user_id}','AddressController@store')->name('addresses.store')->where('user_id', '[0-9]+');
     $router->put('addresses/{id}','AddressController@update')->name('addresses.update')->where('id', '[0-9]+');
 
+    /** Balance route list */
+    $router->resource('transactions', 'BalanceController')->except(['create', 'store', 'show', 'update']);
+    $router->post('transactions/{user_id}','BalanceController@store')->name('transactions.store')->where('user_id', '[0-9]+');
+    $router->put('transactions/{id}','BalanceController@update')->name('transactions.update')->where('id', '[0-9]+');
+    $router->get('users-transactions/{id}', 'UserController@transactions')->name('users.transactions');
+
 });

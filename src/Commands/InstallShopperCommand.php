@@ -5,10 +5,16 @@ namespace Mckenziearts\Shopper\Commands;
 use Illuminate\Console\Command;
 use Mckenziearts\Shopper\ShopperServiceProvider;
 use Mckenziearts\Shopper\Traits\Seedable;
+use Symfony\Component\Console\Helper\ProgressBar;
 
 class InstallShopperCommand extends Command
 {
     use Seedable;
+
+    /**
+     * @var ProgressBar
+     */
+    protected $progressBar;
 
     /**
      * The path of the seeder
@@ -48,17 +54,30 @@ class InstallShopperCommand extends Command
      */
     public function handle()
     {
-        // Intro message
+        $this->progressBar = $this->output->createProgressBar(6);
+        $this->introMessage();
+        sleep(1);
+
         $this->info('Installation of Shopper package, setup database, publish assets and config files');
 
+        if (! $this->progressBar->getProgress()) {
+            $this->progressBar->start();
+        }
+
         $this->call('vendor:publish', ['--provider' => ShopperServiceProvider::class, '--tag' => 'shopper_seeders']);
+        $this->progressBar->advance();
+
         $this->call('vendor:publish', ['--provider' => ShopperServiceProvider::class, '--tag' => 'shopper']);
+        $this->progressBar->advance();
 
         $this->setupDatabaseConfig();
         $this->addEnvVarible();
 
         $this->info('Adding the storage and shopper symlink to your public folder');
         $this->call('shopper:link');
+        $this->progressBar->advance();
+
+        $this->complete();
     }
 
     /**
@@ -70,8 +89,14 @@ class InstallShopperCommand extends Command
     {
         $this->info('Migrating the database tables into your application');
         $this->call('migrate');
+        $this->progressBar->advance();
+
         $this->info('Flush data into the database');
         $this->seed('ShopperSeeder');
+        $this->progressBar->advance();
+
+        // Visually slow down the installation process so that the user can read what's happening
+        usleep(350000);
     }
 
     /**
@@ -86,6 +111,47 @@ class InstallShopperCommand extends Command
             'CURRENCY_SYMBOL'  => config('shopper.currency')
         ];
 
+        $this->progressBar->advance();
         setEnvironmentValue($env);
+        $this->info('Add DASHBOARD_PREFIX and CURRENCY_SYMBOL to .env file');
+    }
+
+    protected function complete()
+    {
+        $this->progressBar->finish();
+
+        // Outro message
+        $this->info("
+       ==========================+=========================================
+                                      ,@@@@@@@,                 
+                              ,,,.   ,@@@@@@/@@,  .oo8888o.     
+                           ,&%%&%&&%,@@@@@/@@@@@@,8888\88/8o 
+                          ,%&\%&&%&&%,@@@\@@@/@@@88\88888/88'   
+                          %&&%&%&/%&&%@@\@@/ /@@@88888\88888'   
+                          %&&%/ %&%%&&@@\ V /@@' `88\8 `/88'    
+                          `&%\ ` /%&'    |.|        \ '|8'      
+                              |o|        | |         | |        
+                              |.|        | |         | |       
+        ======================= Installation Complete ======================
+        ");
+
+        $this->comment("To create a user, run 'artisan shopper:admin'");
+    }
+
+    protected function introMessage()
+    {
+        // Intro message
+        $this->info("
+        ====================================================================
+         ______    _    _     ____   ________   ________   _______   _____   
+        |  ____|  | |  | |   / __ \  |  ___  \  |  ___  \  |  ____| |  __ \  
+        | |____   | |__| |  | |  | | | |___|  | | |___|  | | |____  | |__) | 
+        |____  |  |  __  |  | |  | | |  _____/  |  _____/  |  ____| |  _  /  
+         ____| |  | |  | |  | |__| | | |        | |        | |____  | | \ \  
+        |______|  |_|  |_|   \____/  |_|        |_|        |______| |_|  \_\ 
+                             
+                      Installation started. Please wait...
+        ====================================================================
+        ");
     }
 }
