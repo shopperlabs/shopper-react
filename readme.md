@@ -55,7 +55,6 @@ It packs in lots of demanding features that allows your shop to scale in no time
 - [ ] Custom attributes
 - [x] Social Media Post integration (Twitter & Facebook)
 - [x] Algolia Search
-- [ ] Redux
 - [ ] Translate Message
 - [ ] Custom configuration (Database download, Google Analytics)
 - [x] Open Source
