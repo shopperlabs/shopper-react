@@ -5,6 +5,7 @@ namespace Mckenziearts\Shopper\Http\Controllers\Backend;
 use Algolia\ScoutExtended\Facades\Algolia;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Illuminate\Support\Facades\DB;
+use Mckenziearts\Shopper\Core\Version;
 use Mckenziearts\Shopper\Http\Controllers\Controller;
 use Mckenziearts\Shopper\Plugins\Catalogue\Models\Brand;
 use Mckenziearts\Shopper\Plugins\Catalogue\Models\Category;
@@ -14,6 +15,7 @@ use Mckenziearts\Shopper\Plugins\Orders\Repositories\OrderRepository;
 use Mckenziearts\Shopper\Plugins\Users\Models\User;
 use Mckenziearts\Shopper\Plugins\Users\Repositories\UserRepository;
 use Mckenziearts\Shopper\Shopper;
+use Packagist\Api\Client;
 use Spatie\SslCertificate\SslCertificate;
 
 class DashboardController extends Controller
@@ -53,10 +55,19 @@ class DashboardController extends Controller
         $os = php_uname('s');
         $laravel = app()->version();
         $database = $this->getDatabase();
-        $shopper = Shopper::version();
         $php = phpversion();
 
         $algolia = $this->algoliaIndices();
+
+        $client = new Client();
+        $package = $client->get('mckenziearts/shopper');
+        $versions = array_map(function ($version) {
+            return $version->getVersion();
+        }, $package->getVersions());
+
+        $currentVersion = Shopper::version();
+        $latestVersion = Version::latest($versions);
+        $updateAvailable = version_compare($currentVersion, $latestVersion, '<');
 
         try {
             $certificate = SslCertificate::createForHostName(request()->getHost());
@@ -79,10 +90,12 @@ class DashboardController extends Controller
                 'os',
                 'laravel',
                 'database',
-                'shopper',
                 'php',
                 'sslCertificate',
-                'algolia'
+                'algolia',
+                'currentVersion',
+                'latestVersion',
+                'updateAvailable'
             )
         );
     }
