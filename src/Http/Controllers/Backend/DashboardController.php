@@ -3,10 +3,13 @@
 namespace Mckenziearts\Shopper\Http\Controllers\Backend;
 
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
+use Illuminate\Support\Facades\DB;
 use Mckenziearts\Shopper\Http\Controllers\Controller;
 use Mckenziearts\Shopper\Plugins\Catalogue\Repositories\ProductRepository;
 use Mckenziearts\Shopper\Plugins\Orders\Repositories\OrderRepository;
 use Mckenziearts\Shopper\Plugins\Users\Repositories\UserRepository;
+use Mckenziearts\Shopper\Shopper;
+use Spatie\SslCertificate\SslCertificate;
 
 class DashboardController extends Controller
 {
@@ -42,8 +45,30 @@ class DashboardController extends Controller
     public function dashboard()
     {
         $user = Sentinel::check();
+        $os = php_uname('s');
+        $laravel = app()->version();
+        $database = $this->getDatabase();
+        $shopper = Shopper::version();
+        $php = phpversion();
 
-        return view('shopper::pages.dashboard.index', compact('user'));
+        try {
+            $certificate = SslCertificate::createForHostName(request()->getHost());
+            $sslCertificate = [
+                'status' => 'success',
+                'expiration_date' => $certificate->expirationDate()->diffForHumans(),
+                'expiration_date_in_days' => $certificate->expirationDate()->diffInDays()
+            ];
+        } catch (\Exception $e) {
+            $sslCertificate = [
+                'status' => 'failed',
+                'message' => $e->getMessage()
+            ];
+        }
+
+        return view(
+            'shopper::pages.dashboard.index',
+            compact('user', 'os', 'laravel', 'database', 'shopper', 'php', 'sslCertificate')
+        );
     }
 
     public function ecommerce()
@@ -66,5 +91,21 @@ class DashboardController extends Controller
     public function workInProgress()
     {
         return view('shopper::pages.working');
+    }
+
+    private function getDatabase()
+    {
+        $knownDatabases = [
+            'sqlite',
+            'mysql',
+            'pgsql',
+            'sqlsrv',
+        ];
+        if (! in_array(config('database.default'), $knownDatabases)) {
+            return 'Unknown';
+        }
+        $results = DB::select(DB::raw("select version()"));
+
+        return ucfirst(config('database.default')). ' ' .$results[0]->{'version()'};
     }
 }

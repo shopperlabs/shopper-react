@@ -16008,6 +16008,10 @@ button.close {
   padding-top: 20px !important;
 }
 
+.icon-md {
+  font-size: 1.275rem;
+}
+
 .table thead tr th {
   font-weight: 600;
   font-size: 12px;
@@ -18112,6 +18116,28 @@ div.mce-fullscreen {
   padding: 0.75rem;
   vertical-align: top;
   border-top: 1px solid #e6e9ed;
+}
+
+.system-information {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-row-gap: 20px;
+  margin-top: 30px;
+}
+.system-information li {
+  display: flex;
+  align-items: center;
+}
+.system-information li img {
+  width: 30px;
+  margin-right: 10px;
+}
+
+.element-rs i {
+  margin-top: 10px;
+}
+.element-rs h6 {
+  font-weight: bold;
 }
 
 /*! MailEclipse Template Styles
