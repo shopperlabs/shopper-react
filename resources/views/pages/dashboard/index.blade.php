@@ -45,7 +45,25 @@
                                 </li>
                                 <li>
                                     <img src="{{ asset('/shopper/img/logo.svg') }}">
-                                    <span>{{ $shopper }}</span>
+                                    <span>
+                                        {{ $currentVersion }}
+                                        @if($updateAvailable)
+                                            <i class="fas fa-exclamation-circle text-warning"></i>
+                                        @else
+                                            <i class="fas fa-check-circle text-success"></i>
+                                        @endif
+                                    </span>
+                                </li>
+                                <li>
+                                    @if($updateAvailable)
+                                        <span class="text-warning">
+                                            {{ _('A new version of Shopper is available') }} - v{{ $latestVersion }}
+                                        </span>
+                                        <i class="fas fa-exclamation-circle text-warning"></i>
+                                    @else
+                                        <span>{{ __('You are up to date with Shopper') }}</span>
+                                        <i class="fas fa-check-circle text-success"></i>
+                                    @endif
                                 </li>
                             </ul>
                         </div>
