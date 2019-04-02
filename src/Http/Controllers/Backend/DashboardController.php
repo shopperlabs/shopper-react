@@ -2,11 +2,16 @@
 
 namespace Mckenziearts\Shopper\Http\Controllers\Backend;
 
+use Algolia\ScoutExtended\Facades\Algolia;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Illuminate\Support\Facades\DB;
 use Mckenziearts\Shopper\Http\Controllers\Controller;
+use Mckenziearts\Shopper\Plugins\Catalogue\Models\Brand;
+use Mckenziearts\Shopper\Plugins\Catalogue\Models\Category;
+use Mckenziearts\Shopper\Plugins\Catalogue\Models\Product;
 use Mckenziearts\Shopper\Plugins\Catalogue\Repositories\ProductRepository;
 use Mckenziearts\Shopper\Plugins\Orders\Repositories\OrderRepository;
+use Mckenziearts\Shopper\Plugins\Users\Models\User;
 use Mckenziearts\Shopper\Plugins\Users\Repositories\UserRepository;
 use Mckenziearts\Shopper\Shopper;
 use Spatie\SslCertificate\SslCertificate;
@@ -51,6 +56,8 @@ class DashboardController extends Controller
         $shopper = Shopper::version();
         $php = phpversion();
 
+        $algolia = $this->algoliaIndices();
+
         try {
             $certificate = SslCertificate::createForHostName(request()->getHost());
             $sslCertificate = [
@@ -67,10 +74,22 @@ class DashboardController extends Controller
 
         return view(
             'shopper::pages.dashboard.index',
-            compact('user', 'os', 'laravel', 'database', 'shopper', 'php', 'sslCertificate')
+            compact(
+                'user',
+                'os',
+                'laravel',
+                'database',
+                'shopper',
+                'php',
+                'sslCertificate',
+                'algolia'
+            )
         );
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function ecommerce()
     {
         $products = $this->productRepository->lastestProducts(['previewImage'], 5);
@@ -83,6 +102,36 @@ class DashboardController extends Controller
         return view('shopper::pages.dashboard.e-commerce',
             compact('products', 'orders', 'count')
         );
+    }
+
+    public function algoliaIndices() : ?array
+    {
+        try {
+            $client = Algolia::client();
+            $indices = $client->listIndices();
+
+            if (!isset($indices['items'])) {
+                return null;
+            }
+
+            $products   =  collect($indices['items'])->where('name', (new Product())->getTable())->sum('entries');
+            $categories =  collect($indices['items'])->where('name', (new Category())->getTable())->sum('entries');
+            $brands     =  collect($indices['items'])->where('name', (new Brand())->getTable())->sum('entries');
+            $users      =  collect($indices['items'])->where('name', (new User())->getTable())->sum('entries');
+
+            return [
+                'products' => $products,
+                'users' => $users,
+                'categories' => $categories,
+                'brands' => $brands,
+                'status' => 'success'
+            ];
+        } catch (\Exception $e) {
+            return [
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ];
+        }
     }
 
     /**

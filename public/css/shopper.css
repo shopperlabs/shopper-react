@@ -18140,6 +18140,40 @@ div.mce-fullscreen {
   font-weight: bold;
 }
 
+.algolia-items {
+  margin-top: 30px;
+  padding: 20px;
+  box-shadow: 0 2px 3px #cdd8df;
+  border-radius: 2px;
+}
+.algolia-items .card {
+  box-shadow: none;
+}
+.algolia-items .algolia-header {
+  display: flex;
+  justify-content: space-between;
+}
+.algolia-items .algolia-header a {
+  color: #5468ff !important;
+}
+
+.nova-algolia-card-title {
+  color: #5468ff;
+}
+.nova-algolia-card-title .nova-algolia-card-title-logo {
+  width: 1.8rem;
+  margin-right: 0.2rem;
+  display: inline;
+  vertical-align: middle;
+}
+
+.nova-algolia-card-index {
+  display: inline-block;
+  background-color: #f1f5f8;
+  padding: 0px 5px;
+  border-radius: 5px;
+}
+
 /*! MailEclipse Template Styles
  *
  *  Built on top of Bootstrap 4 (https://getbootstrap.com)
