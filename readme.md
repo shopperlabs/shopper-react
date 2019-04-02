@@ -11,6 +11,8 @@
 Shopper is an Admin Management build for Laravel 5.6+ (Not yet compatible with Laravel 5.8) which includes all the necessary for your online market application. This project is inspired by [Orchid/Platform](https://github.com/orchidsoftware/platform).
 This package is still in development.
 
+![Shopper Screenshot](https://pix.watch/kvtzzS/NK1CPv.png)
+
 # Table of Contents
 
 1. [Requirements](#requirements)
