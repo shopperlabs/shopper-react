@@ -4,12 +4,11 @@ namespace Mckenziearts\Shopper\Plugins\Catalogue\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Laravel\Scout\Searchable;
 use Mckenziearts\Shopper\Plugins\Orders\Models\Order;
 
 class Offer extends Model
 {
-    use SoftDeletes, Searchable;
+    use SoftDeletes;
 
     /**
      * {@inheritDoc}

@@ -99,3 +99,62 @@
   }
 }
 
+.system-information {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-row-gap: 20px;
+  margin-top: 30px;
+
+  li {
+    display: flex;
+    align-items: center;
+    img {
+      width: 30px;
+      margin-right: 10px;
+    }
+  }
+}
+
+.element-rs {
+  i {
+    margin-top: 10px;
+  }
+  h6 {
+    font-weight: bold;
+  }
+}
+
+.algolia-items {
+  margin-top: 30px;
+  padding: 20px;
+  box-shadow: 0 2px 3px #cdd8df;
+  border-radius: 2px;
+
+  .card {
+    box-shadow: none;
+  }
+
+  .algolia-header {
+    display: flex;
+    justify-content: space-between;
+    a {
+      color: #5468ff !important;
+    }
+  }
+}
+
+.nova-algolia-card-title {
+  color: #5468ff;
+  .nova-algolia-card-title-logo {
+    width: 1.8rem;
+    margin-right: .2rem;
+    display: inline;
+    vertical-align: middle;
+  }
+}
+.nova-algolia-card-index {
+  display: inline-block;
+  background-color: #f1f5f8;
+  padding: 0px 5px;
+  border-radius: 5px;
+}
