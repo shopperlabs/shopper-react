@@ -2,6 +2,11 @@
 
 All notable changes to `Shopper` will be documented in this file.
 
+## Version 1.0.1
+## Added
+- Algolia indexes informations to dashboard
+- Laravel Viewable model migration
+
 ## Version 1.0
 ### Added
 - Laravel-mail-editor
