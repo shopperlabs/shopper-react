@@ -13,8 +13,6 @@ Please note that this package is still under active development.
 
 ![Shopper Screenshot](https://pix.watch/kvtzzS/NK1CPv.png)
 
-![Shopper Screenshot](https://pix.watch/kvtzzS/NK1CPv.png)
-
 # Table of Contents
 
 1. [Requirements](#requirements)
