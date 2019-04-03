@@ -10,7 +10,7 @@ class Shopper
     /**
      * Shopper Version.
      */
-    const VERSION = '1.0.0';
+    const VERSION = '1.0.2';
 
     /**
      * @var
