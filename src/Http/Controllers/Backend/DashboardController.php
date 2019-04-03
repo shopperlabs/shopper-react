@@ -15,6 +15,7 @@ use Mckenziearts\Shopper\Plugins\Users\Models\User;
 use Mckenziearts\Shopper\Plugins\Users\Repositories\UserRepository;
 use Mckenziearts\Shopper\Shopper;
 use Spatie\SslCertificate\SslCertificate;
+use Thujohn\Twitter\Facades\Twitter;
 
 class DashboardController extends Controller
 {
@@ -57,6 +58,8 @@ class DashboardController extends Controller
         $php = phpversion();
 
         $algolia = $this->algoliaIndices();
+
+        dd(Twitter::getUserTimeline(['screen_name' => 'thujohn', 'count' => 20, 'format' => 'json']));
 
         try {
             $certificate = SslCertificate::createForHostName(request()->getHost());

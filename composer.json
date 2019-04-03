@@ -27,6 +27,7 @@
     "moneyphp/money": "^3.2",
     "spatie/ssl-certificate": "^1.13",
     "thomaswelton/laravel-gravatar": "^1.1",
+    "thujohn/twitter": "^2.2",
     "tightenco/ziggy": "^0.6.9",
     "toolkito/larasap": "^1.2",
     "watson/active": "^3.0"
