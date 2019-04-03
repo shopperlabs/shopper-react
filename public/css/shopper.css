@@ -18133,6 +18133,9 @@ div.mce-fullscreen {
   margin-right: 10px;
 }
 
+.element-rs {
+  align-items: center;
+}
 .element-rs i {
   margin-top: 10px;
 }
@@ -18172,6 +18175,13 @@ div.mce-fullscreen {
   background-color: #f1f5f8;
   padding: 0px 5px;
   border-radius: 5px;
+}
+
+.flex-card {
+  min-height: 120px;
+}
+.flex-card .flex-content {
+  padding-top: 7px;
 }
 
 /*! MailEclipse Template Styles

@@ -59,7 +59,18 @@ class DashboardController extends Controller
 
         $algolia = $this->algoliaIndices();
 
-        dd(Twitter::getUserTimeline(['screen_name' => 'thujohn', 'count' => 20, 'format' => 'json']));
+        try {
+            $response = Twitter::getFollowersIds(['format' => 'array']);
+            $followers = [
+                'count' => count($response['ids']),
+                'message' => __('Numbers of followers of your twitter account')
+            ];
+        } catch (\Exception $e) {
+            $followers = [
+                'count' => 0,
+                'message' => $e->getMessage(). ' '. __('Set your twitter .env variables')
+            ];
+        }
 
         try {
             $certificate = SslCertificate::createForHostName(request()->getHost());
@@ -85,7 +96,8 @@ class DashboardController extends Controller
                 'shopper',
                 'php',
                 'sslCertificate',
-                'algolia'
+                'algolia',
+                'followers'
             )
         );
     }
