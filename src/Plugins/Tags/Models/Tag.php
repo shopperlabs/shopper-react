@@ -19,6 +19,8 @@ class Tag extends Model implements ViewableContract
      */
     protected $table = 'shopper_tags';
 
+    protected $removeViewsOnDelete = true;
+
     /**
      * {@inheritDoc}
      */

@@ -25,6 +25,8 @@ class Category extends Model implements ViewableContract
      */
     protected $table = 'shopper_catalogue_categories';
 
+    protected $removeViewsOnDelete = true;
+
     /**
      * {@inheritDoc}
      */
