@@ -10,8 +10,8 @@ return [
     |
     */
     'twitter' => [
-        'consurmer_key' => env('TWITTER_CONSURMER_KEY', ''),
-        'consurmer_secret' => env('TWITTER_CONSURMER_SECRET', ''),
+        'consurmer_key' => env('TWITTER_CONSUMER_KEY', ''),
+        'consurmer_secret' => env('TWITTER_CONSUMER_SECRET', ''),
         'access_token' => env('TWITTER_ACCESS_TOKEN', ''),
         'access_token_secret' => env('TWITTER_ACCESS_TOKEN_SECRET', '')
     ],
