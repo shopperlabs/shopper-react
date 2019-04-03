@@ -2,8 +2,17 @@
 
 All notable changes to `Shopper` will be documented in this file.
 
+## Version 1.0.2
+### Added
+- Twitter and Facebook card on home dashboard
+- `thujohn/twitter` to manage twitter 
+- Shopper version status 
+
+### Changed
+- ShopperServiceProvider (register new config file `ttwitter.php`)
+
 ## Version 1.0.1
-## Added
+### Added
 - Algolia indexes informations to dashboard
 - Laravel Viewable model migration
 
