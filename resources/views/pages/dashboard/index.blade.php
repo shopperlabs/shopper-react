@@ -75,40 +75,40 @@
 
     <div class="wrapper">
 
-        {{--<div class="row">
+        <div class="row">
             <div class="col-sm-12 col-md-4">
-                <div class="card">
+                <div class="card flex-card">
                     <div class="card-body">
                         <div class="element-rs d-flex flex-row align-items-top">
                             <i class="fab fa-facebook-f text-facebook icon-md"></i>
-                            <div class="m-l-md">
-                                <h6 class="text-facebook">2.62k Likes</h6>
-                                <p class="mt-2 text-muted card-text">{{ __('Numbers of Likes of your Facebook page account') }}</p>
+                            <div class="m-l-md flex-content">
+                                <h6 class="text-facebook">0 Like</h6>
+                                <p class="mt-2 text-muted card-text">{{ __('Not available for now. Get your Access Page Token and contact us. Thanks') }}</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col-sm-12 col-md-4">
-                <div class="card">
+                <div class="card flex-card">
                     <div class="card-body">
                         <div class="element-rs d-flex flex-row align-items-top">
                             <i class="fab fa-twitter text-twitter icon-md"></i>
-                            <div class="m-l-md">
-                                <h6 class="text-twitter">2.62k Followers</h6>
-                                <p class="mt-2 text-muted card-text">{{ __('Numbers of followers of your twitter account') }}</p>
+                            <div class="m-l-md flex-content">
+                                <h6 class="text-twitter">{{ $followers['count'] }} Followers</h6>
+                                <p class="mt-2 text-muted card-text">{{ $followers['message'] }}</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col-sm-12 col-md-4">
-                <div class="card">
+                <div class="card flex-card">
                     <div class="card-body">
                         <div class="element-rs d-flex flex-row align-items-top">
                             @if ($sslCertificate['status'] === 'success')
                                 <i class="fas fa-lock text-success icon-md"></i>
-                                <div class="m-l-md">
+                                <div class="m-l-md flex-content">
                                     <h6 class="text-success">{{ request()->getHost() }} - {{ __('Valid Certificate') }}</h6>
                                     <p class="mt-2 text-muted card-text">
                                         <strong>Expiration: </strong> {{ $sslCertificate['expiration_date'] }}
@@ -117,7 +117,7 @@
                                 </div>
                             @else
                                 <i class="fas fa-lock text-danger icon-md"></i>
-                                <div class="m-l-md">
+                                <div class="m-l-md flex-content">
                                     <h6 class="text-danger">{{ request()->getHost() }} - {{ __('Invalid Certificate') }}</h6>
                                     <p class="mt-2 text-muted card-text">
                                         {{ $sslCertificate['message'] }}
@@ -128,7 +128,7 @@
                     </div>
                 </div>
             </div>
-        </div>--}}
+        </div>
 
         <div class="algolia-items bg-white">
             <div class="algolia-header mb-4">

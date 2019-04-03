@@ -17,6 +17,7 @@ use Mckenziearts\Shopper\Plugins\Users\Repositories\UserRepository;
 use Mckenziearts\Shopper\Shopper;
 use Packagist\Api\Client;
 use Spatie\SslCertificate\SslCertificate;
+use Thujohn\Twitter\Facades\Twitter;
 
 class DashboardController extends Controller
 {
@@ -70,6 +71,19 @@ class DashboardController extends Controller
         $updateAvailable = version_compare($currentVersion, $latestVersion, '<');
 
         try {
+            $response = Twitter::getFollowersIds(['format' => 'array']);
+            $followers = [
+                'count' => count($response['ids']),
+                'message' => __('Numbers of followers of your twitter account')
+            ];
+        } catch (\Exception $e) {
+            $followers = [
+                'count' => 0,
+                'message' => $e->getMessage(). ' '. __('Set your twitter .env variables')
+            ];
+        }
+
+        try {
             $certificate = SslCertificate::createForHostName(request()->getHost());
             $sslCertificate = [
                 'status' => 'success',
@@ -95,7 +109,8 @@ class DashboardController extends Controller
                 'algolia',
                 'currentVersion',
                 'latestVersion',
-                'updateAvailable'
+                'updateAvailable',
+                'followers'
             )
         );
     }

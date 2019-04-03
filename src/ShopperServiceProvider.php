@@ -81,6 +81,7 @@ class ShopperServiceProvider extends ServiceProvider
             realpath(DASHBOARD_PATH.'/config/shopper.php')    => config_path('shopper.php'),
             realpath(DASHBOARD_PATH.'/config/larasap.php')    => config_path('larasap.php'),
             realpath(DASHBOARD_PATH.'/config/scout.php')      => config_path('scout.php'),
+            realpath(DASHBOARD_PATH.'/config/ttwitter.php')      => config_path('ttwitter.php'),
             realpath(DASHBOARD_PATH.'/config/currencyConverter.php')    => config_path('currencyConverter.php'),
             realpath(DASHBOARD_PATH.'/config/laravellocalization.php')  => config_path('laravellocalization.php'),
             realpath(DASHBOARD_PATH.'/config/cartalyst.sentinel.php')   => config_path('cartalyst.sentinel.php'),

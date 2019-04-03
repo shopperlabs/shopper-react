@@ -116,6 +116,7 @@
 }
 
 .element-rs {
+  align-items: center;
   i {
     margin-top: 10px;
   }
@@ -157,4 +158,11 @@
   background-color: #f1f5f8;
   padding: 0px 5px;
   border-radius: 5px;
+}
+
+.flex-card {
+  min-height: 120px;
+  .flex-content {
+    padding-top: 7px;
+  }
 }
