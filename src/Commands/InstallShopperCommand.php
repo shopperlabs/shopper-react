@@ -136,7 +136,7 @@ class InstallShopperCommand extends Command
         ======================= Installation Complete ======================
         ");
 
-        $this->comment("To create a user, run 'artisan shopper:admin'");
+        $this->comment("To create a user, run 'php artisan shopper:admin'");
     }
 
     protected function introMessage()

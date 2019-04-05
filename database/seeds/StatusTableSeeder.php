@@ -32,6 +32,11 @@ class StatusTableSeeder extends Seeder
                     'name' => 'Canceled',
                     'sort_order' => 4
                 ],
+                [
+                    'code' => Status::STATUS_PAID,
+                    'name' => 'Paid',
+                    'sort_order' => 5
+                ],
             ];
 
             foreach ($statusList as $statusData) {
