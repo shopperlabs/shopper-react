@@ -2,6 +2,19 @@
 
 All notable changes to `Shopper` will be documented in this file.
 
+## Version 1.1
+### Added
+- Laravel 5.8 support
+- Facebook and Twitter API in the core
+
+### Changed
+- ProductController method to post to Twitter and Facebook Account
+- Config file `shopper.php` add facebook and twitter .env key config
+- Status model add `paid` status const for paid command
+
+### Removed
+- `toolkito/larasap` dependency to composer.json
+
 ## Version 1.0.2
 ### Added
 - Twitter and Facebook card on home dashboard
