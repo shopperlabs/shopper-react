@@ -20,6 +20,7 @@
     "danielme85/laravel-cconverter": "^0.2.1",
     "ext-zip": "*",
     "ext-json": "*",
+    "facebook/graph-sdk": "^5.6.1",
     "intervention/image": "^2.4",
     "intervention/imagecache": "^2.3",
     "knplabs/packagist-api": "^1.5",
