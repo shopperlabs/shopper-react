@@ -13,6 +13,7 @@ class Status extends Model
     const STATUS_IN_PROGRESS = 'in_progress';
     const STATUS_COMPETE = 'complete';
     const STATUS_CANCELED = 'canceled';
+    const STATUS_PAID = 'paid';
 
     /**
      * {@inheritDoc}
