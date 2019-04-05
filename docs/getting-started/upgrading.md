@@ -10,7 +10,7 @@ Please update your versions accordingly!
 To update to the latest version inside of your composer.json file make sure to update the version of Shopper inside the require declaration inside of your composer.json to:
 
 ```json
-"tcg/voyager": "1.1.*"
+"mckenziearts/shopper": "1.1.*"
 ```
 
 And then run composer update
