@@ -22,6 +22,8 @@ class Brand extends Model implements ViewableContract
      */
     protected $table = 'shopper_catalogue_brands';
 
+    protected $removeViewsOnDelete = true;
+
     /**
      * {@inheritDoc}
      */

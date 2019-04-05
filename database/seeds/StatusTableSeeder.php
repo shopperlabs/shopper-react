@@ -37,7 +37,6 @@ class StatusTableSeeder extends Seeder
                     'name' => 'Paid',
                     'sort_order' => 5
                 ],
-
             ];
 
             foreach ($statusList as $statusData) {

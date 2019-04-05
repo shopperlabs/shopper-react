@@ -36,12 +36,12 @@
 
                     <div class="form-group">
                         <label class="control-label">{{ __('Consurmer Key') }}</label>
-                        <input type="text" class="form-control" name="twitter_consurmer_key" value="{{ env('TWITTER_CONSUMER_KEY') }}">
+                        <input type="text" class="form-control" name="twitter_consumer_key" value="{{ env('TWITTER_CONSUMER_KEY') }}">
                     </div>
 
                     <div class="form-group">
                         <label class="control-label">{{ __('Consurmer Secret') }}</label>
-                        <input type="text" class="form-control" name="twitter_consurmer_secret" value="{{ env('TWITTER_CONSUMER_SECRET') }}">
+                        <input type="text" class="form-control" name="twitter_consumer_secret" value="{{ env('TWITTER_CONSUMER_SECRET') }}">
                     </div>
 
                     <div class="form-group">

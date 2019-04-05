@@ -3,6 +3,7 @@
 namespace Mckenziearts\Shopper\Plugins\Catalogue\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Mckenziearts\Shopper\Core\SendTo;
 use Mckenziearts\Shopper\Http\Controllers\Controller;
 use Mckenziearts\Shopper\Models\Media;
 use Mckenziearts\Shopper\Plugins\Catalogue\Http\Requests\ProductRequest;
@@ -11,7 +12,6 @@ use Mckenziearts\Shopper\Plugins\Catalogue\Models\Product;
 use Mckenziearts\Shopper\Plugins\Catalogue\Models\ProductRelation;
 use Mckenziearts\Shopper\Plugins\Catalogue\Repositories\ProductRepository;
 use Mckenziearts\Shopper\Repositories\MediaRepository;
-use Toolkito\Larasap\SendTo;
 
 class ProductController extends Controller
 {

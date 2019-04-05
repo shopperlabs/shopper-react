@@ -79,7 +79,6 @@ class ShopperServiceProvider extends ServiceProvider
     {
         $this->publishes([
             realpath(DASHBOARD_PATH.'/config/shopper.php')    => config_path('shopper.php'),
-            realpath(DASHBOARD_PATH.'/config/larasap.php')    => config_path('larasap.php'),
             realpath(DASHBOARD_PATH.'/config/scout.php')      => config_path('scout.php'),
             realpath(DASHBOARD_PATH.'/config/ttwitter.php')      => config_path('ttwitter.php'),
             realpath(DASHBOARD_PATH.'/config/currencyConverter.php')    => config_path('currencyConverter.php'),

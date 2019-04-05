@@ -30,6 +30,8 @@ class Product extends Model implements ViewableContract
      */
     protected $table = 'shopper_catalogue_products';
 
+    protected $removeViewsOnDelete = true;
+
     /**
      * {@inheritDoc}
      */
