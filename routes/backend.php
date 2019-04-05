@@ -13,8 +13,9 @@ use Illuminate\Routing\Router;
 Route::get('/', function () { return redirect()->route('shopper.dashboard.home'); });
 Route::get('work-in-progress', 'DashboardController@workInProgress')->name('wip');
 
-Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.'], function () {
-    Route::get('/', 'DashboardController@dashboard')->name('home');
+Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.'], function (Router $router) {
+    $router->get('/', 'DashboardController@dashboard')->name('home');
+    $router->get('/e-commerce', 'DashboardController@ecommerce')->name('e-commerce');
 });
 
 Route::group(['prefix' => 'media'], function (Router $router) {

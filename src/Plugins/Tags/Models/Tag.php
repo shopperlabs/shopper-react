@@ -5,7 +5,6 @@ namespace Mckenziearts\Shopper\Plugins\Tags\Models;
 use CyrildeWit\EloquentViewable\Viewable;
 use CyrildeWit\EloquentViewable\Contracts\Viewable as ViewableContract;
 use Illuminate\Database\Eloquent\Model;
-use Laravel\Scout\Searchable;
 use Mckenziearts\Shopper\Plugins\Catalogue\Models\Product;
 
 /**
@@ -13,7 +12,7 @@ use Mckenziearts\Shopper\Plugins\Catalogue\Models\Product;
  */
 class Tag extends Model implements ViewableContract
 {
-    use Searchable, Viewable;
+    use Viewable;
 
     /**
      * {@inheritDoc}

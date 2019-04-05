@@ -135,6 +135,14 @@ class Product extends Model implements ViewableContract
     }
 
     /**
+     * @return string
+     */
+    public function getActiveLabel()
+    {
+        return ($this->active === 1) ? '<span class="badge badge-success">'. __('Yes') .'</span>' : '<span class="badge badge-warning">'. __('No') .'</span>';
+    }
+
+    /**
      * Return parent name
      *
      * @return null|string

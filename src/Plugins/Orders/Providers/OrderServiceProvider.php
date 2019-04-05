@@ -28,7 +28,7 @@ class OrderServiceProvider extends ServiceProvider
      */
     public function registerDatabase() : void
     {
-        $this->loadMigrationsFrom(__DIR__ . '/Database/Migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
     }
 
     /**

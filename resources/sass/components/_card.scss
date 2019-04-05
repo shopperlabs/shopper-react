@@ -1,6 +1,7 @@
 .card {
   &.card-welcome {
     border: none;
+    box-shadow: none;
     .card-title {
       text-transform: uppercase;
       font-size: 14px;

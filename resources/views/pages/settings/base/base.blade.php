@@ -31,7 +31,7 @@
                 <label class="control-label">{{ __('Currency') }}</label>
                 <select data-placeholder="{{ __('Select a devise') }}" name="site_currency" class="select2 form-control">
                     @foreach($currencies as $currency)
-                        <option value="{{ $currency }}" @if($currency === $settings->get('site_currency')) selected @endif>
+                        <option value="{{ $currency }}" @if($currency == $settings->get('site_currency')) selected @endif>
                             {{ $currency }}
                         </option>
                     @endforeach

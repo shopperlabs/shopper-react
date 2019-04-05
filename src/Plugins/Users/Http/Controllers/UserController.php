@@ -116,7 +116,15 @@ class UserController extends Controller
      */
     public function show(int $id)
     {
-        return $this->repository->find($id, ['addresses', 'orders']);
+        $record = $this->repository->find($id, ['addresses', 'orders', 'transactions']);
+        $record->orders->map(function ($item) {
+            $item['paymentMethod'] = $item->getPaymentMethod();
+            $item['statusName'] = $item->getStatus();
+            $item['shippingType'] = $item->getShippingType();
+            $item['total_price_formated'] = shopperMoney($item->total_price, setting('site_currency'));
+        });
+
+        return $record;
     }
 
     /**
@@ -189,5 +197,14 @@ class UserController extends Controller
             return redirect()->route('shopper.users.index')
                 ->with('warning', __('There is no user you can impersonate'));
         }
+    }
+
+    /**
+     * @param int $id
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function transactions(int $id)
+    {
+        return $this->repository->find($id, ['transactions'])->transactions;
     }
 }

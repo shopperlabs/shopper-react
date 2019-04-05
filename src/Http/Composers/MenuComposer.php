@@ -64,6 +64,18 @@ class MenuComposer
             //'permission' => 'dashboard.systems.settings',
             'sort'       => 1,
         ]);
+
+        $this->shopper->menu->add('Dashboard', [
+            'slug'       => 'E-commerce',
+            'icon'       => 'fas fa-store',
+            'route'      => route('shopper.dashboard.e-commerce'),
+            'label'      => __('E-commerce'),
+            'childs'     => false,
+            'divider'    => false,
+            'active'     => 'shopper.dashboard.e-commerce',
+            //'permission' => 'dashboard.systems.settings',
+            'sort'       => 1,
+        ]);
     }
 
     /**
@@ -163,7 +175,7 @@ class MenuComposer
             'sort'       => 4,
         ]);
 
-        $this->shopper->menu->add('Catalogue', [
+        /*$this->shopper->menu->add('Catalogue', [
             'slug'       => 'Properties',
             'icon'       => 'fa fa-list',
             'route'      => route('shopper.wip'),
@@ -173,7 +185,7 @@ class MenuComposer
             'active'     => 'shopper.catalogue.properties.*',
             //'permission' => 'dashboard.systems.settings',
             'sort'       => 5,
-        ]);
+        ]);*/
     }
 
     /**
@@ -403,7 +415,7 @@ class MenuComposer
             'sort'       => 6,
         ]);
 
-        $this->shopper->menu->add('Settings', [
+        /*$this->shopper->menu->add('Settings', [
             'slug'       => 'Translate',
             'icon'       => 'icon-speech',
             'route'      =>  route('shopper.wip'),
@@ -412,9 +424,9 @@ class MenuComposer
             'divider'    => false,
             //'permission' => 'dashboard.systems.settings',
             'sort'       => 7,
-        ]);
+        ]);*/
 
-        $this->shopper->menu->add('Settings', [
+        /*$this->shopper->menu->add('Settings', [
             'slug'       => 'Analytics',
             'icon'       => 'fas fa-chart-bar',
             'route'      => route('shopper.wip'),
@@ -425,7 +437,7 @@ class MenuComposer
             'active'     => 'shopper.settings.analytics.*',
             //'permission' => 'dashboard.systems.settings',
             'sort'       => 9,
-        ]);
+        ]);*/
 
         $this->shopper->menu->add('Settings', [
             'slug'       => 'Mailable',

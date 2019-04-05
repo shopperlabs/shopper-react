@@ -25,6 +25,8 @@ import ordersColumns from './ordersColumns'
 import addressesColumns from './addressesColumns'
 import addressFields from './addressFields'
 import addressRules from './addressValidation'
+import balanceColumns from './columns/balanceColumns'
+import transactionFields from './forms/transactionForm';
 
 export default class UserForm extends ShopperComponent {
   constructor(props) {
@@ -34,18 +36,29 @@ export default class UserForm extends ShopperComponent {
       loader: false,
       loading: false,
       loadingAddresses: false,
+      loadingBalance:false,
       isCreate: true,
       visible: false,
+      visibleTransaction: false,
       hasError: false,
       disabledDelete: true,
+      disabledDeleteTransaction: true,
       confirmDelete: false,
-
+      confirmDeleteTransaction: false,
       errors: '',
       imageUrl: '',
 
       form: fields,
       addressForm: addressFields,
       addressRules: addressRules,
+      transactionFields: transactionFields,
+      options: [{
+        value: 'deposit',
+        label: 'Deposit'
+      }, {
+        value: 'withdraw',
+        label: 'Withdraw'
+      }],
       rules: {
         name: [
           { required: true, message: 'Please name is required', trigger: 'blur' }
@@ -82,16 +95,26 @@ export default class UserForm extends ShopperComponent {
           }
         ],
       },
+      rulesTransaction: {
+        amount: [
+          { required: true, message: 'Please fill the amount ', trigger: 'blur' }
+        ]
+      },
       ordersColumns: ordersColumns,
       addressesColumns: addressesColumns,
+      balanceColumns:balanceColumns,
 
       orders: [],
       addresses: [],
       selected: [],
+      selectedTransaction: [],
       countries: [],
       states: [],
+      transactions:[],
 
       currentAddress: null,
+      currentTransaction: null,
+
     }
 
     this.djsConfig = {
@@ -132,6 +155,9 @@ export default class UserForm extends ShopperComponent {
     this.getStatesByCountry = this.getStatesByCountry.bind(this)
     this.postFormAddress = this.postFormAddress.bind(this)
     this.updateFormAddress = this.updateFormAddress.bind(this)
+    this.getUserTransactions = this.getUserTransactions.bind(this)
+    this.postFormTransaction = this.postFormTransaction.bind(this)
+    this.updateFormTransaction = this.updateFormTransaction.bind(this)
   }
 
   componentDidMount() {
@@ -156,6 +182,7 @@ export default class UserForm extends ShopperComponent {
           form: Object.assign(this.state.form, data),
           addresses: data.addresses,
           orders: data.orders,
+          transactions: data.transactions,
           loading: false
         })
       })
@@ -441,19 +468,156 @@ export default class UserForm extends ShopperComponent {
   }
 
   hideModal() {
-    this.setState({visible: false})
+    this.setState({
+      visible: false,
+      visibleTransaction: false
+    })
+    this.refs.transactionForm.resetFields()
   }
 
   showModalDelete() {
     this.setState({confirmDelete: true})
   }
 
+  showModalDeleteTransaction() {
+    this.setState({confirmDeleteTransaction: true})
+  }
+
   hideModalDelete() {
-    this.setState({confirmDelete: false})
+    this.setState({confirmDelete: false,confirmDeleteTransaction: false})
+  }
+
+  deleteSelectedTransaction() {
+    if (this.state.selectedTransaction.length > 0) {
+      let ids = [], records = this.state.selectedTransaction
+
+      records.map((record, index) => ids.push(record.id))
+
+      axios
+        .delete(route('shopper.transactions.destroy', {id: ids}))
+        .then((response) => {
+          this.hideModalDelete()
+          Notification({
+            title: response.data.title,
+            message: response.data.message,
+            type: response.data.status
+          })
+          this.getUserTransactions()
+          this.setState({disabledDeleteTransaction: true})
+        })
+        .catch((error) => {
+          Message.error(error.response.data.message)
+        })
+    }
+  }
+
+  onSelectTransaction(selection) {
+    if (selection.length > 0) {
+      this.setState({
+        disabledDeleteTransaction: false,
+        selectedTransaction: selection
+      })
+    } else {
+      this.setState({
+        disabledDeleteTransaction: true,
+        selectedTransaction: selection
+      })
+    }
+  }
+
+  getUserTransactions() {
+    let element = document.getElementById('user-form')
+    this.setState({loadingBalance: true})
+
+    axios
+      .get(route('shopper.users.transactions', {id: parseInt(element.getAttribute('data-id'))}))
+      .then((response) => {
+        this.setState({
+          transactions: response.data,
+          loadingBalance: false
+        })
+      })
+      .catch((error) => {
+        this.setState({loadingBalance: false})
+        Message.error(error.response.data.message)
+      })
+  }
+
+  postFormTransaction(id) {
+    axios
+      .post(route('shopper.transactions.store', {user_id: parseInt(id)}), this.state.transactionFields)
+      .then((response) => {
+        Notification({
+          title: response.data.title,
+          message: response.data.message,
+          type: response.data.status
+        })
+        if(response.data.status === 'success'){
+          this.hideModal()
+          this.getUserTransactions()
+          this.refs.transactionForm.resetFields()
+        }
+      })
+      .catch((error) => {
+        Message.error(error.response.data.message)
+      })
+  }
+
+  updateFormTransaction(id) {
+    axios
+      .put(route('shopper.transactions.update', {id: parseInt(id)}), this.state.transactionFields)
+      .then((response) => {
+        this.hideModal()
+        Notification({
+          title: response.data.title,
+          message: response.data.message,
+          type: response.data.status
+        })
+        this.getUserTransactions()
+        this.refs.transactionForm.resetFields()
+      })
+      .catch((error) => {
+        Message.error(error.response.data.message)
+      })
+  }
+
+  submitTransaction (e) {
+    e.preventDefault()
+    let element = document.getElementById('user-form')
+
+    if (this.state.currentTransaction === null) {
+      this.postFormTransaction(element.getAttribute('data-id'))
+    } else {
+      this.updateFormTransaction(this.state.currentTransaction.id)
+    }
+  }
+
+  onTransactionCellClick(row, column, cell, event){
+    if (!cell.getAttribute('class').includes('selection')) {
+      this.setState({
+        currentTransaction: row,
+        transactionFields: Object.assign(this.state.transactionFields, row),
+        visibleTransaction: true
+      })
+    }
+  }
+
+  showModalTransaction() {
+    //this.refs.transactionForm.resetFields()
+    this.setState({
+      currentTransaction: null,
+      visibleTransaction: true
+    })
+  }
+
+  onTransactionFormChange (key, value) {
+    this.setState({
+      transactionFields: Object.assign({}, this.state.transactionFields, { [key]: value })
+    })
+
   }
 
   render() {
-    const { imageUrl } = this.state
     let componentConfig = this.componentConfig, djsConfig = this.djsConfig, eventHandlers = this.uploadEvents
 
     return (
@@ -556,6 +720,35 @@ export default class UserForm extends ShopperComponent {
                       height={250}
                       emptyText={this.trans.get('No Orders')}
                       onCellClick={this.onOrdersCellClick.bind(this)}
+                    />
+                  </Loading>
+                </Tabs.Pane>
+                <Tabs.Pane label='Balance' name='5' disabled={this.state.isCreate}>
+                  <div className="balance-actions m-b-md">
+                    <Button
+                      type="primary"
+                      icon="plus"
+                      size="small"
+                      onClick={this.showModalTransaction.bind(this)}
+                    >{this.trans.get('Add/Remove Transaction')}</Button>
+                    <Button
+                      type="danger"
+                      icon="delete"
+                      size='small'
+                      disabled={this.state.disabledDeleteTransaction}
+                      onClick={this.showModalDeleteTransaction.bind(this)}
+                    >{this.trans.get('Delete')}</Button>
+                  </div>
+                  <Loading text={this.trans.get('Loading Balance History...')} loading={this.state.loadingBalance}>
+                    <Table
+                      style={{width: '100%'}}
+                      columns={this.state.balanceColumns}
+                      data={this.state.transactions}
+                      stripe={true}
+                      height={250}
+                      onSelectChange={this.onSelectTransaction.bind(this)}
+                      emptyText={this.trans.get('No transactions made yet')}
+                      onCellClick={this.onTransactionCellClick.bind(this)}
                     />
                   </Loading>
                 </Tabs.Pane>
@@ -685,6 +878,83 @@ export default class UserForm extends ShopperComponent {
             </div>
           </div>
         </Rodal>
+        <Rodal
+          visible={this.state.confirmDeleteTransaction}
+          onClose={this.hideModalDelete.bind(this)}
+          animation='slideDown'
+          className='rodal-modal rodal-default'
+          height={150}
+          width={550}
+        >
+          <div className='modal-data'>
+            <div className='header'><h6>{this.trans.get('Confirm Delete')}</h6></div>
+            <div className='body'>
+              <p>{this.trans.get('Would you really want to delete records transaction ?')}</p>
+              <div className="text-right">
+                <Button onClick={this.deleteSelectedTransaction.bind(this)} type="danger">{this.trans.get('Delete')}</Button>
+                <Button onClick={this.hideModalDelete.bind(this)}>{this.trans.get('Cancel')}</Button>
+              </div>
+            </div>
+          </div>
+        </Rodal>
+        <Dialog
+          title={(this.state.currentTransaction !== null) ? this.trans.get('Update Transaction') : this.trans.get('Create Transaction')}
+          visible={this.state.visibleTransaction}
+          onCancel={this.hideModal.bind(this)}
+        >
+          <Dialog.Body>
+            <Form
+              className='layout'
+              ref='transactionForm'
+              model={this.state.transactionFields}
+              labelWidth='120'
+              rules={this.state.rulesTransaction}
+              labelPosition='top'
+              onSubmit={this.submitTransaction.bind(this)}
+            >
+              <Switch
+                value={this.state.transactionFields.accepted}
+                onColor='#13ce66'
+                offColor='#ff4949'
+                onValue={1}
+                offValue={0}
+                onChange={this.onTransactionFormChange.bind(this, 'accepted')}
+              >
+              </Switch>
+              <span className='active-label'>{this.trans.get('Validatation State')}</span>
+              <p className='m-b-sm'/>
+              <Layout.Row gutter="20">
+                <Layout.Col span="12">
+                  <Form.Item label={this.trans.get('Amount')} prop='amount'>
+                    <Input type='text' value={this.state.transactionFields.amount} onChange={this.onTransactionFormChange.bind(this, 'amount')} autoComplete='off' />
+                  </Form.Item>
+                </Layout.Col>
+                <Layout.Col span="12">
+                  <Form.Item label={this.trans.get('Type Of Transaction')} prop='type'>
+                    <Select value={this.state.transactionFields.type}
+                            filterable={true}
+                            onChange={this.onTransactionFormChange.bind(this, 'type')}>
+                      {
+                        this.state.options.map(el => {
+                          return <Select.Option key={el.value} label={el.label} value={el.value} />
+                        })
+                      }
+                    </Select>
+                  </Form.Item>
+                </Layout.Col>
+              </Layout.Row>
+              <Form.Item label={this.trans.get('Comment')} prop='meta'>
+                <Input type='textarea' autosize={{ minRows: 4, maxRows: 6}} value={this.state.transactionFields.meta} onChange={this.onTransactionFormChange.bind(this, 'meta')} autoComplete='off' />
+              </Form.Item>
+            </Form>
+          </Dialog.Body>
+          <Dialog.Footer className="dialog-footer">
+            <Button type="primary" onClick={this.submitTransaction.bind(this)}>
+              {(this.state.currentTransaction !== null) ? this.trans.get('Update'): this.trans.get('Create')}
+            </Button>
+            <Button onClick={this.hideModal.bind(this)}>{this.trans.get('Cancel')}</Button>
+          </Dialog.Footer>
+        </Dialog>
       </div>
     )
   }
