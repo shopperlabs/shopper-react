@@ -10,8 +10,7 @@ If you cache your configuration files please make sure to run `php artisan confi
 Below we will dive into the configuration file and give a detailed description of each configuration set.
 
 {% hint style="info" %}
-**Laravel Scout** 
-It is important to mention that Shopper works with Laravel Scout, by default Algolia is used. Full documentation of Laravel scout [here](https://laravel.com/docs/5.8/scout)
+**Laravel Scout** It is important to mention that Shopper works with Laravel Scout, by default Algolia is used. Full documentation of Laravel scout [here](https://laravel.com/docs/5.8/scout)
 {% endhint %}
 
 ## Dashboard prefix
@@ -21,6 +20,7 @@ It is important to mention that Shopper works with Laravel Scout, by default Alg
 
 'prefix' => env('DASHBOARD_PREFIX', 'console'),
 ```
+
 The system installed on the website can be easily defined by the dashboard prefix, for example it is `wp-admin` for WordPress, and it gives an opportunity to automatically search for old vulnerable versions of software and gain control over it.
 
 There are other reasons but we won't speak of them in this section. The point is that Shopper allows to change dashboard prefix to every other name, `admin` or `administrator` for example.
@@ -32,6 +32,7 @@ There are other reasons but we won't speak of them in this section. The point is
 
 'currency'  => env('CURRENCY_SYMBOL', 'XAF'),
 ```
+
 This value of the default currency for your store. It is the default value set in the database `shopper_settings` table.
 
 ## Additional resources
@@ -88,14 +89,15 @@ You may add as much new middlewares as you want, as example the middleware for I
 ],
 ```
 
-Shopper provide 2 folders for storage. The `uploads` folder contain all public and protected files that uploaded by administration forms (products, categories, brands and users images).
-The second folder `media` is for the `filemanager`. You nedd to create this folder in the Media Menu on Shopper admin dashboard.
+Shopper provide 2 folders for storage. The `uploads` folder contain all public and protected files that uploaded by administration forms \(products, categories, brands and users images\). The second folder `media` is for the `filemanager`. You nedd to create this folder in the Media Menu on Shopper admin dashboard.
 
 ## Others config
 
 Shopper has many other configurations files as we said. Shopper come with
-- [Scout Extended](https://github.com/algolia/scout-extended): To provide admin product, category, brand and user research
-- [Laravel Localization](https://github.com/mcamara/laravel-localization): To make dashboard localization
-- [Sentinel](https://github.com/cartalyst/sentinel): the auth provider of Laravel Shopper admin
-- [Laravel Cconverter](https://github.com/danielme85/laravel-cconverter): to provide money format and money convertion
-- [Larasap](https://github.com/alihesari/laravel-social-auto-posting): to publish product to your Facebook Page and Twitter account
+
+* [Scout Extended](https://github.com/algolia/scout-extended): To provide admin product, category, brand and user research
+* [Laravel Localization](https://github.com/mcamara/laravel-localization): To make dashboard localization
+* [Sentinel](https://github.com/cartalyst/sentinel): the auth provider of Laravel Shopper admin
+* [Laravel Cconverter](https://github.com/danielme85/laravel-cconverter): to provide money format and money convertion
+* [Larasap](https://github.com/alihesari/laravel-social-auto-posting): to publish product to your Facebook Page and Twitter account
+
