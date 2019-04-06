@@ -6,17 +6,17 @@ Shopper has a few requirements you should be aware of before installing
 
 Make sure your server meets the following requirements.
 
--   Apache 2.2+ or nginx
--   MySQL Server 5.7.8+ , Mariadb 10.3.2+ or PostgreSQL
--   PHP Version 7.1.3+
--   Composer
+* Apache 2.2+ or nginx
+* MySQL Server 5.7.8+ , Mariadb 10.3.2+ or PostgreSQL
+* PHP Version 7.1.3+
+* Composer
 
 ## Install
 
-Shopper is realy easy to install. After creating your new Laravel application (5.6+) you can include the Shopper package with the following command:
+Shopper is realy easy to install. After creating your new Laravel application \(5.6+\) you can include the Shopper package with the following command:
 
 ```bash
-composer require mckenziearts/shopper  
+composer require mckenziearts/shopper
 ```
 
 Next make sure to create a new database and add your database credentials to your .env file, you will also want to add your application URL in the `APP_URL` variable:
@@ -44,7 +44,7 @@ If you see this error message you have an outdated version of MySQL, use the fol
 
 And we're all good to go!
 
-Run the following command to create a user with supreme (at the moment of creation) rights:
+Run the following command to create a user with supreme \(at the moment of creation\) rights:
 
 ```bash
 php artisan shopper:admin
@@ -59,7 +59,7 @@ php artisan vendor:publish --provider="Mckenziearts\Shopper\ShopperServiceProvid
 php artisan vendor:publish --all
 ```
 
-Extend your current User Model (usually `app/User.php`) using the `Mckenziearts\Shopper\Plugins\Users\Models\User as ShopperUser` alias:
+Extend your current User Model \(usually `app/User.php`\) using the `Mckenziearts\Shopper\Plugins\Users\Models\User as ShopperUser` alias:
 
 ```php
 <?php
@@ -72,8 +72,7 @@ class User extends ShopperUser
 }
 ```
 
-To run the project you may use the built-in server:
-`php artisan serve`
+To run the project you may use the built-in server: `php artisan serve`
 
 After that, run `composer dump-autoload` to finish your installation!
 
@@ -82,3 +81,4 @@ To view Shopper's dashboard go to:
 ```php
 http://localhost:8000/console
 ```
+

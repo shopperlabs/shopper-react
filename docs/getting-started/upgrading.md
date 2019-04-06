@@ -3,19 +3,21 @@
 ## Upgrading 1.0 to 1.1
 
 ### Laravel and PHP versions
-Since Laravel 5.8 support has been added to Shopper 1.1, the minimum PHP version is 7.1. 
-Please update your versions accordingly!
+
+Since Laravel 5.8 support has been added to Shopper 1.1, the minimum PHP version is 7.1. Please update your versions accordingly!
 
 ### Update your Composer.json
+
 To update to the latest version inside of your composer.json file make sure to update the version of Shopper inside the require declaration inside of your composer.json to:
 
-```json
+```javascript
 "mckenziearts/shopper": "1.1.*"
 ```
 
 And then run composer update
 
 ### Update Configuration
+
 The `shopper.php` configuration file has had a few changes.
 
 the settings
@@ -54,3 +56,4 @@ was added. This allows you to post to your Twitter account and Facebook page usi
 ## Troubleshooting
 
 Make sure to send us an email on monneylobe@gmail.com if you have any problems and we will try to help you. Thank you.
+
