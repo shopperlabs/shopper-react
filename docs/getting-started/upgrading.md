@@ -23,6 +23,7 @@ The `shopper.php` configuration file has had a few changes.
 the settings
 
 ```php
+<?php
 /*
 |--------------------------------------------------------------------------
 | Twitter API key
@@ -49,6 +50,7 @@ the settings
     'page_access_token' => env('FACEBOOK_PAGE_ACCESS_TOKEN', '')
 ],
 ...
+
 ```
 
 was added. This allows you to post to your Twitter account and Facebook page using Shopper core code.

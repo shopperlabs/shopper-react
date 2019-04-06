@@ -1,6 +1,6 @@
 # Configurations
 
-With the installation of Shopper you will find new configurations files located at `config/shopper.php`, `config/larasap.php`, `config/scout.php`, `config/currencyConverter.php`, `config/laravellocalization.php` and `config/cartalyst.sentinel.php`.  
+With the installation of Shopper you will find new configurations files located at `config/shopper.php`, `config/ttwiter.php`, `config/scout.php`, `config/currencyConverter.php`, `config/laravellocalization.php` and `config/cartalyst.sentinel.php`.  
 And the `shopper.php` file is main for platform, you can find various options to change the configuration of your Shopper installation.
 
 {% hint style="info" %}
@@ -99,5 +99,4 @@ Shopper has many other configurations files as we said. Shopper come with
 * [Laravel Localization](https://github.com/mcamara/laravel-localization): To make dashboard localization
 * [Sentinel](https://github.com/cartalyst/sentinel): the auth provider of Laravel Shopper admin
 * [Laravel Cconverter](https://github.com/danielme85/laravel-cconverter): to provide money format and money convertion
-* [Larasap](https://github.com/alihesari/laravel-social-auto-posting): to publish product to your Facebook Page and Twitter account
-
+* [thujohn/twitter](https://github.com/thujohn/twitter): to easily manage Twitter API
