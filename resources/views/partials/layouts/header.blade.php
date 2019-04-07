@@ -47,9 +47,6 @@
                             </li>
                             <li class="divider"></li>
                             <li><a href="{{ url('/') }}" target="_blank">{{ __('Preview website') }}</a></li>
-                            @if ($profile->isSuperUser())
-                                <li><a href="{{ route('shopper.users.impersonate') }}" target="_blank">{{ __('Impersonate user') }}</a></li>
-                            @endif
                             <li><a href="{{ route('shopper.settings.translate.index') }}">{{ __('Backend Preferences') }}</a></li>
                             <li class="divider"></li>
                             <li>

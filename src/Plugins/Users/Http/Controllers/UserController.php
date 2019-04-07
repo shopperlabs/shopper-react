@@ -181,25 +181,6 @@ class UserController extends Controller
     }
 
     /**
-     * Impersonate user
-     *
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function impersonate()
-    {
-        $user = $this->repository->getModel()->first();
-
-        if ($user) {
-            Auth::login($user);
-
-            return redirect(url('/'))->with('status', __("Impersonate as {$user->name}"));
-        } else {
-            return redirect()->route('shopper.users.index')
-                ->with('warning', __('There is no user you can impersonate'));
-        }
-    }
-
-    /**
      * @param int $id
      * @return \Illuminate\Database\Eloquent\Collection
      */
