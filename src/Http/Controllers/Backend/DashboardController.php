@@ -66,7 +66,7 @@ class DashboardController extends Controller
             return $version->getVersion();
         }, $package->getVersions());
 
-        $currentVersion = Shopper::version();
+        $currentVersion = Version::normalize(Shopper::version());
         $latestVersion = Version::latest($versions);
         $updateAvailable = version_compare($currentVersion, $latestVersion, '<');
 
