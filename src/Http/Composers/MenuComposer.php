@@ -199,6 +199,18 @@ class MenuComposer
             //'permission' => 'dashboard.systems.settings',
             'sort'       => 6,
         ]);
+
+        $this->shopper->menu->add('Catalogue', [
+            'slug'       => 'Banners',
+            'icon'       => 'fas fa-images',
+            'route'      => route('shopper.catalogue.banners.index'),
+            'label'      => __('Banners'),
+            'childs'     => false,
+            'divider'    => false,
+            'active'     => 'shopper.catalogue.banners.*',
+            //'permission' => 'dashboard.systems.settings',
+            'sort'       => 7,
+        ]);
     }
 
     /**
@@ -349,7 +361,7 @@ class MenuComposer
     {
         $this->shopper->menu->add('Main', [
             'slug'       => 'Media',
-            'icon'       => 'icon-picture',
+            'icon'       => 'fas fa-image',
             'route'      => '#',
             'label'      => __('Media'),
             'childs'     => true,
@@ -361,7 +373,7 @@ class MenuComposer
 
         $this->shopper->menu->add('Media', [
             'slug'       => 'Filemanager',
-            'icon'       => 'icon-picture',
+            'icon'       => 'fas fa-image',
             'route'      => route('shopper.media.index'),
             'label'      => __('Filemanager'),
             'groupname'  => __('Browse Media'),

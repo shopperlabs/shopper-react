@@ -92,4 +92,14 @@ class SizeRepository
     {
         return $this->model->paginate($count);
     }
+
+    /**
+     * Return record list
+     *
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
+    public function sizesList()
+    {
+        return $this->model->get();
+    }
 }

@@ -36,7 +36,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5">
+                            <td colspan="3">
                                 @component('shopper::layouts.emptydata')
                                     <span class="mt-4">{{ __("We didn't find anything - just empty space.") }}</span>
                                     <a class="btn btn-primary mt-3" href="{{ route('shopper.catalogue.sizes.create') }}">{{ __('Add New Size') }}</a>

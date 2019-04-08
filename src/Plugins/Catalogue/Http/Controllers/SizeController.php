@@ -118,4 +118,14 @@ class SizeController extends Controller
             ->route('shopper.catalogue.sizes.index')
             ->with('success', __('Record deleted successfully'));
     }
+
+    /**
+     * Return list of records
+     *
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
+    public function sizesList()
+    {
+        return $this->repository->sizesList();
+    }
 }

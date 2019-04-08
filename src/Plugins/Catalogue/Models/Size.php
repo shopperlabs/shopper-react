@@ -15,4 +15,20 @@ class Size extends Model
      * {@inheritDoc}
      */
     protected $fillable = ['name', 'dimension'];
+
+    /**
+     * {@inheritDoc}
+     */
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function banner()
+    {
+        return $this->hasOne(Banner::class);
+    }
 }

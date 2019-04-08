@@ -49,4 +49,8 @@ Route::group([
 
     /** Sizes route list */
     $router->resource('sizes', 'SizeController');
+    $router->get('sizes-list', 'SizeController@sizesList')->name('sizes.list');
+
+    /** Banners route list */
+    $router->resource('banners', 'BannerController');
 });
