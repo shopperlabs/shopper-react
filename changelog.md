@@ -2,6 +2,11 @@
 
 All notable changes to `Shopper` will be documented in this file.
 
+## Version 1.1.1
+### Added
+- Sizes slides management
+- Banners management
+
 ## Version 1.1
 ### Added
 - Laravel 5.8 support
