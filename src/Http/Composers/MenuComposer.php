@@ -186,6 +186,19 @@ class MenuComposer
             //'permission' => 'dashboard.systems.settings',
             'sort'       => 5,
         ]);*/
+
+        $this->shopper->menu->add('Catalogue', [
+            'slug'       => 'Sizes',
+            'icon'       => 'fas fa-crop',
+            'route'      => route('shopper.catalogue.sizes.index'),
+            'label'      => __('Sizes'),
+            'groupname'  => __('Banners & Sizes'),
+            'childs'     => false,
+            'divider'    => false,
+            'active'     => 'shopper.catalogue.sizes.*',
+            //'permission' => 'dashboard.systems.settings',
+            'sort'       => 6,
+        ]);
     }
 
     /**

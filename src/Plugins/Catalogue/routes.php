@@ -47,4 +47,6 @@ Route::group([
     /** Review route list */
     $router->resource('reviews', 'ReviewController');
 
+    /** Sizes route list */
+    $router->resource('sizes', 'SizeController');
 });

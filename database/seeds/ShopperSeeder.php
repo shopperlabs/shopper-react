@@ -20,5 +20,6 @@ class ShopperSeeder extends Seeder
         $this->seed('StatusTableSeeder');
         $this->seed('CountriesTableSeeder');
         $this->seed('SettingsTableSeeder');
+        $this->seed('SizesTableSeeder');
     }
 }

@@ -24,6 +24,7 @@ import './components/tags/TagFrom'
 import './components/reviews/ReviewForm'
 import './components/promo/DiscountForm'
 import './components/promo/CouponForm'
+import './components/sizes/SizeForm'
 import translate from './helpers/translate'
 
 // Language management
