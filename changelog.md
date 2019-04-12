@@ -2,6 +2,13 @@
 
 All notable changes to `Shopper` will be documented in this file.
 
+## Version 1.1.2
+### Changed
+- Return index Lists of Model by last created 
+
+### Removed
+- Category name unique validation  
+
 ## Version 1.1.1
 ### Added
 - Sizes slides management

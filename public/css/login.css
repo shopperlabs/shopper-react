@@ -10030,11 +10030,11 @@ body.my-login-page {
   height: 5px;
   border-radius: 50%;
   position: relative;
-  -webkit-animation: loader12-u9bo4uw 1s linear alternate infinite;
-          animation: loader12-u9bo4uw 1s linear alternate infinite;
+  -webkit-animation: loader12-u3ds8i9 1s linear alternate infinite;
+          animation: loader12-u3ds8i9 1s linear alternate infinite;
   top: -11px;
 }
-@-webkit-keyframes loader12-u9bo4uw {
+@-webkit-keyframes loader12-u3ds8i9 {
   0% {
     box-shadow: -60px 10px 0 2px #f5f5f5, -30px 10px 0 0 rgba(245, 245, 245, 0.2), 0 10px 0 0 rgba(245, 245, 245, 0.2), 30px 10px 0 0 rgba(245, 245, 245, 0.2), 60px 10px 0 0 rgba(245, 245, 245, 0.2);
   }
@@ -10051,7 +10051,7 @@ body.my-login-page {
     box-shadow: -60px 10px 0 0 rgba(245, 245, 245, 0.2), -30px 10px 0 0 rgba(245, 245, 245, 0.2), 0 10px 0 0 rgba(245, 245, 245, 0.2), 30px 10px 0 0 rgba(245, 245, 245, 0.2), 60px 10px 0 2px #f5f5f5;
   }
 }
-@keyframes loader12-u9bo4uw {
+@keyframes loader12-u3ds8i9 {
   0% {
     box-shadow: -60px 10px 0 2px #f5f5f5, -30px 10px 0 0 rgba(245, 245, 245, 0.2), 0 10px 0 0 rgba(245, 245, 245, 0.2), 30px 10px 0 0 rgba(245, 245, 245, 0.2), 60px 10px 0 0 rgba(245, 245, 245, 0.2);
   }
