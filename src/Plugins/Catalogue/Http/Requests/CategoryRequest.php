@@ -20,7 +20,7 @@ class CategoryRequest extends BaseRequest
      * @var array
      */
     public $storeRules = [
-        'name' => 'required|max:255|unique:shopper_catalogue_categories',
+        'name' => 'required|max:255',
         'slug' => 'max:255|unique:shopper_catalogue_categories',
     ];
 
@@ -32,7 +32,7 @@ class CategoryRequest extends BaseRequest
     public function getUpdateRules()
     {
         return [
-            'name'  => 'sometimes|required|max:255|unique:shopper_catalogue_categories,id,' . $this->get('id'),
+            'name'  => 'sometimes|required|max:255',
             'slug'  => 'sometimes|max:255|unique:shopper_catalogue_categories,id,' . $this->get('id'),
         ];
     }

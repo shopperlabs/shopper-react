@@ -96,7 +96,7 @@ class ReviewRepository
      */
     public function paginateList(int $count = 10)
     {
-        return $this->model->paginate($count);
+        return $this->model->orderByDesc('created_at')->paginate($count);
     }
 
     /**

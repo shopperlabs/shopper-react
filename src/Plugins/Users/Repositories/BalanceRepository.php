@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by IntelliJ IDEA.
- * User: Mac
- * Date: 2019-03-27
- * Time: 15:12
- */
 
 namespace Mckenziearts\Shopper\Plugins\Users\Repositories;
-
 
 use Mckenziearts\Shopper\Plugins\Users\Models\Transaction;
 use Mckenziearts\Shopper\Plugins\Users\Models\User;
@@ -60,7 +53,6 @@ class BalanceRepository
         }
 
         return false;
-
     }
 
     /**
@@ -73,8 +65,8 @@ class BalanceRepository
     public function update(array $data, $id)
     {
         return Transaction::findOrFail($id)->update([
-            'amount'        => $data['amount'],
-            'meta'    => $data['meta'],
+            'amount'   => $data['amount'],
+            'meta'     => $data['meta'],
             'accepted' => $data['accepted'],
         ]);
     }
@@ -89,5 +81,4 @@ class BalanceRepository
     {
         return Transaction::whereIn('id', explode(',', $ids))->delete();
     }
-
 }

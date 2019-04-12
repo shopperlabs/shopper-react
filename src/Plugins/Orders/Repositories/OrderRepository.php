@@ -100,6 +100,7 @@ class OrderRepository
     {
         return $this->model
             ->with(['user', 'status', 'shippingType', 'paymentMethod'])
+            ->orderByDesc('created_at')
             ->paginate($count);
     }
 

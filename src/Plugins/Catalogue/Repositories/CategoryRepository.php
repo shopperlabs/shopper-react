@@ -118,7 +118,7 @@ class CategoryRepository
      */
     public function paginateList(int $count = 10)
     {
-        return $this->model->with('parent')->paginate($count);
+        return $this->model->with('parent')->orderByDesc('created_at')->paginate($count);
     }
 
     /**
@@ -128,6 +128,6 @@ class CategoryRepository
      */
     public function active()
     {
-        return $this->model->where('active', 1);
+        return $this->model->where('active', 1)->orderByDesc('created_at');
     }
 }
