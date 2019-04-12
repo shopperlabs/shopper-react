@@ -102,7 +102,7 @@ class ProductRepository
      */
     public function paginateList(int $count = 10)
     {
-        return $this->model->with(['brand', 'category'])->paginate($count);
+        return $this->model->with(['brand', 'category'])->orderByDesc('created_at')->paginate($count);
     }
 
     /**
@@ -126,7 +126,7 @@ class ProductRepository
     {
         return $this->model
             ->with($relations)
-            ->orderBy('created_at', 'desc')
+            ->latest()
             ->limit($results)
             ->get();
     }
