@@ -9,3 +9,8 @@
 * [Upgrading](getting-started/upgrading.md)
 * [Configurations](getting-started/configurations.md)
 
+## Architecture concepts
+
+* [Media Manager](architecture-concepts/media-manager.md)
+* [Settings](architecture-concepts/settings.md)
+* [Helper methods](architecture-concepts/helper-methods.md)

@@ -114,7 +114,7 @@ http://localhost:8000/console
 ```
 
 ## Documentation
-Official documentation is available [Here](https://shopper.gitbook.io/docs).
+Official documentation is available [Here](https://docs.shopper.com).
 
 
 ## Change log  
