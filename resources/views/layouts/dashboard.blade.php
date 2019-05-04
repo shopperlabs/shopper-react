@@ -29,6 +29,14 @@
     @endif
     @stack('css')
     <link rel="stylesheet" type="text/css" href="{{ mix('/css/shopper.css', 'shopper') }}">
+
+    @if(!empty(config('shopper.resources.stylesheets')))
+        <!-- Additional CSS -->
+        @foreach(config('shopper.resources.stylesheets') as $css)
+            <link rel="stylesheet" type="text/css" href="{{ asset($css) }}">
+        @endforeach
+    @endif
+
 </head>
 <body>
 
@@ -56,7 +64,11 @@
         window.messages = @json($messages)
     </script>
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
+
+    @if (!is_null(env('ALGOLIA_APP_ID')) && !empty(env('ALGOLIA_APP_ID')))
+        <script src="https://cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
+    @endif
+
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lozad/dist/lozad.min.js"></script>
     @if ( request()->route()->getName() === 'shopper.settings.mails.templates.newTemplate' ||
           request()->route()->getName() === 'shopper.settings.mails.mailables.editMailable' ||
@@ -72,6 +84,12 @@
     @endif
     <script src="{{ mix('/js/shopper.js','shopper')}}" type="text/javascript"></script>
     @stack('scripts')
+    @if(!empty(config('shopper.resources.scripts')))
+        <!-- Additional Javascript -->
+        @foreach(config('shopper.resources.scripts') as $js)
+            <script type="text/javascript" src="{{ asset($js) }}"></script>
+        @endforeach
+    @endif
 
 </body>
 </html>

@@ -20,10 +20,18 @@
         <div class="col-md-1">
             <a href="javascript:;" class='submenu-bar' id="menu-burger"><i class='icon ion-navicon-round'></i></a>
         </div>
-        <div class="col-xs-12 col-md-3">
-            <input type="search" id="search-input" placeholder="{{ __('Search here...') }}" name="search" class="form-control" />
-            <span id="algolia" data-appID="{{ env('ALGOLIA_APP_ID', '') }}" data-client-secret="{{ env('ALGOLIA_CLIENT_SECRET', '') }}" data-logo="{{ asset('shopper/img/search-by-algolia.svg') }}"></span>
-        </div>
+        @if (!is_null(env('ALGOLIA_APP_ID')) && !empty(env('ALGOLIA_APP_ID')))
+
+            <div class="col-xs-12 col-md-3">
+                <input type="search" id="search-input" placeholder="{{ __('Search here...') }}" name="search" class="form-control" />
+                <span id="algolia" data-appID="{{ env('ALGOLIA_APP_ID', '') }}" data-client-secret="{{ env('ALGOLIA_CLIENT_SECRET', '') }}" data-logo="{{ asset('shopper/img/search-by-algolia.svg') }}"></span>
+            </div>
+
+        @else
+
+            <div class="col-xs-12 col-md-3"></div>
+
+        @endif
         <div class="col-xs-12 col-md-8">
             <div class='pull-right'>
                 <ul class="aside-nav navbar-nav">

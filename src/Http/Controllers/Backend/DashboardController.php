@@ -60,11 +60,15 @@ class DashboardController extends Controller
 
         $algolia = $this->algoliaIndices();
 
-        $client = new Client();
-        $package = $client->get('mckenziearts/shopper');
-        $versions = array_map(function ($version) {
-            return $version->getVersion();
-        }, $package->getVersions());
+        try {
+            $client = new Client();
+            $package = $client->get('mckenziearts/shopper');
+            $versions = array_map(function ($version) {
+                return $version->getVersion();
+            }, $package->getVersions());
+        } catch (\Exception $e) {
+            $versions = ['0.0.0'];
+        }
 
         $currentVersion = Version::normalize(Shopper::version());
         $latestVersion = Version::latest($versions);
@@ -132,6 +136,11 @@ class DashboardController extends Controller
         );
     }
 
+    /**
+     * Algolia Indices
+     *
+     * @return array|null
+     */
     public function algoliaIndices() : ?array
     {
         try {
