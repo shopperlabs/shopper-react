@@ -39,7 +39,7 @@ const messages = window.messages
  */
 
 // Button Menu Sidebar
-let buttonMenu = document.getElementById('menu-burger')
+const buttonMenu = document.getElementById('menu-burger')
 
 buttonMenu.addEventListener('click', function (event) {
   event.preventDefault()
@@ -48,7 +48,7 @@ buttonMenu.addEventListener('click', function (event) {
 })
 
 // Click on tr table record
-let trs = document.querySelectorAll('.record-link')
+const trs = document.querySelectorAll('.record-link')
 
 trs.forEach((tr) => {
   tr.addEventListener('click', function (event) {
@@ -60,7 +60,7 @@ trs.forEach((tr) => {
 })
 
 // Hide alert
-let alerts =  document.querySelectorAll('.alert')
+const alerts =  document.querySelectorAll('.alert')
 
 if (alerts.length > 0) {
   alerts.forEach((alert) => {
@@ -87,96 +87,98 @@ function toggleSidebar() {
  * Algolia search
  * ==============================================================================
  */
-let autocomplete = require('autocomplete.js'),
-  algolia = document.getElementById('algolia'),
-  algoliaLogo = algolia.getAttribute('data-logo'),
-  client = algoliasearch(algolia.getAttribute('data-appID'), algolia.getAttribute('data-client-secret')),
-  products = client.initIndex('shopper_catalogue_products'),
-  categories = client.initIndex('shopper_catalogue_categories'),
-  brands = client.initIndex('shopper_catalogue_brands'),
-  users = client.initIndex('shopper_users')
+const algolia = document.getElementById('algolia')
+if (algolia) {
+  const autocomplete = require('autocomplete.js'),
+    algoliaLogo = algolia.getAttribute('data-logo'),
+    client = algoliasearch(algolia.getAttribute('data-appID'), algolia.getAttribute('data-client-secret')),
+    products = client.initIndex('shopper_catalogue_products'),
+    categories = client.initIndex('shopper_catalogue_categories'),
+    brands = client.initIndex('shopper_catalogue_brands'),
+    users = client.initIndex('shopper_users')
 
-autocomplete('#search-input', { hint: false }, [
-  {
-    source: autocomplete.sources.hits(products, { hitsPerPage: 5 }),
-    displayKey: 'name',
-    templates: {
-      header: '<h4 class="algolia-search-title">Products</h4>',
-      suggestion: function(suggestion) {
-        return `<span>${suggestion._highlightResult.name.value}</span>`
-      },
-      empty: function (result) {
-        return `<span>Sorry no results for ${result.query}</span>`
+  autocomplete('#search-input', { hint: false }, [
+    {
+      source: autocomplete.sources.hits(products, { hitsPerPage: 5 }),
+      displayKey: 'name',
+      templates: {
+        header: '<h4 class="algolia-search-title">Products</h4>',
+        suggestion: function(suggestion) {
+          return `<span>${suggestion._highlightResult.name.value}</span>`
+        },
+        empty: function (result) {
+          return `<span>Sorry no results for ${result.query}</span>`
+        }
       }
-    }
-  },
-  {
-    source: autocomplete.sources.hits(categories, { hitsPerPage: 5 }),
-    displayKey: 'name',
-    templates: {
-      header: '<h4 class="algolia-search-title">Categories</h4>',
-      suggestion: function(suggestion) {
-        return `<span>${suggestion._highlightResult.name.value}</span>`
-      },
-      empty: function (result) {
-        return `<span>No categories for the query ${result.query}</span>`
+    },
+    {
+      source: autocomplete.sources.hits(categories, { hitsPerPage: 5 }),
+      displayKey: 'name',
+      templates: {
+        header: '<h4 class="algolia-search-title">Categories</h4>',
+        suggestion: function(suggestion) {
+          return `<span>${suggestion._highlightResult.name.value}</span>`
+        },
+        empty: function (result) {
+          return `<span>No categories for the query ${result.query}</span>`
+        }
       }
-    }
-  },
-  {
-    source: autocomplete.sources.hits(brands, { hitsPerPage: 5 }),
-    displayKey: 'name',
-    templates: {
-      header: '<h4 class="algolia-search-title">Brands</h4>',
-      suggestion: function(suggestion) {
-        return `<span>${suggestion._highlightResult.name.value}</span>`
-      },
-      empty: function (result) {
-        return `<span>No brand for the query ${result.query}</span>`
+    },
+    {
+      source: autocomplete.sources.hits(brands, { hitsPerPage: 5 }),
+      displayKey: 'name',
+      templates: {
+        header: '<h4 class="algolia-search-title">Brands</h4>',
+        suggestion: function(suggestion) {
+          return `<span>${suggestion._highlightResult.name.value}</span>`
+        },
+        empty: function (result) {
+          return `<span>No brand for the query ${result.query}</span>`
+        }
       }
-    }
-  },
-  {
-    source: autocomplete.sources.hits(users, { hitsPerPage: 5 }),
-    displayKey: 'name',
-    templates: {
-      header: '<h4 class="algolia-search-title">Users</h4>',
-      footer: `<span class="search-foot">
+    },
+    {
+      source: autocomplete.sources.hits(users, { hitsPerPage: 5 }),
+      displayKey: 'name',
+      templates: {
+        header: '<h4 class="algolia-search-title">Users</h4>',
+        footer: `<span class="search-foot">
         <a href="https://www.algolia.com" target="_blank">
           <img src="${algoliaLogo}" width="75" height="25">
         </a>
       </span>`,
-      suggestion: function(suggestion) {
-        return `<span>${suggestion._highlightResult.name.value +' '+ suggestion.last_name}</span>`
-      },
-      empty: function (result) {
-        return `<span>No users for the query ${result.query}</span>`
+        suggestion: function(suggestion) {
+          return `<span>${suggestion._highlightResult.name.value +' '+ suggestion.last_name}</span>`
+        },
+        empty: function (result) {
+          return `<span>No users for the query ${result.query}</span>`
+        }
       }
     }
-  }
-]).on('autocomplete:selected', function(event, suggestion, dataset, context) {
-  switch (dataset) {
-    case 1:
-      window.location.href = route('shopper.catalogue.products.edit', {id: suggestion.id})
-      break
-    case 2:
-      window.location.href = route('shopper.catalogue.categories.edit', {id: suggestion.id})
-      break
-    case 3:
-      window.location.href = route('shopper.catalogue.brands.edit', {id: suggestion.id})
-      break
-    case 4:
-      window.location.href = route('shopper.users.edit', {id: suggestion.id})
-      break
-  }
-})
+  ]).on('autocomplete:selected', function(event, suggestion, dataset, context) {
+    switch (dataset) {
+      case 1:
+        window.location.href = route('shopper.catalogue.products.edit', {id: suggestion.id})
+        break
+      case 2:
+        window.location.href = route('shopper.catalogue.categories.edit', {id: suggestion.id})
+        break
+      case 3:
+        window.location.href = route('shopper.catalogue.brands.edit', {id: suggestion.id})
+        break
+      case 4:
+        window.location.href = route('shopper.users.edit', {id: suggestion.id})
+        break
+    }
+  })
+}
 
 /**
  * ==============================================================================
  * Filemanager
  * ==============================================================================
  */
-let filemaner = document.getElementById('fm')
+const filemaner = document.getElementById('fm')
 
 if (filemaner) {
   document.addEventListener('DOMContentLoaded', function() {

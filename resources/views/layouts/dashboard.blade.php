@@ -56,7 +56,11 @@
         window.messages = @json($messages)
     </script>
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
+
+    @if (!is_null(env('ALGOLIA_APP_ID')) && !empty(env('ALGOLIA_APP_ID')))
+        <script src="https://cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
+    @endif
+
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lozad/dist/lozad.min.js"></script>
     @if ( request()->route()->getName() === 'shopper.settings.mails.templates.newTemplate' ||
           request()->route()->getName() === 'shopper.settings.mails.mailables.editMailable' ||
