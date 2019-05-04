@@ -29,6 +29,14 @@
     @endif
     @stack('css')
     <link rel="stylesheet" type="text/css" href="{{ mix('/css/shopper.css', 'shopper') }}">
+
+    @if(!empty(config('shopper.resources.stylesheets')))
+        <!-- Additional CSS -->
+        @foreach(config('shopper.resources.stylesheets') as $css)
+            <link rel="stylesheet" type="text/css" href="{{ asset($css) }}">
+        @endforeach
+    @endif
+
 </head>
 <body>
 
@@ -76,6 +84,12 @@
     @endif
     <script src="{{ mix('/js/shopper.js','shopper')}}" type="text/javascript"></script>
     @stack('scripts')
+    @if(!empty(config('shopper.resources.scripts')))
+        <!-- Additional Javascript -->
+        @foreach(config('shopper.resources.scripts') as $js)
+            <script type="text/javascript" src="{{ asset($js) }}"></script>
+        @endforeach
+    @endif
 
 </body>
 </html>
