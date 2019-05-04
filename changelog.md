@@ -2,6 +2,13 @@
 
 All notable changes to `Shopper` will be documented in this file.
 
+## version 1.1.3
+- Security release
+
+## Changed
+- Load custom css and js to admin dashboard
+- Update jQuery version 
+
 ## Version 1.1.2
 ### Changed
 - Return index Lists of Model by last created 
