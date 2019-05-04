@@ -16,7 +16,7 @@
     "bootstrap-tagsinput": "^0.7",
     "element-react": "^1.4.24",
     "element-theme-default": "^1.4.13",
-    "jquery": "^3.3.1",
+    "jquery": ">=3.4.0",
     "lang.js": "^1.1.14",
     "laravel-file-manager": "^2.1.4",
     "laravel-mix": "^4.0.7",
