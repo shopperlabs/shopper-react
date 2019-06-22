@@ -5,6 +5,11 @@ const addressesColumns = [
     type: 'selection'
   },
   {
+      label: translate.get('Name'),
+      prop: "name",
+      sortable: true
+  },
+  {
     label: translate.get('Country'),
     prop: "country_id",
     sortable: true

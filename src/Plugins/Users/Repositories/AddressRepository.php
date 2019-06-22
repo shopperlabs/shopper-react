@@ -37,6 +37,7 @@ class AddressRepository
     {
         return $this->model->create([
             'active'        => $data['active'],
+            'name'          => $data['name'],
             'country_id'    => $data['country_id'],
             'state_id'      => $data['state_id'],
             'city'          => $data['city'],
