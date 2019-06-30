@@ -114,7 +114,7 @@ http://localhost:8000/console
 ```
 
 ## Documentation
-Official documentation is available [Here](https://docs.shopper.com).
+Official documentation is available [Here](https://docs.laravelshopper.com).
 
 
 ## Change log  
