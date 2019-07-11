@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Scout\Searchable;
 use Mckenziearts\Shopper\Plugins\Catalogue\Models\Review;
 use Mckenziearts\Shopper\Plugins\Orders\Models\Order;
+use Mckenziearts\Shopper\Plugins\Orders\Models\Wishlist;
 use Mckenziearts\Shopper\Plugins\Users\Traits\HasWallet;
 
 /**
@@ -63,6 +64,14 @@ class User extends Authenticatable
     public function reviews()
     {
         return $this->hasMany(Review::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function wishlist()
+    {
+        return $this->hasOne(Wishlist::class);
     }
 
     /**
