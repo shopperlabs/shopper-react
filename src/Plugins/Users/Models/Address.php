@@ -20,7 +20,7 @@ class Address extends Model
      * {@inheritDoc}
      */
     protected $fillable = [
-        'active', 'user_id', 'country_id', 'state_id', 'city', 'street', 'phone_number', 'address', 'post_code'
+        'active', 'user_id', 'name', 'country_id', 'state_id', 'city', 'street', 'phone_number', 'address', 'post_code'
     ];
 
     /**
