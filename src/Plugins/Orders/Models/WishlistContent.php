@@ -9,7 +9,7 @@ class WishlistContent extends Model
     /**
      * {@inheritDoc}
      */
-    protected $table = 'shopper_cart_content';
+    protected $table = 'shopper_wishlist_content';
 
     /**
      * {@inheritDoc}
