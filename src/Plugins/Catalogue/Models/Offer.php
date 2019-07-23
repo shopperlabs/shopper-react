@@ -32,7 +32,6 @@ class Offer extends Model
      * {@inheritDoc}
      */
     protected $hidden = [
-        'product',
         'deleted_at',
         'created_at',
         'updated_at'
