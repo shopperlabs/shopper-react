@@ -24,7 +24,7 @@
     "laravel-file-manager": "^2.1.4",
     "laravel-mix": "^4.0.7",
     "loaders.css": "^0.1.2",
-    "lodash": "^4.17.5",
+    "lodash": "^4.17.13",
     "moment": "^2.22.2",
     "notie": "^4.3.1",
     "open-color": "^1.6.3",
