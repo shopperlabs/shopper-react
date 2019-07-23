@@ -6,6 +6,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Scout\Searchable;
 use Mckenziearts\Shopper\Plugins\Catalogue\Models\Review;
+use Mckenziearts\Shopper\Plugins\Orders\Models\Cart;
 use Mckenziearts\Shopper\Plugins\Orders\Models\Order;
 use Mckenziearts\Shopper\Plugins\Orders\Models\Wishlist;
 use Mckenziearts\Shopper\Plugins\Users\Traits\HasWallet;
@@ -56,6 +57,14 @@ class User extends Authenticatable
     public function addresses()
     {
         return $this->hasMany(Address::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function cart()
+    {
+        return $this->hasOne(Cart::class);
     }
 
     /**
