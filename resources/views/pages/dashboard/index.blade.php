@@ -57,7 +57,7 @@
                                 <li>
                                     @if($updateAvailable)
                                         <span class="text-warning">
-                                            {{ _('A new version of Shopper is available') }} - v{{ $latestVersion }}
+                                            {{ __('A new version of Shopper is available') }} - v{{ $latestVersion }}
                                         </span>
                                         <i class="fas fa-exclamation-circle text-warning"></i>
                                     @else
