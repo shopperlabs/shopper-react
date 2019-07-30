@@ -3,6 +3,7 @@
 namespace Mckenziearts\Shopper\Plugins\Promo\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 use Mckenziearts\Shopper\Models\Setting;
 use Mckenziearts\Shopper\Plugins\Catalogue\Models\Product;
 use Mckenziearts\Shopper\Plugins\Users\Models\User;
@@ -32,6 +33,7 @@ class Coupon extends Model
         'name',
         'code',
         'value',
+        'min_value',
         'type',
         'usage_limit',
         'usage_limit_per_user',
@@ -88,10 +90,12 @@ class Coupon extends Model
     public function getValue()
     {
         switch ($this->type) {
-            case self::COUPON_CART_FIXED || self::COUPON_PRODUCT_FIXED:
+            case self::COUPON_CART_FIXED:
+            case self::COUPON_PRODUCT_FIXED:
                 return '- ' . shopperMoney($this->value, (new Setting)->get('site_currency'));
                 break;
-            case self::COUPON_CART_PERCENT || self::COUPON_PRODUCT_PERCENT:
+            case self::COUPON_CART_PERCENT:
+            case self::COUPON_PRODUCT_PERCENT:
                 return '-' . $this->value . '%';
                 break;
         }

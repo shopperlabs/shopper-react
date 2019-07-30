@@ -487,9 +487,14 @@ export default class CouponForm extends ShopperComponent{
                         />
                       </Form.Item>
                     </Layout.Col>
-                    <Layout.Col span="12">
+                    <Layout.Col span="6">
                       <Form.Item label={this.trans.get('Coupon value')} prop='value'>
                         <InputNumber value={this.state.form.value} onChange={this.onChange.bind(this, 'value')} min="1" max="100" />
+                      </Form.Item>
+                    </Layout.Col>
+                    <Layout.Col span="6">
+                      <Form.Item label={this.trans.get('Coupon min value')} prop='min_value'>
+                        <InputNumber value={this.state.form.min_value} onChange={this.onChange.bind(this, 'min_value')} min="1" max="1000" />
                       </Form.Item>
                     </Layout.Col>
                   </Layout.Row>

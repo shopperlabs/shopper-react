@@ -20,11 +20,12 @@ class CouponRequest extends BaseRequest
      * @var array
      */
     public $storeRules = [
-        'name'  => 'required|max:255|unique:shopper_coupons',
-        'code'  => 'required|max:8|unique:shopper_coupons',
-        'value' => 'required',
-        'type'  => 'required',
-        'date'  => 'required'
+        'name'      => 'required|max:255|unique:shopper_coupons',
+        'code'      => 'required|max:30|unique:shopper_coupons',
+        'value'     => 'required',
+        'min_value' => 'nullable',
+        'type'      => 'required',
+        'date'      => 'required'
     ];
 
     /**
@@ -35,11 +36,12 @@ class CouponRequest extends BaseRequest
     public function getUpdateRules()
     {
         return [
-            'name'  => 'sometimes|required|max:255|unique:shopper_coupons,id,' . $this->get('id'),
-            'code'  => 'sometimes|required|max:8|unique:shopper_coupons,id,' . $this->get('id'),
-            'value' => 'sometimes|required',
-            'type'  => 'sometimes|required',
-            'date'  => 'sometimes|required'
+            'name'      => 'sometimes|required|max:255|unique:shopper_coupons,id,' . $this->get('id'),
+            'code'      => 'sometimes|required|max:30|unique:shopper_coupons,id,' . $this->get('id'),
+            'value'     => 'sometimes|required',
+            'min_value' => 'sometimes|nullable',
+            'type'      => 'sometimes|required',
+            'date'      => 'sometimes|required'
         ];
     }
 }
