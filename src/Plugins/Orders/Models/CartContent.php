@@ -3,6 +3,7 @@
 namespace Mckenziearts\Shopper\Plugins\Orders\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Mckenziearts\Shopper\Plugins\Catalogue\Models\Offer;
 
 class CartContent extends Model
 {
@@ -26,5 +27,13 @@ class CartContent extends Model
     public function cart()
     {
         return $this->belongsTo(Cart::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function offer()
+    {
+        return $this->belongsTo(Offer::class);
     }
 }
