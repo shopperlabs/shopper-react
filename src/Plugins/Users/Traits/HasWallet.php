@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by IntelliJ IDEA.
- * User: Mac
- * Date: 2019-03-27
- * Time: 14:57
- */
 
 namespace Mckenziearts\Shopper\Plugins\Users\Traits;
-
 
 use Mckenziearts\Shopper\Plugins\Users\Models\Transaction;
 use Mckenziearts\Shopper\Plugins\Users\Models\Wallet;
