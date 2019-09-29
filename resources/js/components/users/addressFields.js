@@ -1,5 +1,6 @@
 const addressFields = {
   active: 0,
+  name: '',
   country_id: '',
   state_id: '',
   city: '',

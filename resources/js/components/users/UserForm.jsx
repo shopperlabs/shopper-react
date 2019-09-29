@@ -789,6 +789,9 @@ export default class UserForm extends ShopperComponent {
               </Switch>
               <span className='active-label'>{this.trans.get('Default')}</span>
               <p className='m-b-sm'/>
+              <Form.Item label={this.trans.get('Name')} prop='name'>
+                <Input type='text' value={this.state.addressForm.name} onChange={this.onAddressFormChange.bind(this, 'name')} autoComplete='off' />
+              </Form.Item>
               <Layout.Row gutter="20">
                 <Layout.Col span="12">
                   <Form.Item label={this.trans.get('Country')} prop='country_id'>
