@@ -41,7 +41,7 @@
     "select2": "^4.0",
     "select2-bootstrap-theme": "0.1.0-beta.10",
     "toastr": "^2.1.4",
-    "snyk": "^1.161.1"
+    "snyk": "^1.231.0"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-0",
