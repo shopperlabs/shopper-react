@@ -1,5 +1,5 @@
 # Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
-version: v1.13.3
+version: v1.14.1
 ignore: {}
 # patches apply the minimum changes required to fix a vulnerability
 patch:
@@ -8,3 +8,54 @@ patch:
         patched: '2019-05-06T07:35:03.757Z'
     - laravel-file-manager > axios:
         patched: '2019-05-06T07:35:03.757Z'
+  SNYK-JS-LODASH-567746:
+    - lodash:
+        patched: '2020-05-01T07:40:00.185Z'
+    - laravel-mix > lodash:
+        patched: '2020-05-01T07:40:00.185Z'
+    - open-color > lodash:
+        patched: '2020-05-01T07:40:00.185Z'
+    - react-quill > lodash:
+        patched: '2020-05-01T07:40:00.185Z'
+    - laravel-mix > @babel/core > lodash:
+        patched: '2020-05-01T07:40:00.185Z'
+    - laravel-mix > css-loader > lodash:
+        patched: '2020-05-01T07:40:00.185Z'
+    - laravel-mix > webpack-merge > lodash:
+        patched: '2020-05-01T07:40:00.185Z'
+    - laravel-mix > @babel/preset-env > @babel/plugin-transform-block-scoping > lodash:
+        patched: '2020-05-01T07:40:00.185Z'
+    - laravel-mix > babel-merge > @babel/core > lodash:
+        patched: '2020-05-01T07:40:00.185Z'
+    - laravel-mix > extract-text-webpack-plugin > async > lodash:
+        patched: '2020-05-01T07:40:00.185Z'
+    - laravel-mix > optimize-css-assets-webpack-plugin > last-call-webpack-plugin > lodash:
+        patched: '2020-05-01T07:40:00.185Z'
+    - laravel-mix > webpack-dev-server > http-proxy-middleware > lodash:
+        patched: '2020-05-01T07:40:00.185Z'
+    - laravel-mix > @babel/preset-env > @babel/plugin-transform-classes > @babel/helper-define-map > lodash:
+        patched: '2020-05-01T07:40:00.185Z'
+    - laravel-mix > babel-merge > @babel/core > @babel/helper-module-transforms > lodash:
+        patched: '2020-05-01T07:40:00.185Z'
+    - laravel-mix > webpack-dev-server > portfinder > async > lodash:
+        patched: '2020-05-01T07:40:00.185Z'
+    - laravel-mix > @babel/preset-env > @babel/plugin-transform-unicode-regex > @babel/helper-create-regexp-features-plugin > @babel/helper-regex > lodash:
+        patched: '2020-05-01T07:40:00.185Z'
+    - laravel-mix > babel-merge > @babel/core > @babel/helpers > @babel/traverse > lodash:
+        patched: '2020-05-01T07:40:00.185Z'
+    - laravel-mix > @babel/preset-env > @babel/preset-modules > @babel/plugin-transform-dotall-regex > @babel/helper-create-regexp-features-plugin > @babel/helper-regex > lodash:
+        patched: '2020-05-01T07:40:00.185Z'
+    - laravel-mix > babel-merge > @babel/core > @babel/helper-module-transforms > @babel/helper-replace-supers > @babel/traverse > lodash:
+        patched: '2020-05-01T07:40:00.185Z'
+    - laravel-mix > @babel/preset-env > @babel/plugin-transform-exponentiation-operator > @babel/helper-builder-binary-assignment-operator-visitor > @babel/helper-explode-assignable-expression > @babel/traverse > @babel/generator > lodash:
+        patched: '2020-05-01T07:40:00.185Z'
+    - laravel-mix > babel-merge > @babel/core > @babel/helper-module-transforms > @babel/helper-replace-supers > @babel/traverse > @babel/generator > lodash:
+        patched: '2020-05-01T07:40:00.185Z'
+    - laravel-mix > babel-merge > @babel/core > @babel/helper-module-transforms > @babel/helper-replace-supers > @babel/traverse > @babel/helper-split-export-declaration > @babel/types > lodash:
+        patched: '2020-05-01T07:40:00.185Z'
+    - laravel-mix > @babel/preset-env > @babel/plugin-transform-exponentiation-operator > @babel/helper-builder-binary-assignment-operator-visitor > @babel/helper-explode-assignable-expression > @babel/traverse > @babel/helper-split-export-declaration > @babel/types > lodash:
+        patched: '2020-05-01T07:40:00.185Z'
+    - laravel-mix > babel-merge > @babel/core > @babel/helper-module-transforms > @babel/helper-replace-supers > @babel/traverse > @babel/helper-function-name > @babel/template > @babel/types > lodash:
+        patched: '2020-05-01T07:40:00.185Z'
+    - laravel-mix > @babel/preset-env > @babel/plugin-transform-exponentiation-operator > @babel/helper-builder-binary-assignment-operator-visitor > @babel/helper-explode-assignable-expression > @babel/traverse > @babel/helper-function-name > @babel/template > @babel/types > lodash:
+        patched: '2020-05-01T07:40:00.185Z'
