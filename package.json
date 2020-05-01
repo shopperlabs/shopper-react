@@ -9,7 +9,7 @@
     "prod": "npm run production",
     "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
     "snyk-protect": "snyk protect",
-    "prepublish": "npm run snyk-protect"
+    "prepublish": "yarn run snyk-protect"
   },
   "dependencies": {
     "autocomplete.js": "^0.35.0",
@@ -41,7 +41,7 @@
     "select2": "^4.0",
     "select2-bootstrap-theme": "0.1.0-beta.10",
     "toastr": "^2.1.4",
-    "snyk": "^1.161.1"
+    "snyk": "^1.316.1"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-0",
