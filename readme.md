@@ -1,10 +1,15 @@
-<p align="center"><img height="100px" src="https://pix.watch/k_qldx/tNOUs0.png"></p>
-
 <p align="center">
-<a href="https://travis-ci.org/mckenziearts/shopper"><img src="https://travis-ci.org/mckenziearts/shopper.png?branch=master"></a>
 <a href="https://packagist.org/packages/mckenziearts/shopper"><img src="https://img.shields.io/packagist/v/mckenziearts/shopper.svg?style=flat-square"></a>
 <a href="https://packagist.org/packages/mckenziearts/shopper"><img src="https://img.shields.io/packagist/dt/mckenziearts/shopper.svg?style=flat-square"></a>
 </p>
+
+# Shopper
+
+⚠️ This package is abandoned and no longer maintained. Use [this version](https://github.com/shopperlabs/framework) instead. ⚠️
+
+👉 If you are interested to step on as the main maintainer of this package, please [reach out to me](https://twitter.com/monneyarthur)!
+
+---
 
 ## Introduction
 
